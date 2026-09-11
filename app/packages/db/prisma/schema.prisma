@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LessonSourceType {
+  PRESENTATION
+  TEXTBOOK
+}
+
+enum QuizDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuizStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum QuizSource {
+  MANUAL
+  AI_GENERATED
+}
+
+enum GenerationJobStatus {
+  PENDING
+  RUNNING
+  DONE
+  FAILED
+}
+
+enum RoomState {
+  LOBBY
+  PRESENTING
+  QUIZ_QUESTION
+  QUIZ_REVIEW
+  DISCUSSION_OPEN
+  DISCUSSION_CLOSED
+  LEADERBOARD
+  ENDED
+}
+
+model Subject {
+  id         String       @id @default(cuid())
+  key        String       @unique
+  name       String
+  orderIndex Int
+  lessonUnits LessonUnit[]
+}
+
+model LessonUnit {
+  id              String             @id @default(cuid())
+  subject         Subject            @relation(fields: [subjectId], references: [id])
+  subjectId       String
+  sourceType      LessonSourceType
+  title           String
+  orderIndex      Int
+  slug            String             @unique
+  contentMarkdown String
+  chapterLabel    String?
+  createdAt       DateTime           @default(now())
+
+  discussionQuestions DiscussionQuestion[]
+  quizQuestions       QuizQuestion[]
+  generationJobs      GenerationJob[]
+  roomsCurrentlyOn    Room[]           @relation("RoomCurrentLessonUnit")
+  playlistItems       RoomPlaylistItem[]
+}
+
+model DiscussionQuestion {
+  id              String   @id @default(cuid())
+  lessonUnit      LessonUnit @relation(fields: [lessonUnitId], references: [id], onDelete: Cascade)
+  lessonUnitId    String
+  orderIndex      Int
+  question        String
+  suggestedAnswer String?
+
+  discussionPosts DiscussionPost[]
+}
+
+model QuizQuestion {
+  id           String         @id @default(cuid())
+  lessonUnit   LessonUnit     @relation(fields: [lessonUnitId], references: [id], onDelete: Cascade)
+  lessonUnitId String
+  question     String
+  options      Json
+  correctIndex Int
+  explanation  String
+  sourceQuote  String
+  difficulty   QuizDifficulty
+  status       QuizStatus     @default(DRAFT)
+  source       QuizSource     @default(AI_GENERATED)
+  createdAt    DateTime       @default(now())
+
+  answers Answer[]
+}
+
+model GenerationJob {
+  id           String              @id @default(cuid())
+  lessonUnit   LessonUnit          @relation(fields: [lessonUnitId], references: [id], onDelete: Cascade)
+  lessonUnitId String
+  status       GenerationJobStatus @default(PENDING)
+  attempts     Int                 @default(0)
+  error        String?
+  updatedAt    DateTime            @updatedAt
+}
+
+model Room {
+  id                  String      @id @default(cuid())
+  code                String      @unique
+  hostToken           String
+  currentLessonUnit   LessonUnit? @relation("RoomCurrentLessonUnit", fields: [currentLessonUnitId], references: [id], onDelete: SetNull)
+  currentLessonUnitId String?
+  state               RoomState   @default(LOBBY)
+  createdAt           DateTime    @default(now())
+
+  participants     Participant[]
+  answers          Answer[]
+  discussionPosts  DiscussionPost[]
+  participantBadges ParticipantBadge[]
+  playlistItems    RoomPlaylistItem[]
+}
+
+/// Ordered list of LessonUnits a Room will step through via host:nextStep. Room.currentLessonUnitId
+/// always points at one of these (the one currently "on") so read paths that only care about "what's
+/// showing now" don't need to join through this table.
+model RoomPlaylistItem {
+  id           String     @id @default(cuid())
+  room         Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId       String
+  lessonUnit   LessonUnit @relation(fields: [lessonUnitId], references: [id], onDelete: Cascade)
+  lessonUnitId String
+  orderIndex   Int
+
+  @@unique([roomId, orderIndex])
+}
+
+model Participant {
+  id        String   @id @default(cuid())
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    String
+  nickname  String
+  connected Boolean  @default(true)
+  joinedAt  DateTime @default(now())
+
+  answers          Answer[]
+  discussionPosts  DiscussionPost[]
+  postUpvotes      PostUpvote[]
+  participantBadges ParticipantBadge[]
+
+  @@unique([roomId, nickname])
+}
+
+model Answer {
+  id              String       @id @default(cuid())
+  participant     Participant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId   String
+  quizQuestion    QuizQuestion @relation(fields: [quizQuestionId], references: [id], onDelete: Cascade)
+  quizQuestionId  String
+  room            Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId          String
+  selectedIndex   Int
+  isCorrect       Boolean
+  responseTimeMs  Int
+  pointsAwarded   Int
+  streakBonus     Int          @default(0)
+  answeredAt      DateTime     @default(now())
+
+  @@unique([participantId, quizQuestionId])
+}
+
+model DiscussionPost {
+  id                   String             @id @default(cuid())
+  room                 Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId               String
+  discussionQuestion   DiscussionQuestion @relation(fields: [discussionQuestionId], references: [id], onDelete: Cascade)
+  discussionQuestionId String
+  participant          Participant        @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId        String
+  content              String
+  upvotes              Int                @default(0)
+  createdAt            DateTime           @default(now())
+
+  postUpvotes PostUpvote[]
+}
+
+model PostUpvote {
+  id            String         @id @default(cuid())
+  post          DiscussionPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId        String
+  participant   Participant    @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId String
+  createdAt     DateTime       @default(now())
+
+  @@unique([postId, participantId])
+}
+
+model Badge {
+  id          String @id @default(cuid())
+  code        String @unique
+  name        String
+  description String
+
+  participantBadges ParticipantBadge[]
+}
+
+model ParticipantBadge {
+  id            String      @id @default(cuid())
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId String
+  badge         Badge       @relation(fields: [badgeId], references: [id])
+  badgeId       String
+  room          Room        @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId        String
+  awardedAt     DateTime    @default(now())
+
+  @@unique([participantId, badgeId, roomId])
+}
+
+model AdminUser {
+  id           String @id @default(cuid())
+  username     String @unique
+  passwordHash String
+}

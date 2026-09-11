@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-app-gradient text-white antialiased;
+  min-height: 100vh;
+}
+
+::selection {
+  background: #7c5cff66;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(124, 92, 255, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 24px rgba(124, 92, 255, 0);
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 1.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+/* Was only suppressing the mobile tap-highlight flash — despite the name, it enforced no minimum
+   touch-target size at all, so small buttons (e.g. the discussion upvote button) stayed well under
+   the ~44px baseline (WCAG 2.5.5 / iOS & Android guidance) students need to reliably tap on a phone
+   mid-class. min-height/min-width are additive with existing padding, so already-large buttons
+   (the full-width join button, the 110px quiz answer tiles) are unaffected. */
+.tap-target {
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
+}
