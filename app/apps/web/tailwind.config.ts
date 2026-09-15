@@ -1,18 +1,11 @@
 import type { Config } from "tailwindcss";
+import { THEME } from "./src/theme-tokens";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
-      colors: {
-        ink: "#0b0a1f",
-        panel: "#151233",
-        panel2: "#1c1740",
-        accent: "#7c5cff",
-        accent2: "#22d3ee",
-        correct: "#22c55e",
-        wrong: "#ef4444",
-      },
+      colors: { ...THEME },
       backgroundImage: {
         "app-gradient": "radial-gradient(1200px 600px at 10% -10%, #3b1d8f33, transparent), radial-gradient(1000px 500px at 110% 10%, #0891b233, transparent), linear-gradient(180deg, #0b0a1f 0%, #120f2e 100%)",
         "kahoot-a": "linear-gradient(135deg, #ef4444, #dc2626)",

@@ -43,3 +43,23 @@ export function disconnectSocket() {
   socket = null;
   socketAuthKey = undefined;
 }
+
+/** Wraps the `socket.timeout(ms).emit(event, payload, (err, ack) => ...)` pattern that was
+ * hand-written at every call site (and, on the host console's action buttons, not even handled at
+ * all — a command that silently failed to reach the server gave the teacher zero feedback).
+ * Resolves with the ack payload, or rejects with an Error whose message is either the transport
+ * error or the server's `{error}` string, so callers can show it directly. */
+export function emitWithAck<TPayload, TAck>(
+  socket: Socket,
+  event: string,
+  payload: TPayload,
+  timeoutMs = 6000,
+): Promise<TAck> {
+  return new Promise((resolve, reject) => {
+    socket.timeout(timeoutMs).emit(event, payload, (err: Error | null, ack: (TAck & { error?: undefined }) | { error: string }) => {
+      if (err) return reject(new Error("Không kết nối được tới máy chủ."));
+      if (ack && typeof ack === "object" && "error" in ack && ack.error) return reject(new Error(ack.error));
+      resolve(ack as TAck);
+    });
+  });
+}

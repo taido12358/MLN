@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { CenteredMessage } from "@/components/ui/CenteredMessage";
 
 /**
  * Next.js App Router error boundary for everything under the root layout (`/`, `/host/*`,
@@ -15,20 +16,17 @@ export default function ErrorBoundary({ error, reset }: { error: Error & { diges
   }, [error]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <div className="text-5xl">😵</div>
-      <h1 className="mt-4 text-xl font-extrabold">Đã có lỗi xảy ra</h1>
-      <p className="mt-2 max-w-sm text-sm text-white/60">
-        Trang gặp sự cố ngoài dự kiến. Thử lại — nếu vẫn lỗi, quay về trang chủ và tham gia lại phòng.
-      </p>
-      <div className="mt-6 flex gap-3">
-        <button onClick={reset} className="tap-target rounded-xl bg-accent px-5 py-3 font-bold text-ink">
-          Thử lại
-        </button>
-        <a href="/" className="tap-target flex items-center rounded-xl bg-white/10 px-5 py-3 font-bold">
-          Về trang chủ
-        </a>
-      </div>
-    </main>
+    <CenteredMessage
+      emoji="😵"
+      title="Đã có lỗi xảy ra"
+      subtitle="Trang gặp sự cố ngoài dự kiến. Thử lại — nếu vẫn lỗi, quay về trang chủ và tham gia lại phòng."
+    >
+      <button onClick={reset} className="tap-target rounded-2xl bg-gradient-to-r from-accent to-accent2 px-5 py-3 font-bold text-ink">
+        Thử lại
+      </button>
+      <a href="/" className="tap-target flex items-center rounded-2xl bg-white/10 px-5 py-3 font-bold">
+        Về trang chủ
+      </a>
+    </CenteredMessage>
   );
 }
