@@ -13,7 +13,23 @@ dòng đó sang "Đã giải quyết" kèm ngày giải quyết + link tới `se
   không có version control thật, không thể revert/diff qua git. Cân nhắc `git init`
   khi có nhiều agent cùng sửa code để tránh mất việc do ghi đè file. *(infra)*
 
+- **2026-09-11** — Backlog đề xuất nâng cấp chức năng: 2 mục còn lại chưa triển khai —
+  kéo-thả sắp xếp lại playlist trước khi tạo phòng, chế độ tự luyện tập sau giờ học
+  (không tính điểm). Cả 2 bị gạt khỏi phiên 2026-09-15 vì là tính năng sản phẩm lớn hơn
+  hẳn phần còn lại của backlog. Chi tiết gốc:
+  [`../sessions/2026-09-11_1201_misc_de-xuat-nang-cap.md`](../sessions/2026-09-11_1201_misc_de-xuat-nang-cap.md).
+  *(web, api)*
+
 ## Đã giải quyết
+
+- **2026-09-11** (giải quyết 2026-09-15) — 6 mục backlog: nút "sinh hàng loạt" quiz AI
+  trong UI `/host/content`, danh sách "ai chưa trả lời" cho host, xoá bài thảo luận không
+  phù hợp, export CSV kết quả buổi học, "+10 giây" khi câu hỏi đang mở, hiện
+  `suggestedAnswer` cho host lúc mở thảo luận. Cùng phiên còn dựng UI kit dùng chung và
+  sửa loạt bug nhỏ (field `running` bị đè ở batch-status, màu `global-error.tsx` lệch
+  token, `timeLimitSec` không clamp state thật, `LessonUnitPanel.load()` thiếu
+  try/catch). Xem
+  [`../sessions/2026-09-15_1027_misc_cai-thien-toan-dien.md`](../sessions/2026-09-15_1027_misc_cai-thien-toan-dien.md).
 
 - **2026-09-10** (giải quyết cùng ngày phát hiện) — Trang chiếu chỉ-đọc
   `/leaderboard/[roomCode]` hoàn toàn không hoạt động vì thiếu socket event join riêng

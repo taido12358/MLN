@@ -7,6 +7,13 @@ import confetti from "canvas-confetti";
 import { getSocket } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
 import { badgeInfo } from "@/lib/badges";
+import { readStoredIdentity, writeStoredIdentity } from "@/lib/storage";
+import { CenteredMessage } from "@/components/ui/CenteredMessage";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { Input } from "@/components/ui/Input";
+import { LeaderboardList } from "@/components/LeaderboardList";
+import { QuizOptionTile } from "@/components/QuizOptionTile";
+import { OPTION_SHAPES } from "@/lib/quizOptions";
 import {
   PARTICIPANT_JOIN,
   QUIZ_SUBMIT_ANSWER,
@@ -18,8 +25,7 @@ import {
   type LeaderboardWhereAmIAck,
 } from "@mln/shared";
 
-const OPTION_STYLES = ["bg-kahoot-a", "bg-kahoot-b", "bg-kahoot-c", "bg-kahoot-d"];
-const OPTION_SHAPES = ["▲", "◆", "●", "■"];
+const DISCUSSION_MAX_LENGTH = 500; // matches the server-side cap in apps/api/src/socket/handlers/discussion.ts
 
 export default function PlayPage({ params }: { params: { roomCode: string } }) {
   const roomCode = params.roomCode.toUpperCase();
@@ -29,17 +35,15 @@ export default function PlayPage({ params }: { params: { roomCode: string } }) {
   const [joinError, setJoinError] = useState<string | null>(null);
 
   useEffect(() => {
-    let raw: string | null = null;
-    try {
-      raw = localStorage.getItem(`mln:identity:${roomCode}`);
-    } catch {
-      /* ignore */
-    }
-    if (!raw) {
+    const stored = readStoredIdentity(roomCode);
+    if (!stored) {
       router.replace("/");
       return;
     }
-    const identity = JSON.parse(raw) as { participantId: string; nickname: string };
+    // Destructured into separate consts (rather than referencing `stored` directly below) so
+    // TypeScript's null-narrowing above actually applies inside the `join` closure defined further
+    // down — it doesn't carry the narrowing through a captured object reference.
+    const { participantId: storedParticipantId, nickname: storedNickname } = stored;
     const socket = getSocket();
     const detach = store.attach(socket);
 
@@ -51,18 +55,15 @@ export default function PlayPage({ params }: { params: { roomCode: string } }) {
     function join() {
       socket.timeout(8000).emit(
         PARTICIPANT_JOIN,
-        { roomCode, nickname: identity.nickname, participantId: identity.participantId },
+        { roomCode, nickname: storedNickname, participantId: storedParticipantId },
         (err: Error | null, ack: ParticipantJoinAck) => {
           if (err || !ack?.participantId) {
             setJoinError("Không thể kết nối tới phòng. Phòng có thể đã đóng.");
             return;
           }
-          store.setIdentity(roomCode, ack.participantId, identity.nickname);
+          store.setIdentity(roomCode, ack.participantId, storedNickname);
           store.syncFromJoin(ack.roomState);
-          localStorage.setItem(
-            `mln:identity:${roomCode}`,
-            JSON.stringify({ participantId: ack.participantId, nickname: identity.nickname }),
-          );
+          writeStoredIdentity(roomCode, { participantId: ack.participantId, nickname: storedNickname });
           setJoinError(null);
           setReady(true);
         },
@@ -82,7 +83,7 @@ export default function PlayPage({ params }: { params: { roomCode: string } }) {
   if (joinError) {
     return (
       <CenteredMessage emoji="😕" title="Không vào được phòng" subtitle={joinError}>
-        <a href="/" className="mt-6 rounded-xl bg-accent px-5 py-3 font-bold text-ink">
+        <a href="/" className="tap-target flex items-center rounded-2xl bg-gradient-to-r from-accent to-accent2 px-5 py-3 font-bold text-ink">
           Quay lại
         </a>
       </CenteredMessage>
@@ -90,7 +91,7 @@ export default function PlayPage({ params }: { params: { roomCode: string } }) {
   }
 
   if (!ready) {
-    return <CenteredMessage emoji="🔌" title="Đang kết nối…" subtitle="Đang vào phòng, chờ chút nhé." />;
+    return <CenteredMessage pulse emoji="🔌" title="Đang kết nối…" subtitle="Đang vào phòng, chờ chút nhé." />;
   }
 
   return <RoomView roomCode={roomCode} />;
@@ -114,13 +115,13 @@ function RoomView({ roomCode }: { roomCode: string }) {
       return <EndedView />;
     case "PRESENTING":
       return (
-        <CenteredMessage emoji="📖" title="Giáo viên đang trình bày" subtitle={state.currentLessonUnitTitle ?? "Đang chuẩn bị nội dung…"}>
+        <CenteredMessage pulse emoji="📖" title="Giáo viên đang trình bày" subtitle={state.currentLessonUnitTitle ?? "Đang chuẩn bị nội dung…"}>
           <PeopleBadge count={state.participantCount} />
         </CenteredMessage>
       );
     default:
       return (
-        <CenteredMessage emoji="🕒" title="Đang chờ bắt đầu" subtitle="Giáo viên sẽ mở đầu buổi học ngay.">
+        <CenteredMessage pulse emoji="🕒" title="Đang chờ bắt đầu" subtitle="Giáo viên sẽ mở đầu buổi học ngay.">
           <PeopleBadge count={state.participantCount} />
         </CenteredMessage>
       );
@@ -133,7 +134,7 @@ function PeopleBadge({ count }: { count: number }) {
 }
 
 function QuizQuestionView({ roomCode }: { roomCode: string }) {
-  const { currentQuestion, answerCount, participantId, addMyAnswerResult, myLastAnswer } = useRoomStore();
+  const { currentQuestion, answerCount, addMyAnswerResult, myLastAnswer } = useRoomStore();
   const [selected, setSelected] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const submittedRef = useRef(false);
@@ -148,7 +149,7 @@ function QuizQuestionView({ roomCode }: { roomCode: string }) {
     return () => clearInterval(id);
   }, []);
 
-  if (!currentQuestion) return <CenteredMessage emoji="⏳" title="Đang tải câu hỏi…" subtitle="" />;
+  if (!currentQuestion) return <CenteredMessage emoji="⏳" title="Đang tải câu hỏi…" />;
 
   const elapsed = now - currentQuestion.openedAt;
   const totalMs = currentQuestion.timeLimitSec * 1000;
@@ -174,16 +175,10 @@ function QuizQuestionView({ roomCode }: { roomCode: string }) {
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col px-4 py-6">
       <div className="flex items-center justify-between text-sm text-white/60">
-        <span>{answerCount ? `${answerCount.answeredCount}/${answerCount.totalParticipants} đã trả lời` : " "}</span>
+        <span>{answerCount ? `${answerCount.answeredCount}/${answerCount.totalParticipants} đã trả lời` : " "}</span>
         <span className={`font-bold ${remainingSec <= 5 ? "text-wrong" : "text-white"}`}>{remainingSec}s</span>
       </div>
-      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-        <motion.div
-          className="h-full bg-gradient-to-r from-accent to-accent2"
-          animate={{ width: `${pct * 100}%` }}
-          transition={{ ease: "linear", duration: 0.1 }}
-        />
-      </div>
+      <ProgressBar percent={pct * 100} className="mt-2" barClassName="transition-[width] duration-100 ease-linear" />
 
       <motion.h1
         key={currentQuestion.questionId}
@@ -195,26 +190,17 @@ function QuizQuestionView({ roomCode }: { roomCode: string }) {
       </motion.h1>
 
       <div className="mt-6 grid grid-cols-2 gap-3">
-        {currentQuestion.options.map((opt, i) => {
-          const isSelected = selected === i;
-          const disabled = submittedRef.current || timeUp;
-          return (
-            <motion.button
-              key={i}
-              whileTap={disabled ? undefined : { scale: 0.95 }}
-              disabled={disabled}
-              onClick={() => submit(i)}
-              aria-label={`Đáp án ${OPTION_SHAPES[i]}: ${opt}`}
-              aria-pressed={isSelected}
-              className={`tap-target flex min-h-[110px] flex-col items-center justify-center gap-2 rounded-2xl p-3 text-center font-bold text-white shadow-lg transition ${OPTION_STYLES[i]} ${
-                isSelected ? "ring-4 ring-white" : ""
-              } ${disabled && !isSelected ? "opacity-50" : ""}`}
-            >
-              <span className="text-2xl">{OPTION_SHAPES[i]}</span>
-              <span className="text-sm leading-tight">{opt}</span>
-            </motion.button>
-          );
-        })}
+        {currentQuestion.options.map((opt, i) => (
+          <QuizOptionTile
+            key={i}
+            index={i}
+            label={opt}
+            interactive
+            selected={selected === i}
+            disabled={submittedRef.current || timeUp}
+            onClick={() => submit(i)}
+          />
+        ))}
       </div>
 
       {selected !== null && !myLastAnswer && (
@@ -235,7 +221,7 @@ function QuizReviewView() {
     }
   }, [myLastAnswer]);
 
-  if (!questionClosed) return <CenteredMessage emoji="⏳" title="Đang chấm điểm…" subtitle="" />;
+  if (!questionClosed) return <CenteredMessage emoji="⏳" title="Đang chấm điểm…" />;
 
   const maxCount = Math.max(1, ...questionClosed.optionCounts);
 
@@ -300,14 +286,15 @@ function DiscussionView({ roomCode, open }: { roomCode: string; open: boolean })
 
       {open && (
         <div className="mt-4 flex gap-2">
-          <input
+          <Input
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value.slice(0, DISCUSSION_MAX_LENGTH))}
             onKeyDown={(e) => e.key === "Enter" && post()}
             placeholder="Chia sẻ ý kiến của bạn…"
-            className="flex-1 rounded-xl border border-white/10 bg-panel px-4 py-3 outline-none ring-accent focus:ring-2"
+            maxLength={DISCUSSION_MAX_LENGTH}
+            className="py-3"
           />
-          <button onClick={post} className="tap-target rounded-xl bg-accent px-4 py-3 font-bold text-ink">
+          <button onClick={post} className="tap-target shrink-0 rounded-2xl bg-accent px-4 py-3 font-bold text-ink">
             Gửi
           </button>
         </div>
@@ -332,6 +319,7 @@ function DiscussionView({ roomCode, open }: { roomCode: string; open: boolean })
                 <button
                   onClick={() => upvote(p.postId)}
                   disabled={p.participantId === participantId || upvoted.has(p.postId)}
+                  aria-label={`Upvote bài của ${p.nickname}, hiện có ${p.upvotes} lượt`}
                   className="tap-target flex shrink-0 flex-col items-center rounded-lg bg-white/5 px-3 py-1 text-sm font-bold disabled:opacity-40"
                 >
                   ▲<span>{p.upvotes}</span>
@@ -360,20 +348,8 @@ function LeaderboardView({ roomCode }: { roomCode: string }) {
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col px-4 py-8">
       <h1 className="text-center text-2xl font-extrabold">🏆 Bảng xếp hạng</h1>
-      <div className="mt-6 space-y-2">
-        {leaderboard.map((row) => (
-          <motion.div
-            key={row.participantId}
-            layout
-            className={`flex items-center gap-3 rounded-xl p-3 ${
-              row.participantId === participantId ? "bg-accent/30 ring-2 ring-accent" : "bg-panel"
-            }`}
-          >
-            <span className="w-8 text-center text-lg font-black text-accent2">#{row.rank}</span>
-            <span className="flex-1 font-semibold">{row.nickname}</span>
-            <span className="font-bold">{row.score}</span>
-          </motion.div>
-        ))}
+      <div className="mt-6">
+        <LeaderboardList rows={leaderboard} highlightParticipantId={participantId} />
       </div>
       {!inTop && mine && (
         <div className="mt-4 rounded-xl border border-dashed border-white/20 p-3 text-center">
@@ -422,47 +398,13 @@ function EndedView() {
         </div>
       )}
 
-      <div className="mt-8 w-full space-y-2">
-        {leaderboard.slice(0, 10).map((row) => (
-          <div
-            key={row.participantId}
-            className={`flex items-center gap-3 rounded-xl p-3 ${
-              row.participantId === participantId ? "bg-accent/30 ring-2 ring-accent" : "bg-panel"
-            }`}
-          >
-            <span className="w-8 text-center font-black text-accent2">#{row.rank}</span>
-            <span className="flex-1 font-semibold">{row.nickname}</span>
-            <span className="font-bold">{row.score}</span>
-          </div>
-        ))}
+      <div className="mt-8 w-full">
+        <LeaderboardList rows={leaderboard.slice(0, 10)} highlightParticipantId={participantId} />
       </div>
 
       <a href="/" className="mt-8 rounded-xl bg-white/10 px-5 py-3 font-bold">
         Về trang chủ
       </a>
-    </main>
-  );
-}
-
-function CenteredMessage({
-  emoji,
-  title,
-  subtitle,
-  children,
-}: {
-  emoji: string;
-  title: string;
-  subtitle: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-        <div className="pulse-ring inline-block rounded-full text-6xl">{emoji}</div>
-        <h1 className="mt-6 text-xl font-extrabold">{title}</h1>
-        {subtitle && <p className="mt-2 text-white/60">{subtitle}</p>}
-        {children}
-      </motion.div>
     </main>
   );
 }

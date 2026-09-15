@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { api, ApiError, type Subject, type LessonUnitSummary, type LessonUnitDetail, type QuizQuestion } from "@/lib/api";
+import { useAdminToken } from "@/hooks/useAdminToken";
+import { api, ApiError, type Subject, type LessonUnitSummary, type LessonUnitDetail, type QuizQuestion, type BatchGenerateStatus } from "@/lib/api";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+
+const BATCH_POLL_MS = 2000;
 
 export default function ContentAdminPage() {
-  const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
+  const token = useAdminToken();
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [activeSubject, setActiveSubject] = useState<Subject | null>(null);
   const [units, setUnits] = useState<LessonUnitSummary[]>([]);
@@ -15,13 +21,49 @@ export default function ContentAdminPage() {
   const [cart, setCart] = useState<{ id: string; title: string }[]>([]);
   const [roomResult, setRoomResult] = useState<{ code: string; hostToken: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [batchStatus, setBatchStatus] = useState<BatchGenerateStatus | null>(null);
+  const [batchStarting, setBatchStarting] = useState(false);
 
   useEffect(() => {
-    const t = localStorage.getItem("mln:adminToken");
-    if (!t) return router.replace("/host");
-    setToken(t);
+    if (!token) return;
     api.subjects().then(setSubjects).catch(() => setError("Không tải được danh sách môn học."));
-  }, [router]);
+  }, [token]);
+
+  // Poll batch-generate progress regardless of who started it — another host session may already
+  // have one running (the backend enforces a single-flight batch across the whole process), so this
+  // also surfaces that state to a teacher who just opened this page.
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    async function poll() {
+      try {
+        const status = await api.batchGenerateStatus(token!);
+        if (!cancelled) setBatchStatus(status);
+      } catch {
+        /* transient — next tick retries */
+      }
+    }
+    poll();
+    const id = setInterval(poll, BATCH_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, [token]);
+
+  async function startBatchGenerate() {
+    if (!token) return;
+    setBatchStarting(true);
+    setError(null);
+    try {
+      await api.batchGenerate(token, 5);
+      setBatchStatus(await api.batchGenerateStatus(token));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Không khởi động được sinh hàng loạt.");
+    } finally {
+      setBatchStarting(false);
+    }
+  }
 
   async function openSubject(s: Subject) {
     if (!token) return;
@@ -54,6 +96,10 @@ export default function ContentAdminPage() {
 
   if (!token) return null;
 
+  const batchTotal = batchStatus ? batchStatus.pending + batchStatus.runningJobs + batchStatus.doneCount + batchStatus.failedCount : 0;
+  const batchDonePct = batchStatus && batchTotal > 0 ? ((batchStatus.doneCount + batchStatus.failedCount) / batchTotal) * 100 : 0;
+  const batchActive = Boolean(batchStatus?.isRunning);
+
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-4 px-4 py-6 lg:flex-row">
       <aside className="w-full shrink-0 space-y-2 lg:w-56">
@@ -70,6 +116,23 @@ export default function ContentAdminPage() {
             <span className="ml-2 text-xs opacity-60">{s.lessonUnitCount}</span>
           </button>
         ))}
+
+        <Card className="space-y-2 p-3">
+          <h3 className="text-xs font-bold uppercase text-white/40">Sinh hàng loạt</h3>
+          <p className="text-[11px] text-white/50">Sinh câu hỏi AI cho mọi chủ đề/chương chưa có câu hỏi nào.</p>
+          <Button size="sm" variant="secondary" loading={batchStarting} disabled={batchActive} onClick={startBatchGenerate} className="w-full">
+            ✨ Sinh câu hỏi cho nội dung chưa có
+          </Button>
+          {batchStatus && batchTotal > 0 && (
+            <div className="space-y-1">
+              <ProgressBar percent={batchDonePct} />
+              <p className="text-[11px] text-white/50">
+                {batchActive ? "Đang chạy… " : "Hoàn tất — "}
+                {batchStatus.doneCount} xong · {batchStatus.failedCount} lỗi · {batchStatus.pending + batchStatus.runningJobs} còn lại
+              </p>
+            </div>
+          )}
+        </Card>
       </aside>
 
       <section className="flex-1 space-y-2">
@@ -112,22 +175,18 @@ export default function ContentAdminPage() {
           {cart.map((c) => (
             <div key={c.id} className="flex items-center justify-between gap-2 rounded-lg bg-panel2 px-2 py-1 text-xs">
               <span className="truncate">{c.title}</span>
-              <button onClick={() => toggleCart(c)} className="text-wrong">
+              <button onClick={() => toggleCart(c)} aria-label={`Bỏ ${c.title} khỏi giỏ`} className="text-wrong">
                 ✕
               </button>
             </div>
           ))}
           {cart.length === 0 && <p className="p-2 text-xs text-white/40">Tick chọn chủ đề/chương ở giữa để thêm vào phòng.</p>}
         </div>
-        <button
-          onClick={createRoom}
-          disabled={cart.length === 0}
-          className="w-full rounded-xl bg-gradient-to-r from-accent to-accent2 py-3 font-extrabold text-ink disabled:opacity-40"
-        >
+        <Button onClick={createRoom} disabled={cart.length === 0} className="w-full">
           Tạo phòng học
-        </button>
+        </Button>
         {roomResult && (
-          <div className="rounded-xl bg-panel p-3 text-center">
+          <Card className="text-center">
             <p className="text-xs text-white/50">Mã phòng</p>
             <p className="text-2xl font-black tracking-widest text-accent2">{roomResult.code}</p>
             <a
@@ -136,7 +195,7 @@ export default function ContentAdminPage() {
             >
               Vào Host Console →
             </a>
-          </div>
+          </Card>
         )}
         {error && <p className="text-xs text-wrong">{error}</p>}
       </aside>
@@ -146,14 +205,22 @@ export default function ContentAdminPage() {
 
 function LessonUnitPanel({ id, token }: { id: string; token: string }) {
   const [detail, setDetail] = useState<LessonUnitDetail | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [genError, setGenError] = useState<string | null>(null);
+  const [contentOpen, setContentOpen] = useState(false);
 
   async function load() {
-    setDetail(await api.lessonUnit(id, token));
+    setLoadError(null);
+    try {
+      setDetail(await api.lessonUnit(id, token));
+    } catch {
+      setLoadError("Không tải được nội dung chủ đề này.");
+    }
   }
 
   useEffect(() => {
+    setDetail(null);
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -171,28 +238,51 @@ function LessonUnitPanel({ id, token }: { id: string; token: string }) {
     }
   }
 
+  if (loadError) {
+    return (
+      <Card className="space-y-2 text-center">
+        <p className="text-sm text-wrong">{loadError}</p>
+        <Button size="sm" variant="secondary" onClick={load}>
+          Thử lại
+        </Button>
+      </Card>
+    );
+  }
+
   if (!detail) return <p className="text-sm text-white/40">Đang tải…</p>;
 
   return (
     <div className="space-y-4 rounded-xl bg-panel p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-bold">{detail.title}</h3>
-        <button
-          onClick={generate}
-          disabled={generating}
-          className="rounded-lg bg-accent2 px-3 py-2 text-sm font-bold text-ink disabled:opacity-50"
-        >
+        <Button size="sm" variant="secondary" loading={generating} onClick={generate}>
           {generating ? "Đang sinh câu hỏi bằng AI…" : "✨ Sinh câu hỏi AI"}
-        </button>
+        </Button>
       </div>
       {genError && <p className="text-sm text-wrong">{genError}</p>}
+
+      {/* Fetched but never shown before this pass — lets the host cross-check AI-generated
+          questions against the actual source text without leaving this screen. */}
+      <div>
+        <button onClick={() => setContentOpen((v) => !v)} className="text-xs font-bold uppercase text-white/40 hover:text-white/70">
+          {contentOpen ? "▾" : "▸"} Nội dung gốc
+        </button>
+        {contentOpen && (
+          <div className="mt-1 max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg bg-panel2 p-3 text-xs text-white/70">
+            {detail.contentMarkdown}
+          </div>
+        )}
+      </div>
 
       {detail.discussionQuestions.length > 0 && (
         <div>
           <h4 className="text-xs font-bold uppercase text-white/40">Câu hỏi thảo luận</h4>
-          <ul className="mt-1 space-y-1 text-sm text-white/70">
+          <ul className="mt-1 space-y-2 text-sm text-white/70">
             {detail.discussionQuestions.map((q) => (
-              <li key={q.id}>• {q.question}</li>
+              <li key={q.id}>
+                <p>• {q.question}</p>
+                {q.suggestedAnswer && <p className="mt-0.5 pl-3 text-xs italic text-white/40">Gợi ý: {q.suggestedAnswer}</p>}
+              </li>
             ))}
           </ul>
         </div>
@@ -215,6 +305,8 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(q);
   const [busy, setBusy] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
 
   async function save() {
     setBusy(true);
@@ -238,6 +330,7 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
   }
 
   async function remove() {
+    setConfirmDelete(false);
     setBusy(true);
     try {
       await api.deleteQuizQuestion(q.id, token);
@@ -247,16 +340,16 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
     }
   }
 
+  const difficultyLabel = { EASY: "Dễ", MEDIUM: "Trung bình", HARD: "Khó" }[q.difficulty];
+
   return (
-    <div className="rounded-lg bg-panel2 p-3">
-      <div className="flex items-start justify-between gap-2">
-        <span
-          className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-bold uppercase ${
-            q.status === "PUBLISHED" ? "bg-correct/30 text-correct" : "bg-white/10 text-white/50"
-          }`}
-        >
-          {q.status === "PUBLISHED" ? "Đã xuất bản" : "Nháp"}
-        </span>
+    <div className="rounded-xl bg-panel2 p-3">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge tone={q.status === "PUBLISHED" ? "success" : "neutral"}>{q.status === "PUBLISHED" ? "Đã xuất bản" : "Nháp"}</Badge>
+          <Badge tone={q.source === "AI_GENERATED" ? "accent" : "neutral"}>{q.source === "AI_GENERATED" ? "AI sinh" : "Thủ công"}</Badge>
+          <Badge tone="neutral">{difficultyLabel}</Badge>
+        </div>
         <div className="flex gap-1 text-xs">
           <button onClick={() => setEditing((e) => !e)} className="rounded bg-white/10 px-2 py-1">
             Sửa
@@ -266,11 +359,17 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
               Publish
             </button>
           )}
-          <button onClick={remove} disabled={busy} className="rounded bg-wrong/80 px-2 py-1 font-bold">
+          <button onClick={() => setConfirmDelete(true)} disabled={busy} className="rounded bg-wrong/80 px-2 py-1 font-bold">
             Xoá
           </button>
         </div>
       </div>
+
+      {q.status === "PUBLISHED" && editing && (
+        <p className="mt-2 rounded-lg bg-amber-400/10 px-2 py-1.5 text-xs text-amber-300">
+          ⚠ Câu này đang xuất bản — sửa sẽ ảnh hưởng ngay tới nội dung học viên có thể gặp trong phòng đang mở.
+        </p>
+      )}
 
       {!editing ? (
         <>
@@ -284,6 +383,14 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
             ))}
           </ul>
           <p className="mt-1 text-xs italic text-white/40">{q.explanation}</p>
+          {q.sourceQuote && (
+            <div className="mt-1">
+              <button onClick={() => setQuoteOpen((v) => !v)} className="text-[11px] font-semibold text-accent2 hover:underline">
+                {quoteOpen ? "▾ Ẩn trích dẫn nguồn" : "▸ Xem trích dẫn nguồn (fact-check)"}
+              </button>
+              {quoteOpen && <blockquote className="mt-1 border-l-2 border-accent2/50 pl-2 text-xs italic text-white/50">“{q.sourceQuote}”</blockquote>}
+            </div>
+          )}
         </>
       ) : (
         <div className="mt-2 space-y-2">
@@ -316,6 +423,16 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
           </button>
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDelete}
+        title="Xoá câu hỏi này?"
+        description="Không thể hoàn tác. Câu hỏi sẽ bị xoá vĩnh viễn khỏi ngân hàng câu hỏi."
+        confirmLabel="Xoá"
+        danger
+        onConfirm={remove}
+        onCancel={() => setConfirmDelete(false)}
+      />
     </div>
   );
 }

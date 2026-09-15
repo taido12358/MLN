@@ -3,11 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 import { api, ApiError } from "@/lib/api";
+import { writeAdminToken } from "@/lib/storage";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 export default function HostLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +22,7 @@ export default function HostLoginPage() {
     setLoading(true);
     try {
       const { token } = await api.login(password);
-      localStorage.setItem("mln:adminToken", token);
+      writeAdminToken(token);
       router.push("/host/content");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Không thể đăng nhập.");
@@ -35,22 +40,27 @@ export default function HostLoginPage() {
         className="w-full max-w-xs space-y-4 rounded-2xl bg-panel p-6 shadow-glow"
       >
         <h1 className="text-center text-xl font-extrabold">👩‍🏫 Giáo viên đăng nhập</h1>
-        <input
-          type="password"
+        <Input
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Mật khẩu"
-          className="w-full rounded-xl border border-white/10 bg-panel2 px-4 py-3 outline-none ring-accent focus:ring-2"
           autoFocus
+          trailing={
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="tap-target flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white"
+              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          }
         />
         {error && <p className="text-sm text-wrong">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-xl bg-gradient-to-r from-accent to-accent2 py-3 font-extrabold text-ink disabled:opacity-60"
-        >
+        <Button type="submit" loading={loading} className="w-full">
           {loading ? "Đang đăng nhập…" : "Đăng nhập"}
-        </button>
+        </Button>
         <a href="/" className="block text-center text-xs text-white/40 hover:text-white/70">
           ← Về trang sinh viên
         </a>

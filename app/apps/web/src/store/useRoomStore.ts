@@ -11,9 +11,11 @@ import {
   DISCUSSION_CLOSED,
   DISCUSSION_NEW_POST,
   DISCUSSION_POST_UPDATED,
+  DISCUSSION_POST_DELETED,
   ROOM_LESSON_UNIT_SELECTED,
   LEADERBOARD_UPDATE,
   ROOM_ENDED,
+  QUIZ_TIME_EXTENDED,
   type RoomStateValue,
   type QuizQuestionOpenedPayload,
   type QuizAnswerCountPayload,
@@ -21,9 +23,11 @@ import {
   type DiscussionOpenedPayload,
   type DiscussionNewPostPayload,
   type DiscussionPostUpdatedPayload,
+  type DiscussionPostDeletedPayload,
   type LeaderboardRow,
   type RoomEndedPayload,
   type RoomStateSnapshot,
+  type QuizTimeExtendedPayload,
 } from "@mln/shared";
 
 interface RoomStore {
@@ -122,18 +126,28 @@ export const useRoomStore = create<RoomStore>((set, get) => ({
     const onNewPost = (p: DiscussionNewPostPayload) => set((s) => ({ posts: [...s.posts, p] }));
     const onPostUpdated = (p: DiscussionPostUpdatedPayload) =>
       set((s) => ({ posts: s.posts.map((post) => (post.postId === p.postId ? { ...post, upvotes: p.upvotes } : post)) }));
+    const onPostDeleted = (p: DiscussionPostDeletedPayload) =>
+      set((s) => ({ posts: s.posts.filter((post) => post.postId !== p.postId) }));
     const onLeaderboardUpdate = (p: { topN: LeaderboardRow[] }) => set({ leaderboard: p.topN, roomState: "LEADERBOARD" });
     const onRoomEnded = (p: RoomEndedPayload) => set({ ended: p, leaderboard: p.finalLeaderboard, roomState: "ENDED" });
+    const onTimeExtended = (p: QuizTimeExtendedPayload) =>
+      set((s) =>
+        s.currentQuestion && s.currentQuestion.questionId === p.questionId
+          ? { currentQuestion: { ...s.currentQuestion, timeLimitSec: p.newTimeLimitSec, openedAt: p.openedAt } }
+          : {},
+      );
 
     socket.on(ROOM_PARTICIPANT_JOINED, onParticipantJoined);
     socket.on(ROOM_LESSON_UNIT_SELECTED, onLessonUnitSelected);
     socket.on(QUIZ_QUESTION_OPENED, onQuestionOpened);
     socket.on(QUIZ_ANSWER_COUNT, onAnswerCount);
     socket.on(QUIZ_QUESTION_CLOSED, onQuestionClosed);
+    socket.on(QUIZ_TIME_EXTENDED, onTimeExtended);
     socket.on(DISCUSSION_OPENED, onDiscussionOpened);
     socket.on(DISCUSSION_CLOSED, onDiscussionClosed);
     socket.on(DISCUSSION_NEW_POST, onNewPost);
     socket.on(DISCUSSION_POST_UPDATED, onPostUpdated);
+    socket.on(DISCUSSION_POST_DELETED, onPostDeleted);
     socket.on(LEADERBOARD_UPDATE, onLeaderboardUpdate);
     socket.on(ROOM_ENDED, onRoomEnded);
 
@@ -143,10 +157,12 @@ export const useRoomStore = create<RoomStore>((set, get) => ({
       socket.off(QUIZ_QUESTION_OPENED, onQuestionOpened);
       socket.off(QUIZ_ANSWER_COUNT, onAnswerCount);
       socket.off(QUIZ_QUESTION_CLOSED, onQuestionClosed);
+      socket.off(QUIZ_TIME_EXTENDED, onTimeExtended);
       socket.off(DISCUSSION_OPENED, onDiscussionOpened);
       socket.off(DISCUSSION_CLOSED, onDiscussionClosed);
       socket.off(DISCUSSION_NEW_POST, onNewPost);
       socket.off(DISCUSSION_POST_UPDATED, onPostUpdated);
+      socket.off(DISCUSSION_POST_DELETED, onPostDeleted);
       socket.off(LEADERBOARD_UPDATE, onLeaderboardUpdate);
       socket.off(ROOM_ENDED, onRoomEnded);
     };

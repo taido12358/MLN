@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { getSocket } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
-import { badgeInfo } from "@/lib/badges";
+import { LeaderboardList } from "@/components/LeaderboardList";
 import { VIEWER_JOIN, type ViewerJoinAck } from "@mln/shared";
 
 export default function StandaloneLeaderboardPage({ params }: { params: { roomCode: string } }) {
   const roomCode = params.roomCode.toUpperCase();
   const store = useRoomStore();
   const fired = useRef(false);
+  const [connected, setConnected] = useState(true);
 
   useEffect(() => {
     const socket = getSocket();
@@ -28,11 +29,21 @@ export default function StandaloneLeaderboardPage({ params }: { params: { roomCo
         if (!err && ack?.roomState) store.syncFromJoin(ack.roomState);
       });
     }
-    socket.on("connect", join);
+    function onConnect() {
+      setConnected(true);
+      join();
+    }
+    function onDisconnect() {
+      setConnected(false);
+    }
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    setConnected(socket.connected);
     if (socket.connected) join();
 
     return () => {
-      socket.off("connect", join);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
       detach();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,31 +60,23 @@ export default function StandaloneLeaderboardPage({ params }: { params: { roomCo
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-10">
-      <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-black">
-        🏆 Bảng xếp hạng — {roomCode}
+      {/* This screen runs unattended on a projector — a dropped connection would otherwise freeze
+          silently with no one around to notice, so make it impossible to miss. */}
+      {!connected && (
+        <div className="fixed inset-x-0 top-0 flex items-center justify-center gap-2 bg-wrong px-4 py-2 text-sm font-bold text-white">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
+          Mất kết nối — đang thử kết nối lại…
+        </div>
+      )}
+
+      <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+        <span className="block text-lg font-bold text-white/60">🏆 Bảng xếp hạng</span>
+        <span className="mt-1 block text-5xl font-black tracking-widest text-accent2">{roomCode}</span>
       </motion.h1>
 
-      <div className="mt-10 w-full max-w-2xl space-y-3">
+      <div className="mt-10 w-full max-w-2xl">
         {rows.length === 0 && <p className="text-center text-white/40">Chưa có dữ liệu — chờ giáo viên mở bảng xếp hạng.</p>}
-        {rows.map((r, i) => (
-          <motion.div
-            key={r.participantId}
-            layout
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="flex items-center gap-4 rounded-xl bg-panel px-6 py-4 text-2xl shadow-lg"
-          >
-            <span className="w-14 font-black text-accent2">#{r.rank}</span>
-            <span className="flex-1 text-left font-bold">{r.nickname}</span>
-            <span className="font-black">{r.score}</span>
-            {store.ended && (
-              <span className="text-xl">
-                {(store.ended.badgesByParticipant[r.participantId] || []).map((c) => badgeInfo(c).emoji).join(" ")}
-              </span>
-            )}
-          </motion.div>
-        ))}
+        <LeaderboardList rows={rows} size="lg" staggered badgesByParticipant={store.ended?.badgesByParticipant} />
       </div>
     </main>
   );

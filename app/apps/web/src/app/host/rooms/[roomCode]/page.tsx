@@ -1,23 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { getSocket, type HostAuth } from "@/lib/socket";
+import { getSocket, emitWithAck, type HostAuth } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
-import { badgeInfo } from "@/lib/badges";
-import { api, type RoomDetail, type LessonUnitDetail, type QuizQuestion } from "@/lib/api";
+import { useAdminToken } from "@/hooks/useAdminToken";
+import { api, ApiError, type RoomDetail, type LessonUnitDetail, type QuizQuestion } from "@/lib/api";
+import { Button } from "@/components/ui/Button";
+import { CenteredMessage } from "@/components/ui/CenteredMessage";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { LeaderboardList } from "@/components/LeaderboardList";
+import { QuizOptionTile } from "@/components/QuizOptionTile";
 import {
   HOST_SELECT_LESSON_UNIT,
   HOST_OPEN_QUESTION,
   HOST_FORCE_CLOSE_QUESTION,
+  HOST_EXTEND_QUESTION_TIME,
+  HOST_GET_UNANSWERED,
+  HOST_DELETE_POST,
   HOST_OPEN_DISCUSSION,
   HOST_CLOSE_DISCUSSION,
   HOST_SHOW_LEADERBOARD,
   HOST_NEXT_STEP,
   HOST_END_ROOM,
+  ROOM_LESSON_UNIT_SELECTED,
+  type HostGetUnansweredAck,
+  type RoomLessonUnitSelectedPayload,
 } from "@mln/shared";
+
+const MIN_TIME_LIMIT_SEC = 5;
+const MAX_TIME_LIMIT_SEC = 120;
+const UNANSWERED_POLL_MS = 3000;
 
 /**
  * Host connects the socket with `{roomCode, hostToken}` in the handshake `auth` (see lib/socket.ts)
@@ -27,19 +40,20 @@ import {
  */
 export default function HostRoomPage({ params }: { params: { roomCode: string } }) {
   const roomCode = params.roomCode.toUpperCase();
-  const router = useRouter();
-  const [adminToken, setAdminToken] = useState<string | null>(null);
+  const adminToken = useAdminToken();
   const [hostAuth, setHostAuth] = useState<HostAuth | null>(null);
   const [room, setRoom] = useState<RoomDetail | null>(null);
   const [activeUnit, setActiveUnit] = useState<LessonUnitDetail | null>(null);
   const [timeLimitSec, setTimeLimitSec] = useState(20);
   const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [unanswered, setUnanswered] = useState<{ participantId: string; nickname: string }[]>([]);
+  const [confirmEndRoom, setConfirmEndRoom] = useState(false);
+  const [deletePostId, setDeletePostId] = useState<string | null>(null);
   const store = useRoomStore();
 
   useEffect(() => {
-    const at = localStorage.getItem("mln:adminToken");
-    if (!at) return router.replace("/host");
-    setAdminToken(at);
+    if (!adminToken) return;
 
     let ht = new URLSearchParams(window.location.search).get("hostToken");
     if (ht) sessionStorage.setItem(`mln:hostToken:${roomCode}`, ht);
@@ -60,7 +74,7 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
     const detach = store.attach(socket);
     return () => detach();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomCode]);
+  }, [roomCode, adminToken]);
 
   useEffect(() => {
     if (store.ended) confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
@@ -73,46 +87,127 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
     setActiveUnit(detail);
   }
 
+  // Keeps the "đang trình chiếu" picker in sync with whatever lesson unit the room is actually on —
+  // whether changed from this tab (startLessonUnit below), via host:nextStep, or from a second host
+  // tab. Previously `activeUnit` only updated when this tab's own click set it, so those other paths
+  // could silently leave the question/discussion pickers showing a stale unit's content.
+  useEffect(() => {
+    if (!hostAuth) return;
+    const socket = getSocket(hostAuth);
+    function onSelected(p: RoomLessonUnitSelectedPayload) {
+      loadUnit(p.lessonUnitId).catch(() => setActionError("Không tải được chủ đề vừa chọn."));
+    }
+    socket.on(ROOM_LESSON_UNIT_SELECTED, onSelected);
+    return () => {
+      socket.off(ROOM_LESSON_UNIT_SELECTED, onSelected);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hostAuth, adminToken]);
+
+  // Panel "Chưa trả lời" — polls while a question is open so the host can nudge stragglers by name.
+  useEffect(() => {
+    if (!hostAuth || store.roomState !== "QUIZ_QUESTION") {
+      setUnanswered([]);
+      return;
+    }
+    let cancelled = false;
+    async function poll() {
+      try {
+        const ack = await emitWithAck<{ roomCode: string }, HostGetUnansweredAck>(getSocket(hostAuth!), HOST_GET_UNANSWERED, { roomCode });
+        if (!cancelled) setUnanswered(ack.unanswered);
+      } catch {
+        /* transient — next tick retries */
+      }
+    }
+    poll();
+    const id = setInterval(poll, UNANSWERED_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, [hostAuth, store.roomState, roomCode]);
+
+  async function runHostAction<T>(event: string, payload: T) {
+    if (!hostAuth) return;
+    setActionError(null);
+    try {
+      await emitWithAck(getSocket(hostAuth), event, payload);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Lệnh không thực hiện được.");
+    }
+  }
+
   function startLessonUnit(lessonUnitId: string) {
-    getSocket(hostAuth || undefined).emit(HOST_SELECT_LESSON_UNIT, { roomCode, lessonUnitId });
+    runHostAction(HOST_SELECT_LESSON_UNIT, { roomCode, lessonUnitId });
   }
 
   function openQuestion(q: QuizQuestion) {
-    getSocket(hostAuth || undefined).emit(HOST_OPEN_QUESTION, { roomCode, quizQuestionId: q.id, timeLimitSec });
+    runHostAction(HOST_OPEN_QUESTION, { roomCode, quizQuestionId: q.id, timeLimitSec });
   }
 
   function forceClose() {
-    getSocket(hostAuth || undefined).emit(HOST_FORCE_CLOSE_QUESTION, { roomCode });
+    runHostAction(HOST_FORCE_CLOSE_QUESTION, { roomCode });
+  }
+
+  function extendTime() {
+    runHostAction(HOST_EXTEND_QUESTION_TIME, { roomCode, extraSec: 10 });
   }
 
   function openDiscussion(discussionQuestionId: string) {
-    getSocket(hostAuth || undefined).emit(HOST_OPEN_DISCUSSION, { roomCode, discussionQuestionId });
+    runHostAction(HOST_OPEN_DISCUSSION, { roomCode, discussionQuestionId });
   }
 
   function closeDiscussion() {
-    getSocket(hostAuth || undefined).emit(HOST_CLOSE_DISCUSSION, { roomCode });
+    runHostAction(HOST_CLOSE_DISCUSSION, { roomCode });
   }
 
   function showLeaderboard() {
-    getSocket(hostAuth || undefined).emit(HOST_SHOW_LEADERBOARD, { roomCode });
+    runHostAction(HOST_SHOW_LEADERBOARD, { roomCode });
   }
 
   function nextStep() {
-    getSocket(hostAuth || undefined).emit(HOST_NEXT_STEP, { roomCode });
+    runHostAction(HOST_NEXT_STEP, { roomCode });
   }
 
   function endRoom() {
-    if (!confirm("Kết thúc phòng học? Không thể mở lại.")) return;
-    getSocket(hostAuth || undefined).emit(HOST_END_ROOM, { roomCode });
+    setConfirmEndRoom(false);
+    runHostAction(HOST_END_ROOM, { roomCode });
   }
 
-  if (error) return <CenteredError message={error} />;
+  function confirmDeletePost() {
+    if (deletePostId) runHostAction(HOST_DELETE_POST, { roomCode, postId: deletePostId });
+    setDeletePostId(null);
+  }
+
+  async function downloadCsv() {
+    if (!hostAuth) return;
+    setActionError(null);
+    try {
+      const blob = await api.exportRoomCsv(roomCode, hostAuth.hostToken);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ket-qua-${roomCode}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Không tải được CSV.");
+    }
+  }
+
+  if (error) return <CenteredMessage emoji="😕" title="Không vào được phòng" subtitle={error} />;
   if (!room) return <p className="p-8 text-center text-white/50">Đang tải phòng…</p>;
+
+  const activeDiscussionQuestion = activeUnit?.discussionQuestions.find(
+    (dq) => dq.id === store.discussionQuestion?.discussionQuestionId,
+  );
 
   return (
     <main className="flex min-h-screen flex-col lg:flex-row">
       <section className="flex flex-1 items-center justify-center bg-black/20 p-8">
-        <ProjectorView />
+        <ProjectorView onRequestDeletePost={setDeletePostId} />
       </section>
 
       <aside className="w-full space-y-4 overflow-y-auto border-t border-white/10 bg-panel p-4 lg:w-96 lg:border-l lg:border-t-0">
@@ -122,6 +217,8 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
           </h1>
           <span className="text-xs text-white/40">{store.participantCount} người</span>
         </div>
+
+        {actionError && <p className="rounded-lg bg-wrong/15 px-3 py-2 text-xs text-wrong">{actionError}</p>}
 
         <div>
           <h2 className="mb-1 text-xs font-bold uppercase text-white/40">Danh sách chủ đề</h2>
@@ -156,10 +253,14 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
                 <input
                   type="number"
                   value={timeLimitSec}
-                  onChange={(e) => setTimeLimitSec(Number(e.target.value) || 20)}
+                  onChange={(e) =>
+                    setTimeLimitSec(
+                      Math.min(MAX_TIME_LIMIT_SEC, Math.max(MIN_TIME_LIMIT_SEC, Number(e.target.value) || MIN_TIME_LIMIT_SEC)),
+                    )
+                  }
                   className="w-14 rounded bg-panel px-1 py-0.5 text-center text-xs"
-                  min={5}
-                  max={120}
+                  min={MIN_TIME_LIMIT_SEC}
+                  max={MAX_TIME_LIMIT_SEC}
                 />
               </div>
               <div className="mt-1 max-h-40 space-y-1 overflow-y-auto">
@@ -174,9 +275,22 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
                   <p className="text-xs text-white/40">Chưa có câu hỏi đã xuất bản cho chủ đề này.</p>
                 )}
               </div>
-              <button onClick={forceClose} className="mt-1 w-full rounded bg-wrong/70 py-1.5 text-xs font-bold">
-                Đóng câu hỏi sớm
-              </button>
+              <div className="mt-1 flex gap-1">
+                <button onClick={forceClose} className="flex-1 rounded bg-wrong/70 py-1.5 text-xs font-bold">
+                  Đóng câu hỏi sớm
+                </button>
+                {store.roomState === "QUIZ_QUESTION" && (
+                  <button onClick={extendTime} className="flex-1 rounded bg-accent2/80 py-1.5 text-xs font-bold text-ink">
+                    +10 giây
+                  </button>
+                )}
+              </div>
+              {unanswered.length > 0 && (
+                <div className="mt-1 rounded bg-panel px-2 py-1.5 text-xs text-white/60">
+                  <span className="font-bold text-white/40">Chưa trả lời ({unanswered.length}): </span>
+                  {unanswered.map((p) => p.nickname).join(", ")}
+                </div>
+              )}
             </div>
 
             <div>
@@ -188,6 +302,11 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
                   </button>
                 ))}
               </div>
+              {activeDiscussionQuestion?.suggestedAnswer && (
+                <p className="mt-1 rounded bg-panel px-2 py-1.5 text-xs italic text-white/50">
+                  💡 Gợi ý dẫn dắt: {activeDiscussionQuestion.suggestedAnswer}
+                </p>
+              )}
               <button onClick={closeDiscussion} className="mt-1 w-full rounded bg-white/10 py-1.5 text-xs font-bold">
                 Đóng thảo luận
               </button>
@@ -199,31 +318,46 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
           <button onClick={showLeaderboard} className="flex-1 rounded-lg bg-white/10 py-2 text-sm font-bold">
             🏆 Bảng xếp hạng
           </button>
-          <button onClick={endRoom} className="flex-1 rounded-lg bg-wrong/80 py-2 text-sm font-bold">
+          <button onClick={() => setConfirmEndRoom(true)} className="flex-1 rounded-lg bg-wrong/80 py-2 text-sm font-bold">
             ⏹ Kết thúc
           </button>
         </div>
+        <Button variant="secondary" size="sm" onClick={downloadCsv} className="w-full">
+          ⬇ Tải CSV kết quả
+        </Button>
       </aside>
+
+      <ConfirmDialog
+        open={confirmEndRoom}
+        title="Kết thúc phòng học?"
+        description="Không thể mở lại phòng sau khi kết thúc."
+        confirmLabel="Kết thúc"
+        danger
+        onConfirm={endRoom}
+        onCancel={() => setConfirmEndRoom(false)}
+      />
+      <ConfirmDialog
+        open={deletePostId !== null}
+        title="Xoá bài thảo luận này?"
+        description="Bài viết sẽ biến mất ngay khỏi màn hình mọi học viên. Không thể hoàn tác."
+        confirmLabel="Xoá"
+        danger
+        onConfirm={confirmDeletePost}
+        onCancel={() => setDeletePostId(null)}
+      />
     </main>
   );
 }
 
-function ProjectorView() {
+function ProjectorView({ onRequestDeletePost }: { onRequestDeletePost: (postId: string) => void }) {
   const s = useRoomStore();
 
   if (s.ended) {
     return (
       <div className="w-full max-w-3xl text-center">
         <h1 className="text-4xl font-black">🎊 Kết thúc buổi học</h1>
-        <div className="mt-8 space-y-3">
-          {s.leaderboard.slice(0, 10).map((r) => (
-            <div key={r.participantId} className="flex items-center gap-4 rounded-xl bg-panel px-5 py-3 text-2xl">
-              <span className="w-12 font-black text-accent2">#{r.rank}</span>
-              <span className="flex-1 text-left font-bold">{r.nickname}</span>
-              <span className="font-black">{r.score}</span>
-              <span>{(s.ended!.badgesByParticipant[r.participantId] || []).map((c) => badgeInfo(c).emoji).join(" ")}</span>
-            </div>
-          ))}
+        <div className="mt-8">
+          <LeaderboardList rows={s.leaderboard.slice(0, 10)} size="lg" badgesByParticipant={s.ended.badgesByParticipant} />
         </div>
       </div>
     );
@@ -233,14 +367,8 @@ function ProjectorView() {
     return (
       <div className="w-full max-w-3xl text-center">
         <h1 className="text-4xl font-black">🏆 Bảng xếp hạng</h1>
-        <div className="mt-8 space-y-3">
-          {s.leaderboard.map((r) => (
-            <div key={r.participantId} className="flex items-center gap-4 rounded-xl bg-panel px-5 py-3 text-2xl">
-              <span className="w-12 font-black text-accent2">#{r.rank}</span>
-              <span className="flex-1 text-left font-bold">{r.nickname}</span>
-              <span className="font-black">{r.score}</span>
-            </div>
-          ))}
+        <div className="mt-8">
+          <LeaderboardList rows={s.leaderboard} size="lg" />
         </div>
       </div>
     );
@@ -255,9 +383,7 @@ function ProjectorView() {
         </p>
         <div className="mt-8 grid grid-cols-2 gap-4">
           {s.currentQuestion.options.map((o, i) => (
-            <div key={i} className={`rounded-2xl p-6 text-xl font-bold ${["bg-kahoot-a", "bg-kahoot-b", "bg-kahoot-c", "bg-kahoot-d"][i]}`}>
-              {o}
-            </div>
+            <QuizOptionTile key={i} index={i} label={o} size="lg" />
           ))}
         </div>
       </div>
@@ -294,9 +420,18 @@ function ProjectorView() {
             .sort((a, b) => b.upvotes - a.upvotes)
             .slice(0, 8)
             .map((p) => (
-              <div key={p.postId} className="rounded-xl bg-panel px-5 py-3 text-left text-lg">
-                <span className="font-bold text-accent2">{p.nickname}: </span>
-                {p.content} <span className="text-white/40">▲{p.upvotes}</span>
+              <div key={p.postId} className="flex items-center gap-3 rounded-xl bg-panel px-5 py-3 text-left text-lg">
+                <div className="flex-1">
+                  <span className="font-bold text-accent2">{p.nickname}: </span>
+                  {p.content} <span className="text-white/40">▲{p.upvotes}</span>
+                </div>
+                <button
+                  onClick={() => onRequestDeletePost(p.postId)}
+                  aria-label={`Xoá bài của ${p.nickname}`}
+                  className="tap-target shrink-0 rounded-lg bg-wrong/20 px-2 py-1 text-sm text-wrong hover:bg-wrong/30"
+                >
+                  ✕
+                </button>
               </div>
             ))}
         </div>
@@ -309,13 +444,5 @@ function ProjectorView() {
       <p className="text-2xl text-white/40">Màn hình lớp sẽ hiện tại đây khi bắt đầu chủ đề.</p>
       <p className="mt-2 text-white/30">{s.participantCount} người đã tham gia</p>
     </div>
-  );
-}
-
-function CenteredError({ message }: { message: string }) {
-  return (
-    <main className="flex min-h-screen items-center justify-center px-6 text-center">
-      <p className="text-wrong">{message}</p>
-    </main>
   );
 }

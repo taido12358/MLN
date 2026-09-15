@@ -118,6 +118,14 @@ export interface RoomDetail {
   playlistItems: RoomPlaylistItem[];
 }
 
+export interface BatchGenerateStatus {
+  pending: number;
+  runningJobs: number;
+  doneCount: number;
+  failedCount: number;
+  isRunning: boolean;
+}
+
 export const api = {
   login: (password: string) => request<{ token: string }>("/api/admin/login", { method: "POST", body: { password } }),
 
@@ -151,4 +159,26 @@ export const api = {
     }),
 
   roomByCode: (code: string, hostToken: string) => request<RoomDetail>(`/api/admin/rooms/${code}`, { hostToken }),
+
+  batchGenerate: (token: string, count = 5) =>
+    request<{ queued: number }>("/api/admin/generate-quiz/batch", { method: "POST", token, body: { count } }),
+
+  batchGenerateStatus: (token: string) => request<BatchGenerateStatus>("/api/admin/generate-quiz/batch/status", { token }),
+
+  // Not JSON, so bypasses the `request<T>` helper above — returns a Blob for the caller to trigger
+  // a client-side download from (see host/rooms/[roomCode]/page.tsx's downloadCsv).
+  exportRoomCsv: async (code: string, hostToken: string): Promise<Blob> => {
+    const res = await fetch(`${API_URL}/api/admin/rooms/${code}/export.csv`, { headers: { "x-host-token": hostToken } });
+    if (!res.ok) {
+      let message = `Lỗi ${res.status}`;
+      try {
+        const data = await res.json();
+        if (data?.error) message = data.error;
+      } catch {
+        /* ignore */
+      }
+      throw new ApiError(message, res.status);
+    }
+    return res.blob();
+  },
 };

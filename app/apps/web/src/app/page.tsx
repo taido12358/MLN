@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { getSocket } from "@/lib/socket";
+import { readStoredIdentity, writeStoredIdentity } from "@/lib/storage";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import { PARTICIPANT_JOIN, type ParticipantJoinAck } from "@mln/shared";
+
+const ROOM_CODE_LENGTH = 6;
 
 export default function JoinPage() {
   const router = useRouter();
@@ -19,12 +24,11 @@ export default function JoinPage() {
 
     const code = roomCode.trim().toUpperCase();
     const name = nickname.trim();
-    if (code.length < 4) return setError("Mã phòng không hợp lệ.");
+    if (code.length !== ROOM_CODE_LENGTH) return setError(`Mã phòng phải gồm ${ROOM_CODE_LENGTH} ký tự.`);
     if (name.length < 1) return setError("Vui lòng nhập biệt danh.");
 
     setLoading(true);
     const socket = getSocket();
-
     const stored = readStoredIdentity(code);
 
     socket.timeout(6000).emit(
@@ -36,10 +40,7 @@ export default function JoinPage() {
           setError("Không thể tham gia — kiểm tra lại mã phòng hoặc kết nối mạng.");
           return;
         }
-        localStorage.setItem(
-          `mln:identity:${code}`,
-          JSON.stringify({ participantId: ack.participantId, nickname: name }),
-        );
+        writeStoredIdentity(code, { participantId: ack.participantId, nickname: name });
         router.push(`/play/${code}`);
       },
     );
@@ -68,47 +69,37 @@ export default function JoinPage() {
           Tham gia buổi học tương tác — trả lời trắc nghiệm, thảo luận, leo hạng cùng cả lớp.
         </p>
 
-        <form onSubmit={handleJoin} className="mt-8 space-y-4 text-left">
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50">
-              Mã phòng
-            </label>
-            <input
+        <fieldset disabled={loading} className="mt-8 space-y-4 text-left">
+          <form onSubmit={handleJoin} className="space-y-4">
+            <Input
+              label="Mã phòng"
               value={roomCode}
-              onChange={(e) => setRoomCode(e.target.value.toUpperCase().slice(0, 6))}
+              onChange={(e) => setRoomCode(e.target.value.toUpperCase().slice(0, ROOM_CODE_LENGTH))}
               placeholder="VD: 8K2QRZ"
-              className="w-full rounded-2xl border border-white/10 bg-panel px-4 py-4 text-center text-2xl font-black tracking-[0.3em] outline-none ring-accent focus:ring-2"
+              className="text-center text-2xl font-black tracking-[0.3em]"
               autoComplete="off"
               autoCapitalize="characters"
             />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50">
-              Biệt danh của bạn
-            </label>
-            <input
+            <Input
+              label="Biệt danh của bạn"
               value={nickname}
               onChange={(e) => setNickname(e.target.value.slice(0, 24))}
               placeholder="VD: Minh Anh"
-              className="w-full rounded-2xl border border-white/10 bg-panel px-4 py-4 text-lg font-semibold outline-none ring-accent focus:ring-2"
+              className="text-lg font-semibold"
               autoComplete="off"
             />
-          </div>
 
-          {error && (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-medium text-wrong">
-              {error}
-            </motion.p>
-          )}
+            {error && (
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-medium text-wrong">
+                {error}
+              </motion.p>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="tap-target w-full rounded-2xl bg-gradient-to-r from-accent to-accent2 py-4 text-lg font-extrabold text-ink shadow-glow transition active:scale-[0.98] disabled:opacity-60"
-          >
-            {loading ? "Đang kết nối…" : "Tham gia lớp học"}
-          </button>
-        </form>
+            <Button type="submit" loading={loading} className="w-full py-4 text-lg active:scale-[0.98]">
+              {loading ? "Đang kết nối…" : "Tham gia lớp học"}
+            </Button>
+          </form>
+        </fieldset>
 
         <a href="/host" className="mt-8 inline-block text-sm text-white/40 underline-offset-4 hover:text-white/70 hover:underline">
           Giáo viên đăng nhập →
@@ -116,13 +107,4 @@ export default function JoinPage() {
       </motion.div>
     </main>
   );
-}
-
-function readStoredIdentity(roomCode: string): { participantId: string; nickname: string } | null {
-  try {
-    const raw = localStorage.getItem(`mln:identity:${roomCode}`);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
 }
