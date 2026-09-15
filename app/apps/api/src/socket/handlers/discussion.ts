@@ -5,6 +5,7 @@ import type { AppServer, AppSocket } from "../types.js";
 
 type SubmitPostAck = (response: { postId: string } | { error: string }) => void;
 type UpvoteAck = (response: { ok: true } | { error: string }) => void;
+type DeletePostAck = (response: { ok: true } | { error: string }) => void;
 
 export function registerDiscussionHandlers(io: AppServer, socket: AppSocket, prisma: PrismaClient) {
   socket.on(Events.DISCUSSION_SUBMIT_POST, async (payload: Events.DiscussionSubmitPostPayload, ack?: SubmitPostAck) => {
@@ -86,6 +87,30 @@ export function registerDiscussionHandlers(io: AppServer, socket: AppSocket, pri
     } catch (err) {
       console.error("[socket] discussion:upvote lỗi:", err);
       ack?.({ error: "Lỗi khi upvote." });
+    }
+  });
+
+  // Moderation: lets the teacher pull down a single off-topic/inappropriate post without closing
+  // the whole discussion round for everyone else. `PostUpvote` rows cascade-delete with the post
+  // (schema.prisma onDelete: Cascade), so no separate cleanup is needed here.
+  socket.on(Events.HOST_DELETE_POST, async (payload: Events.HostDeletePostPayload, ack?: DeletePostAck) => {
+    try {
+      if (!socket.data.isHost || socket.data.roomCode !== payload.roomCode) {
+        return ack?.({ error: "Không có quyền điều khiển phòng này." });
+      }
+
+      const post = await prisma.discussionPost.findUnique({ where: { id: payload.postId } });
+      if (!post || post.roomId !== socket.data.roomId) return ack?.({ error: "Không tìm thấy bài viết." });
+
+      await prisma.discussionPost.delete({ where: { id: payload.postId } });
+
+      ack?.({ ok: true });
+      io.to(`room:${payload.roomCode}`).emit(Events.DISCUSSION_POST_DELETED, {
+        postId: payload.postId,
+      } satisfies Events.DiscussionPostDeletedPayload);
+    } catch (err) {
+      console.error("[socket] host:deletePost lỗi:", err);
+      ack?.({ error: "Lỗi khi xoá bài viết." });
     }
   });
 }

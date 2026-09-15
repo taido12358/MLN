@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import crypto from "node:crypto";
 import { prisma } from "../../prismaClient.js";
 import { asyncHandler } from "../asyncHandler.js";
+import { computeRoomLeaderboard } from "../../socket/leaderboard.js";
 
 /** Requires the admin JWT (mounted behind requireAdmin) — only a logged-in teacher creates rooms. */
 export const adminRoomsRouter = Router();
@@ -90,5 +91,85 @@ hostTokenRoomsRouter.get(
     }
 
     res.json(room);
+  }),
+);
+
+function csvField(value: unknown): string {
+  const s = value === null || value === undefined ? "" : String(value);
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function csvRow(fields: unknown[]): string {
+  return fields.map(csvField).join(",") + "\r\n";
+}
+
+/** CSV export of a room's results — deliberately reads straight from Postgres (never the in-memory
+ * roomState), so it works identically whether the room is still live or has already been ended
+ * (host:endRoom clears roomState.ts's in-memory entry, but every Answer/DiscussionPost/
+ * ParticipantBadge row it's built from stays in Postgres indefinitely). Same host-token auth as
+ * GET /rooms/:code above. No CSV library dependency — the data is small (≤70 participants/session,
+ * per the original architecture's sizing), so a hand-rolled RFC 4180-ish writer is enough. */
+hostTokenRoomsRouter.get(
+  "/rooms/:code/export.csv",
+  asyncHandler(async (req: Request, res: Response) => {
+    const hostToken = req.headers["x-host-token"];
+    const room = await prisma.room.findUnique({ where: { code: req.params.code } });
+    if (!room) return res.status(404).json({ error: "Không tìm thấy phòng." });
+    if (typeof hostToken !== "string" || hostToken !== room.hostToken) {
+      return res.status(403).json({ error: "hostToken không hợp lệ cho phòng này." });
+    }
+
+    const [leaderboard, badgeRows, answers, posts] = await Promise.all([
+      computeRoomLeaderboard(prisma, room.id),
+      prisma.participantBadge.findMany({ where: { roomId: room.id }, include: { badge: true } }),
+      prisma.answer.findMany({
+        where: { roomId: room.id },
+        include: { participant: true, quizQuestion: true },
+        orderBy: { answeredAt: "asc" },
+      }),
+      prisma.discussionPost.findMany({
+        where: { roomId: room.id },
+        include: { participant: true, discussionQuestion: true },
+        orderBy: { createdAt: "asc" },
+      }),
+    ]);
+
+    const badgeNamesByParticipant = new Map<string, string[]>();
+    for (const b of badgeRows) {
+      const list = badgeNamesByParticipant.get(b.participantId) ?? [];
+      list.push(b.badge.name);
+      badgeNamesByParticipant.set(b.participantId, list);
+    }
+
+    let csv = "﻿"; // BOM so Excel opens the Vietnamese diacritics as UTF-8 instead of guessing ANSI
+    csv += csvRow(["Bảng điểm"]);
+    csv += csvRow(["Hạng", "Biệt danh", "Điểm", "Huy hiệu"]);
+    for (const row of leaderboard) {
+      csv += csvRow([row.rank, row.nickname, row.score, (badgeNamesByParticipant.get(row.participantId) ?? []).join(" | ")]);
+    }
+
+    csv += "\r\n" + csvRow(["Câu trả lời chi tiết"]);
+    csv += csvRow(["Biệt danh", "Câu hỏi", "Đáp án đã chọn", "Đúng/Sai", "Thời gian (ms)", "Điểm", "Điểm chuỗi"]);
+    for (const a of answers) {
+      csv += csvRow([
+        a.participant.nickname,
+        a.quizQuestion.question,
+        a.selectedIndex,
+        a.isCorrect ? "Đúng" : "Sai",
+        a.responseTimeMs,
+        a.pointsAwarded,
+        a.streakBonus,
+      ]);
+    }
+
+    csv += "\r\n" + csvRow(["Bài thảo luận"]);
+    csv += csvRow(["Biệt danh", "Câu hỏi thảo luận", "Nội dung", "Lượt upvote"]);
+    for (const p of posts) {
+      csv += csvRow([p.participant.nickname, p.discussionQuestion.question, p.content, p.upvotes]);
+    }
+
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", `attachment; filename="ket-qua-${room.code}.csv"`);
+    res.send(csv);
   }),
 );

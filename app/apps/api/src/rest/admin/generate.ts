@@ -47,7 +47,18 @@ generateRouter.post("/generate-quiz/batch", async (req: Request, res: Response) 
 
 generateRouter.get("/generate-quiz/batch/status", async (_req: Request, res: Response) => {
   try {
-    res.json({ ...(await getBatchProgress()), running: isBatchRunning() });
+    // Was `{...progress, running: isBatchRunning()}` — progress.running (count of GenerationJob rows
+    // in RUNNING status) and isBatchRunning()'s boolean single-flight flag collided under the same
+    // `running` key, silently dropping the numeric count. Renamed both so the UI can show an actual
+    // progress bar (pending+runningJobs remaining vs. doneCount+failedCount) alongside the flag.
+    const progress = await getBatchProgress();
+    res.json({
+      pending: progress.pending,
+      runningJobs: progress.running,
+      doneCount: progress.done,
+      failedCount: progress.failed,
+      isRunning: isBatchRunning(),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Lỗi khi lấy tiến độ." });

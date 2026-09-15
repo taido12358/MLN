@@ -129,6 +129,28 @@ export interface HostEndRoomPayload {
   roomCode: string;
 }
 
+export const HOST_EXTEND_QUESTION_TIME = "host:extendQuestionTime";
+export interface HostExtendQuestionTimePayload {
+  roomCode: string;
+  extraSec: number;
+}
+
+// Request/ack (not broadcast) — deliberately host-only so the "who hasn't answered yet" list never
+// reaches student sockets, unlike quiz:answerCount which is a room-wide broadcast of just a count.
+export const HOST_GET_UNANSWERED = "host:getUnanswered";
+export interface HostGetUnansweredPayload {
+  roomCode: string;
+}
+export interface HostGetUnansweredAck {
+  unanswered: { participantId: string; nickname: string }[];
+}
+
+export const HOST_DELETE_POST = "host:deletePost";
+export interface HostDeletePostPayload {
+  roomCode: string;
+  postId: string;
+}
+
 // Read-only join for a screen that has no student identity of its own — the standalone projector
 // leaderboard page (/leaderboard/[roomCode]). It only calls `socket.join()` server-side: no
 // Participant row is created/updated, so opening this page never pollutes the room's real
@@ -229,4 +251,16 @@ export const ROOM_ENDED = "room:ended";
 export interface RoomEndedPayload {
   finalLeaderboard: LeaderboardRow[];
   badgesByParticipant: Record<string, string[]>;
+}
+
+export const QUIZ_TIME_EXTENDED = "quiz:timeExtended";
+export interface QuizTimeExtendedPayload {
+  questionId: string;
+  newTimeLimitSec: number;
+  openedAt: number;
+}
+
+export const DISCUSSION_POST_DELETED = "discussion:postDeleted";
+export interface DiscussionPostDeletedPayload {
+  postId: string;
 }

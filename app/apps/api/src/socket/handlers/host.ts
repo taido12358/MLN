@@ -150,6 +150,71 @@ export function registerHostHandlers(io: AppServer, socket: AppSocket, prisma: P
     }
   });
 
+  // Extends the currently-open question's deadline. Answers already submitted before the extension
+  // keep the pointsAwarded they were scored with at submit time (calcQuizPoints reads roomState's
+  // timeLimitMs at that moment, in quiz.ts) — only the *remaining* countdown, and any answer
+  // submitted after this point, sees the new, larger timeLimitMs. That's a deliberate "no
+  // retroactive rescoring" choice: an early, fast, correct answer shouldn't lose points just because
+  // the teacher decided to give everyone else more time.
+  socket.on(Events.HOST_EXTEND_QUESTION_TIME, async (payload: Events.HostExtendQuestionTimePayload, ack?: SimpleAck) => {
+    if (!requireHost(socket, payload.roomCode, ack)) return;
+    try {
+      const roomState = getRoomState(payload.roomCode);
+      if (!roomState || roomState.state !== "QUIZ_QUESTION" || !roomState.currentQuestionId || roomState.questionOpenedAt === null) {
+        return ack?.({ error: "Không có câu hỏi nào đang mở để gia hạn." });
+      }
+
+      const extraSec = Math.min(60, Math.max(1, Number.isFinite(payload.extraSec) ? Math.round(payload.extraSec) : 10));
+      const currentTimeLimitMs = roomState.timeLimitMs ?? 0;
+      const newTimeLimitMs = Math.min(MAX_TIME_LIMIT_SEC * 1000, currentTimeLimitMs + extraSec * 1000);
+      roomState.timeLimitMs = newTimeLimitMs;
+
+      if (roomState.closeTimer) clearTimeout(roomState.closeTimer);
+      const remainingMs = Math.max(0, roomState.questionOpenedAt + newTimeLimitMs - Date.now());
+      const questionId = roomState.currentQuestionId;
+      const openedAt = roomState.questionOpenedAt;
+      roomState.closeTimer = setTimeout(() => {
+        closeCurrentQuestion(io, prisma, payload.roomCode).catch((err) =>
+          console.error("[socket] auto-close câu hỏi lỗi:", err),
+        );
+      }, remainingMs);
+
+      ack?.({ ok: true });
+      io.to(`room:${payload.roomCode}`).emit(Events.QUIZ_TIME_EXTENDED, {
+        questionId,
+        newTimeLimitSec: Math.round(newTimeLimitMs / 1000),
+        openedAt,
+      } satisfies Events.QuizTimeExtendedPayload);
+    } catch (err) {
+      console.error("[socket] host:extendQuestionTime lỗi:", err);
+      ack?.({ error: "Lỗi khi gia hạn thời gian." });
+    }
+  });
+
+  // Host-only request/ack (not broadcast) so the "who hasn't answered" list never reaches student
+  // sockets. Diffs the room's currently-connected participants against roomState's live
+  // answeredParticipantIds set (same data quiz:answerCount's count is derived from).
+  socket.on(Events.HOST_GET_UNANSWERED, async (payload: Events.HostGetUnansweredPayload, ack?: (r: Events.HostGetUnansweredAck | { error: string }) => void) => {
+    if (!requireHost(socket, payload.roomCode, ack as SimpleAck)) return;
+    try {
+      const roomState = getRoomState(payload.roomCode);
+      if (!roomState || roomState.state !== "QUIZ_QUESTION") {
+        return ack?.({ unanswered: [] });
+      }
+      const participants = await prisma.participant.findMany({
+        where: { roomId: socket.data.roomId, connected: true },
+        select: { id: true, nickname: true },
+      });
+      const unanswered = participants
+        .filter((p) => !roomState.answeredParticipantIds.has(p.id))
+        .map((p) => ({ participantId: p.id, nickname: p.nickname }));
+      ack?.({ unanswered });
+    } catch (err) {
+      console.error("[socket] host:getUnanswered lỗi:", err);
+      ack?.({ error: "Lỗi khi lấy danh sách chưa trả lời." });
+    }
+  });
+
   socket.on(Events.HOST_FORCE_CLOSE_QUESTION, async (payload: Events.HostForceCloseQuestionPayload, ack?: SimpleAck) => {
     if (!requireHost(socket, payload.roomCode, ack)) return;
     try {
