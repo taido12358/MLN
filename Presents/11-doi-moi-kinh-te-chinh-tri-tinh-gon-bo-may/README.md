@@ -10,7 +10,7 @@ Kinh tế quyết định chính trị xét đến cùng; chính trị có tính
 
 | Tài liệu | Nội dung và cách dùng |
 |---|---|
-| [Minigame 34 tỉnh, thành](./minigame/index.html) | Phần 1, HTML chạy trực tiếp, 34 dạng thử thách, chọn 8 hoặc 9 đội thi, bảng điểm tự cập nhật và lưu tiến độ |
+| [Minigame 34 tỉnh, thành](./minigame/index.html) | Phần 1, HTML chạy trực tiếp, 34 dạng thử thách, tám nhóm gồm Nhóm 1–7 và Nhóm 9, bảng điểm tự cập nhật và lưu tiến độ |
 | [Hướng dẫn minigame](./minigame/README.md) | Cách mở trò chơi, điều phối đội, danh sách thử thách và chuyển sang phần 2 |
 | [PowerPoint sau minigame](./Slide-Chu-de-11-Sau-minigame.pptx) | Bản cập nhật theo góp ý giảng viên và đối chiếu giáo trình, 15 slide, 4 biểu đồ và 3 bảng chỉnh sửa được, ghi chú lời nói, nhạc nhúng ở slide 1, 7, 15 và video VTV qua liên kết |
 | [Lý thuyết chi tiết](./ly-thuyet-chi-tiet.md) | Bài phân tích đầy đủ: khái niệm, hai chiều tác động, bài học Đổi mới, trường hợp sáp nhập, hạn chế và giải pháp |

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8b2937">
+  <meta name="theme-color" content="#ffffff">
   <title>34 tỉnh, thành · Minigame chủ đề 11</title>
   <style>
     :root{--paper:#f5f0e7;--white:#fffdf8;--ink:#272822;--red:#8b2937;--red-dark:#68212d;--muted:#716c62;--line:#ddd3c4;--green:#31644b;--soft:#eee4d6;--gold:#ddbb7d;--blue:#275c7b;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--paper);font-size:17px}
@@ -60,13 +60,163 @@
 @media(max-width:1000px){.map-layout{grid-template-columns:minmax(0,1fr) 245px;gap:16px}.map-heading{padding:17px;flex-wrap:wrap}.map-viewport{height:720px}.map-info{padding:21px}.map-help{padding:18px}}
 @media(max-width:720px){.map-layout{grid-template-columns:1fr}.map-viewport{height:640px}.map-sidebar{position:static;grid-template-columns:1fr}.map-info{padding:22px}.map-number{font-size:3rem;float:right;margin:0 0 8px 15px}.map-info h2{font-size:1.45rem}.map-info .tag{display:block}.map-info button{margin-top:0}.map-heading h2{font-size:1.3rem}.map-legend{gap:10px;font-size:.65rem}.map-heading{gap:12px}.map-tools button{font-size:.75rem}}
 @media(prefers-reduced-motion:reduce){#board .province{animation:none!important;transition:none!important}#board .province path{transition:none!important}}
+</style><style>/* Large, high-contrast typography for a classroom projector. */
+:root{--muted:#49463f;--line:#c5b9a7}
+button,input,select{font-weight:600}
+.hero h1>span{background:none;color:var(--red);animation:none}
+.ambient i{opacity:.08}
+.option[aria-pressed="true"]{background:#762134;color:#fff;border:3px solid #762134}
+.option:not([aria-pressed="true"]){border:2px solid #b3a48e}
+.feedback{color:#242822}.feedback.success{background:#e4f1e6;border-color:#245839}
+.map-info .tag,.map-info .map-state{color:#fff1cf}
+
+@media(min-width:1000px){
+  :root{font-size:clamp(22px,1.55vw,30px)}
+  .wrap{max-width:1920px;padding:18px 30px}
+  .top{gap:18px;padding-bottom:12px}.brand{font-size:.85rem;letter-spacing:0}.top-actions{gap:10px}.top-actions button{padding:9px 14px;font-size:.9rem}
+  .tabs{padding-top:12px;gap:12px}.tabs [role="tab"]{padding:10px 22px;font-size:1rem}
+  .hero{padding:12px 0;gap:30px;grid-template-columns:1.25fr 1fr}.hero h1{font-size:1.65rem;letter-spacing:-.025em;margin:0;line-height:1.16}.hero h1 br{display:none}.hero h1 span:after{content:" · "}.hero p{display:none}
+  .answer-team-label{gap:5px 16px}.answer-team-label span{font-size:.85rem;color:var(--ink)}.answer-team-label select{padding:8px 13px;font-size:1rem}.current-points{font-size:1.55rem}.scores>button{display:none}
+  .toolbar{gap:10px;margin-bottom:12px}.toolbar input,.toolbar select{font-size:.9rem;padding:10px 12px}.toolbar button{font-size:.9rem;padding:10px 15px}.toolbar input{min-width:190px}.toolbar select{min-width:140px}.counter{font-size:.95rem}.progress{height:9px;margin-bottom:17px}
+  .map-layout{grid-template-columns:minmax(0,1fr) minmax(340px,25%);gap:22px}
+  .map-heading{padding:15px 20px;gap:10px}.map-heading h2{font-size:1.2rem}.map-heading .tag{display:none}.map-tools button{font-size:.9rem;padding:8px 12px}.map-tools span{font-size:.8rem;min-width:50px}
+  .map-viewport{height:clamp(340px,calc(100dvh - 530px),760px)}
+  #board .province text{font-size:14px;font-weight:800}.map-decoration text{font-size:13px}.map-decoration .inset-caption{font-size:12px}
+  .map-legend{font-size:.8rem;color:#303e37;gap:10px 16px;padding:12px 18px}.map-legend i{width:14px;height:14px}
+  .map-info{padding:23px}.map-info .tag{font-size:.75rem;letter-spacing:.02em}.map-number{font-size:3.1rem;margin:10px 0}.map-info h2{font-size:1.6rem;margin:12px 0;line-height:1.2}.map-info p{font-size:1.05rem;line-height:1.45}.map-info .map-state{font-size:.9rem;padding-top:14px}.map-info button{font-size:1.05rem;min-height:56px}
+  .map-help{padding:20px}.map-help label{font-size:1rem}.map-help select{font-size:.95rem;padding:11px}.map-help p{font-size:.85rem;line-height:1.45}.map-help p:last-child{display:none}
+  .board-footer{margin-top:19px;padding-top:16px;gap:20px}.board-footer p{font-size:.9rem;line-height:1.5}.board-footer button{font-size:1rem}.source-note{font-size:.8rem;line-height:1.5;padding-top:18px}.live{font-size:.95rem}
+
+  dialog{width:min(1640px,98vw);max-height:96dvh;border:2px solid #aa9c87;border-radius:13px}
+  .dialog-body{padding:24px 32px;max-height:94dvh;scroll-padding-top:16px;scroll-padding-bottom:100px}
+  #question-dialog .dialog-body{height:94dvh;display:flex;flex-direction:column;overflow:hidden}
+  #question-dialog .dialog-top,#question-dialog .question-meta,#question-dialog .prompt{flex-shrink:0}
+  #quiz-form{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+  #quiz-area{flex:1;min-height:0;overflow:auto;padding:6px 12px 20px 0;scrollbar-gutter:stable;scrollbar-color:#8b2937 #e6ddcf}
+  #feedback{flex-shrink:0;max-height:35%;overflow:auto}
+  #quiz-form:has(#quiz-area:disabled) #quiz-area{display:none}
+  #quiz-form:has(#quiz-area:disabled) #feedback{flex:1;min-height:0;max-height:none}
+  .dialog-top h2{font-size:clamp(36px,2.7vw,54px);line-height:1.15;letter-spacing:-.02em}
+  .dialog-top .tag{font-size:clamp(22px,1.5vw,30px);margin-bottom:9px}.dialog-top .close{font-size:38px;padding:3px 17px;border:2px solid #8f7c65}
+  .question-meta{font-size:clamp(20px,1.4vw,28px);font-weight:600;color:#484138;margin:12px 0 20px}
+  .prompt{font-size:clamp(30px,2.2vw,44px);font-weight:650;line-height:1.38;max-width:none;margin-bottom:24px}
+  .quiz-area,.choice-set legend,.field>span,.pair-row label,.step-block{font-size:clamp(26px,1.85vw,37px);line-height:1.4}
+  .options{gap:14px}.option{font-size:clamp(26px,1.8vw,36px);line-height:1.35;min-height:78px;padding:16px 20px;font-weight:650}
+  .field input,.field select,.pair-row select{font-size:clamp(26px,1.8vw,36px);padding:12px 15px;border:2px solid #aa987f;max-width:100%}
+  .pair-row{gap:24px;padding:16px 0}.rows{gap:10px}.quotation{font-size:clamp(28px,2vw,40px);line-height:1.45;padding:22px}
+  .token{font-size:1.5rem;min-width:65px;min-height:65px}.answer-strip{min-height:90px}.answer-strip .token{font-size:1.3rem}.answer-strip .placeholder{font-size:1rem}
+  .order-list li{font-size:1.1rem;grid-template-columns:38px 1fr 122px;padding:17px;gap:15px}.order-buttons button{font-size:1.15rem;padding:8px 15px}
+  .memory-card{font-size:1.15rem;min-height:125px;padding:15px}.memory-grid{gap:15px}
+  .word-grid{grid-template-columns:repeat(7,62px);gap:8px}.word-grid button{height:62px;font-size:35px}
+  .cross-grid{grid-template-columns:repeat(7,56px);grid-template-rows:repeat(9,56px);gap:5px}.cross-grid input{width:56px;height:56px;font-size:32px}
+  .pin input{width:84px;height:84px;font-size:2rem}.range-output{font-size:3.3rem}.hint{font-size:1.1rem}.bucket-buttons button,.bucket-zone button{font-size:1.05rem}.bucket-zone h3{font-size:1.15rem}
+  .question-controls{flex-shrink:0;background:var(--white);margin:18px 0 0;padding:16px 0 0;border-top:2px solid #b9a991}
+  .question-controls button,.question-controls .pptx-link{font-size:clamp(22px,1.5vw,30px);min-height:56px;padding:12px 17px}
+  .feedback{font-size:clamp(27px,1.9vw,38px);line-height:1.5;padding:20px 24px}.feedback h3{font-size:1.15em}.feedback p{margin:12px 0}.feedback a{font-size:.85em}.feedback .lesson{font-weight:750}
+
+  .wrap:has(#score-panel:not([hidden])) .hero{display:none}
+  .standings-heading{margin:18px 0}.standings-heading h2{font-size:1.6rem;margin-bottom:4px}.standings-heading p{font-size:.95rem;color:var(--ink)}
+  .standings-grid{gap:14px}.standing,.standing.active{padding:14px 18px;gap:5px 15px;border-width:2px}.standing h3{font-size:1.25rem;line-height:1.2}.standing .rank{font-size:.85rem;color:#443e35}.standing .record-count{font-size:.9rem;color:#443e35}.standing .points{font-size:2.8rem;line-height:1.05}.standing button{font-size:.85rem;padding:8px 12px;min-height:44px}
+  .score-details{margin-top:24px}.score-details h3{font-size:1.3rem}.score-details table{font-size:1rem}.score-details caption{font-size:.95rem;color:var(--ink)}.score-details th,.score-details td{padding:16px}
+  .ending h2{font-size:1.8rem}.ending .winners{font-size:1.25rem}.bridge{font-size:1.25rem;line-height:1.55}.two-parts p{font-size:1.05rem}
+}
+
+@media(min-width:1000px) and (max-height:820px){
+  .top-actions button{padding:7px 12px}.top{padding-bottom:9px}.tabs [role="tab"]{padding:8px 18px}.standings-heading{margin:12px 0}.standing,.standing.active{padding:11px 16px;gap:4px 12px}.standing .points{font-size:2.6rem}.standing button{padding:6px 12px;min-height:40px}
+}
+
+@media(max-width:999px){
+  :root{font-size:19px}.prompt{font-size:1.3rem;font-weight:650;line-height:1.45}.option{font-size:1.1rem;font-weight:600;min-height:66px}.dialog-body{padding:22px 20px}.question-meta{font-size:.95rem;color:#484138}.feedback{font-size:1.1rem}.standing h3{font-size:1.35rem}.standing .points{font-size:3.2rem}.map-info h2{font-size:1.6rem}.map-info p{font-size:1rem}.map-help p{font-size:.88rem}.source-note{font-size:.82rem}.source-note a{white-space:normal}
+}
+</style><style>/* White surfaces, vivid accents and readable motion for classroom projection. */
+:root{--paper:#fff;--white:#fff;--ink:#17253e;--muted:#4c5d76;--red:#2454d7;--red-dark:#163aa4;--green:#08765e;--line:#d4deed;--soft:#eef3fa;--gold:#f6b94c;--blue:#1649ba;background:#fff;color:var(--ink);color-scheme:light}
+body{background:#fff}.ambient{display:none}
+button,input,select{border-color:#c9d5e7;border-radius:12px}
+button{box-shadow:0 2px 0 #16386408;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}
+button:hover:enabled{background:#f3f7ff;border-color:#6c91ed;box-shadow:0 5px 15px #2454d714}
+button:active:enabled{transform:translateY(1px)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #2454d7;outline-offset:4px}
+input,select{background:#fff;color:var(--ink);border:2px solid #c9d5e7}
+input:focus,select:focus{border-color:#2454d7;box-shadow:0 0 0 4px #2454d713}
+.primary,.primary:hover:enabled{color:#fff;border-color:#2454d7;background:linear-gradient(115deg,#1744bf,#386deb,#2454d7);background-size:200% 100%;box-shadow:0 5px 14px #2454d726;animation:blue-button-flow 6s ease-in-out infinite}
+.primary::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,#ffffff25 50%,transparent 75%);transform:translateX(-120%);pointer-events:none}
+.primary:hover:enabled::before{animation:button-sweep .65s ease-out}
+.primary:hover:enabled{box-shadow:0 8px 22px #2454d738}
+.top{border-color:#e0e7f2}.brand{color:#204dc2}.brand:before{background:#2454d7;box-shadow:0 0 0 5px #2454d70c;animation:blue-beacon 3s ease-in-out infinite}
+.top-actions button{background:#fff;color:#203a61}
+.hero h1{color:#17253e}.hero h1>span{color:#2454d7}.current-points,.counter{color:#2454d7}
+.tabs{border-color:#dce5f3;gap:12px}.tabs [role="tab"]{color:#475d7b;border-radius:12px 12px 0 0;transition:background .2s,color .2s,box-shadow .2s}
+.tabs [role="tab"]:hover{background:#f1f6ff;color:#204dc2}.tabs [aria-selected="true"],.tabs [aria-selected="true"]:hover{background:#2454d7;color:#fff;box-shadow:0 5px 14px #2454d71c}
+.progress{background:#e5edf8;height:10px}.progress div{background:linear-gradient(100deg,#2454d7,#17a6a0,#2454d7);background-size:200% 100%}
+.map-card{background:#fff;border:1px solid #d3def0;box-shadow:0 12px 35px #17345c0b;border-radius:20px}
+.map-heading,.map-legend{background:#fff;border-color:#e0e8f5}
+.map-heading h2{color:#17345c}.map-heading h2:before{content:"✦";display:inline-block;margin-right:10px;color:#2454d7;font-size:.85em}
+.map-tools button{background:#fff;color:#204dc2;border-color:#cddaf0}.map-tools span{color:#244369;font-weight:750}
+.map-viewport{background:#fff;scrollbar-color:#5480e4 #eef3fb}
+.map-decoration rect{fill:#fff;fill-opacity:1;stroke:#b5c9e9;stroke-dasharray:5 5}.map-decoration text{fill:#4f6b92}.map-decoration .sea-name{fill:#7d9dc6;opacity:.65}.map-decoration .inset-caption{fill:#526d91}
+#board .province[data-region="bac"]{--map-color:#4b70da}
+#board .province[data-region="trung"]{--map-color:#15998b}
+#board .province[data-region="nam"]{--map-color:#e77d48}
+#board .province path{stroke:#fff;stroke-width:1.2;transition:fill .18s,stroke .18s,filter .22s}
+#board .province .map-dot{fill:#fff;stroke:#26466c;stroke-width:.65}#board .province text{fill:#17345c}
+#board .province[aria-disabled="false"]:hover path,#board .province[aria-disabled="false"]:focus-visible path,#board .province[aria-disabled="false"].is-selected path{fill:#ffd475;stroke:#1c4bc4;stroke-width:2;filter:drop-shadow(0 0 6px #2454d744);animation:province-glow 2.4s ease-in-out infinite}
+#board .province[aria-disabled="true"] path{fill:#a7b4c5;stroke:#fff;animation:none;filter:none}
+#board .province.is-filtered{opacity:.1}
+.map-legend{color:#344c6c}.map-legend i.north{background:#4b70da}.map-legend i.central{background:#15998b}.map-legend i.south{background:#e77d48}.map-legend i.locked{background:#a7b4c5}
+.map-info{--region-accent:#2454d7;background:#fff;color:#17253e;border:1px solid #d3def0;border-radius:20px;box-shadow:0 12px 35px #17345c0b}
+.map-info[data-region="bac"]{--region-accent:#2454d7}.map-info[data-region="trung"]{--region-accent:#087f73}.map-info[data-region="nam"]{--region-accent:#ba5423}
+.map-info:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#2454d7,#17a6a0,#f5b747)}
+.map-info .tag{color:#345780;letter-spacing:.035em}.map-number{color:var(--region-accent);line-height:1.1}.map-info h2{color:#17345c;font-weight:800}.map-info p{color:#273f61}.map-info .map-state{color:#354d6e;border-color:#dce5f2;font-weight:600}
+.map-info button,.map-info button:hover:enabled{background:linear-gradient(115deg,#1744bf,#386deb);color:#fff;border:1px solid #2454d7;box-shadow:0 5px 15px #2454d724}
+.map-info button:disabled{background:#eef3fa;color:#586b85;border-color:#d7e1ef;box-shadow:none;opacity:1}
+.map-help{background:#fff;border-color:#d3def0;box-shadow:0 8px 20px #17345c06}.map-help label{color:#17345c}.map-help p{color:#4c5d76}#map-matches{color:#2454d7}
+.source-note{color:#4c5d76}.board-footer{border-color:#dce5f2}
+
+dialog{background:#fff;border:1px solid #c4d4ef;box-shadow:0 28px 100px #102e6052;border-radius:20px}
+dialog::backdrop{background:#102744bd;backdrop-filter:blur(3px)}
+.dialog-top h2{color:#17345c}.dialog-top .tag{color:#2454d7}.dialog-top .tag:before{content:"✦";color:#15998b;display:inline-block;margin-right:10px}
+.dialog-top .close{border-color:#c9d7ed;color:#35547a;background:#fff}.question-meta{color:#415776}.prompt{color:#152642}
+.question-controls{background:#fff;border-color:#d3dfef}.question-controls button{border-color:#c7d5ea}
+#quiz-area{scrollbar-color:#5480e4 #eef3fb}
+.option:not([aria-pressed="true"]){background:#fff;border:2px solid #c0d0e9;color:#172e50;box-shadow:0 3px 8px #17345c06}
+.option:not([aria-pressed="true"]):hover:enabled{background:#f5f8ff;border-color:#2454d7;box-shadow:0 6px 18px #2454d717}
+.option[aria-pressed="true"]{background:#2454d7;color:#fff;border:3px solid #2454d7;box-shadow:0 0 0 4px #2454d716}
+.option[aria-pressed="true"]:hover:enabled,.option[aria-pressed="true"]:focus-visible{background:#1d46bc;color:#fff;border-color:#1d46bc}
+.field input,.field select,.pair-row select{background:#fff;border-color:#bdcee7;color:#172e50}.pair-row{border-color:#e0e8f4}
+.quotation,.answer-strip,.order-list li,.hint{background:#f5f8fe;border-color:#2454d7;color:#17345c}
+.answer-strip .token{background:#2454d7;color:#fff}.token:disabled{background:#edf2fa;color:#64758b}.token,.word-grid button,.cross-grid input{border-color:#c2d1e8}
+.word-grid .selected{background:#2454d7;color:#fff}.cross-grid input.shared{background:#fff0c6}
+.word-grid button.selected:hover:enabled,.answer-strip .token:hover:enabled{background:#1d46bc;color:#fff;border-color:#1d46bc}
+.memory-card.flipped{background:#eef5ff;border-color:#5480e4}.memory-card.matched{background:#f0fbf7;border-color:#0d8a6c;color:#08644f}
+.bucket-buttons button.active{background:#2454d7;color:#fff}.bucket-zone{border-color:#8ba8d7;background:#fff}.bucket-zone h3,.budget-total,.range-output{color:#2454d7}.range{accent-color:#2454d7}
+.feedback{background:#fff;color:#172e50;border-color:#d25143;box-shadow:0 6px 24px #17345c0a;border-radius:0 14px 14px 0}
+.feedback.success{background:#fff;border-color:#0a8b6b;box-shadow:0 6px 24px #0a8b6b10}.feedback.success h3{color:#08765e}.feedback.success h3:before{content:"✓";margin-right:12px;font-weight:850}.feedback .lesson{color:#204dc2}.feedback a{color:#1649ba}
+.flying-score{color:#2454d7;text-shadow:0 3px 0 #fff,0 0 28px #b9d4ff}.click-ripple{background:#8db5ff66}
+
+.standing{--group-color:#2454d7;position:relative;overflow:hidden;isolation:isolate;background:#fff;border-color:#d0dcee;box-shadow:0 7px 22px #17345c08;transition:transform .22s,box-shadow .22s,border-color .22s}
+.standing:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--group-color)}
+.standing[data-team-index="1"]{--group-color:#087f73}.standing[data-team-index="2"]{--group-color:#7650c8}.standing[data-team-index="3"]{--group-color:#ba5423}.standing[data-team-index="4"]{--group-color:#275f98}.standing[data-team-index="5"]{--group-color:#22733c}.standing[data-team-index="6"]{--group-color:#b13c73}.standing[data-team-index="7"]{--group-color:#4e4cbc}
+.standing h3{color:#17345c}.standing .points{color:var(--group-color)}.standing .rank{color:#36547c;background:#f0f5fd;border-radius:8px;padding:3px 9px;justify-self:start}.standing .record-count{color:#4c5d76}
+.standing.active{background:#fff;border-color:var(--group-color);box-shadow:0 0 0 3px #2454d70c,0 10px 26px #17345c10;animation:active-group-glow 3s ease-in-out infinite}
+.standing:hover{border-color:var(--group-color);transform:translateY(-3px);box-shadow:0 12px 28px #17345c14}
+.standing button{background:#fff;color:#25456e;border-color:#ccdaee}.standing button:hover{background:#f2f7ff;color:#204dc2}
+.score-details table{background:#fff}.score-details th{background:#17345c}.score-details td{color:#243d60}.score-details td:last-child{color:#2454d7}.score-details th,.score-details td{border-color:#dce5f2}
+.bridge{border-color:#2454d7;color:#17345c}.two-parts h3,.ending .winners{color:#2454d7}.pptx-link{background:#2454d7;color:#fff}
+
+@keyframes blue-button-flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes button-sweep{to{transform:translateX(120%)}}
+@keyframes blue-beacon{0%,100%{box-shadow:0 0 0 5px #2454d70d}50%{box-shadow:0 0 0 9px #2454d705}}
+@keyframes province-glow{0%,100%{filter:drop-shadow(0 0 4px #2454d72b)}50%{filter:drop-shadow(0 0 9px #2454d755)}}
+@keyframes active-group-glow{0%,100%{box-shadow:0 0 0 3px #2454d70a,0 7px 22px #17345c08}50%{box-shadow:0 0 0 4px #2454d714,0 10px 28px #17345c12}}
+@media(min-width:1000px){.standings-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.standing:hover{transform:none}}
 </style></head>
 <body>
   <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
   <main class="wrap">
-    <header class="top"><div class="brand">CHỦ ĐỀ 11 · PHẦN 1 / MINIGAME</div><div class="top-actions"><button id="sound-toggle" aria-pressed="false">Âm hiệu tắt</button><button id="fullscreen">Toàn màn hình</button><button id="settings-open">Đội & luật chơi</button></div></header>
-    <nav class="tabs" role="tablist" aria-label="Trò chơi và điểm thi"><button id="game-tab" role="tab" aria-selected="true" aria-controls="game-panel" tabindex="0">Trò chơi</button><button id="score-tab" role="tab" aria-selected="false" aria-controls="score-panel" tabindex="-1">Bảng điểm 9 đội</button></nav>
-    <section class="hero" aria-labelledby="page-title"><div><h1 id="page-title"><span>34 tỉnh, thành</span><br>Tìm hiểu sáp nhập 2025</h1><p>Chọn một địa phương, mở một thử thách. Từ những thay đổi trên địa giới đến câu chuyện đổi mới kinh tế và chính trị.</p></div><div id="scores" class="scores" aria-label="Chọn đội trả lời"></div></section>
+    <header class="top"><div class="brand">CHỦ ĐỀ 11 · PHẦN 1 / MINIGAME</div><div class="top-actions"><button id="sound-toggle" aria-pressed="false">Âm hiệu tắt</button><button id="fullscreen">Toàn màn hình</button><button id="settings-open">Nhóm & luật chơi</button></div></header>
+    <nav class="tabs" role="tablist" aria-label="Trò chơi và điểm thi"><button id="game-tab" role="tab" aria-selected="true" aria-controls="game-panel" tabindex="0">Trò chơi</button><button id="score-tab" role="tab" aria-selected="false" aria-controls="score-panel" tabindex="-1">Bảng điểm 8 nhóm</button></nav>
+    <section class="hero" aria-labelledby="page-title"><div><h1 id="page-title"><span>34 tỉnh, thành</span><br>Tìm hiểu sáp nhập 2025</h1><p>Chọn một địa phương, mở một thử thách. Từ những thay đổi trên địa giới đến câu chuyện đổi mới kinh tế và chính trị.</p></div><div id="scores" class="scores" aria-label="Chọn nhóm trả lời"></div></section>
     <section id="game-panel" role="tabpanel" aria-labelledby="game-tab">
     <div class="toolbar"><input id="search" type="search" placeholder="Tìm tỉnh, thành…" aria-label="Tìm tỉnh, thành"><select id="region" aria-label="Lọc khu vực"><option value="all">Cả nước</option><option value="bac">Miền Bắc</option><option value="trung">Miền Trung & Tây Nguyên</option><option value="nam">Miền Nam</option></select><select id="status-filter" aria-label="Lọc tiến độ"><option value="all">Tất cả thử thách</option><option value="new">Chưa hoàn thành</option><option value="done">Đã hoàn thành</option></select><button id="random" class="primary">Chọn ngẫu nhiên</button><span id="counter" class="counter"></span></div>
     <div class="progress" role="progressbar" aria-label="Tiến độ hoàn thành" aria-valuemin="0" aria-valuemax="34" aria-valuenow="0"><div id="progress-fill"></div></div>
@@ -90,14 +240,14 @@
     </section>
     <div class="board-footer"><p>Mỗi địa phương có một dạng thử thách riêng. Có thể chọn một số lượt cho phần khởi động rồi bấm kết thúc để vào bài thuyết trình.</p><button id="finish-open" class="primary">Kết thúc & dẫn vào bài</button></div>
     </section>
-    <section id="score-panel" role="tabpanel" aria-labelledby="score-tab" hidden><div class="standings-heading"><div><h2 id="score-title">Bảng điểm 9 đội</h2><p>Điểm tự cập nhật sau mỗi câu trả lời đúng. Đúng lần đầu được 10 điểm, lần hai 7 điểm, từ lần ba 5 điểm.</p></div><button id="score-team-settings">Đổi tên đội</button></div><div id="standings" class="standings-grid" aria-label="Điểm và thứ hạng chín đội"></div><div class="score-details"><h3>Chi tiết điểm từng câu</h3><table><caption id="score-summary"></caption><thead><tr><th scope="col">Địa phương</th><th scope="col">Đội trả lời</th><th scope="col">Kết quả</th><th scope="col">Điểm</th></tr></thead><tbody id="score-history"></tbody></table></div></section>
+    <section id="score-panel" role="tabpanel" aria-labelledby="score-tab" hidden><div class="standings-heading"><div><h2 id="score-title">Bảng điểm 8 nhóm</h2><p>Điểm tự cập nhật sau mỗi câu trả lời đúng. Đúng lần đầu được 10 điểm, lần hai 7 điểm, từ lần ba 5 điểm.</p></div><button id="score-team-settings">Danh sách nhóm</button></div><div id="standings" class="standings-grid" aria-label="Điểm và thứ hạng tám nhóm"></div><div class="score-details"><h3>Chi tiết điểm từng câu</h3><table><caption id="score-summary"></caption><thead><tr><th scope="col">Địa phương</th><th scope="col">Nhóm trả lời</th><th scope="col">Kết quả</th><th scope="col">Điểm</th></tr></thead><tbody id="score-history"></tbody></table></div></section>
     <div id="notice" class="live" role="status" aria-live="polite"></div>
     <footer class="source-note">Dữ kiện địa giới theo đợt sắp xếp năm 2025. Các tình huống vận dụng được ghi rõ trong câu hỏi. <a href="https://baochinhphu.vn/nghi-quyet-cua-quoc-hoi-ve-sap-xep-don-vi-hanh-chinh-cap-tinh-102250612191145158.htm" target="_blank" rel="noopener">Nghị quyết 202/2025/QH15</a>. Ranh giới giản lược từ <a href="https://github.com/nguyenduy1133/Free-GIS-Data" target="_blank" rel="noopener">Free GIS Data</a>. Hai quần đảo hiển thị trong khung phụ phóng đại. Trò chơi lưu tiến độ trên trình duyệt đang dùng.</footer>
   </main>
 
   <dialog id="question-dialog" aria-labelledby="question-title"><div class="dialog-body"><div class="dialog-top"><div><span id="question-type" class="tag"></span><h2 id="question-title"></h2></div><button class="close" id="question-close" aria-label="Đóng thử thách">×</button></div><p id="question-meta" class="question-meta"></p><p id="prompt" class="prompt"></p><form id="quiz-form"><fieldset id="quiz-area" class="quiz-area"></fieldset><div id="feedback" role="status" aria-live="polite"></div><div class="question-controls"><button id="check" type="submit" class="primary">Kiểm tra đáp án</button><button id="reveal" type="button">Xem lời giải · 0 điểm</button><button id="round-done" type="button" class="close-round">Về bảng địa phương</button></div></form></div></dialog>
-  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-body"><div class="dialog-top"><h2 id="settings-title">Đội & luật chơi</h2><button class="close" id="settings-close" aria-label="Đóng thiết lập">×</button></div><form id="settings-form"><div class="settings-grid"><label class="field"><span>Tổng số đội thi</span><select id="team-count"><option value="8">8 đội</option><option value="9">9 đội</option></select></label><div id="team-inputs" class="settings-grid"></div></div><ul class="rules"><li>Chọn đội đang trả lời trước khi mở một địa phương.</li><li>Đúng ở lần kiểm tra đầu được 10 điểm, lần hai 7 điểm, từ lần ba 5 điểm.</li><li>Câu trả lời chưa đủ dữ liệu sẽ được nhắc bổ sung.</li><li>Xem lời giải được 0 điểm. Mỗi địa phương chỉ chấm điểm một lần.</li><li>Sau một lượt hoàn thành, trò chơi chuyển sang đội tiếp theo. Có thể đổi đội bằng ô chọn hoặc tab bảng điểm.</li><li>Chọn tổng cộng 8 hoặc 9 đội thi. Có thể đổi tên đội trong ván.</li></ul><div id="settings-message" class="live" role="status"></div><div class="question-controls"><button class="primary" type="submit">Lưu thiết lập</button><button id="reset-open" type="button">Chơi lại từ đầu</button></div></form></div></dialog>
-  <dialog id="reset-dialog" aria-labelledby="reset-title"><div class="dialog-body"><h2 id="reset-title">Bắt đầu ván mới?</h2><p>Điểm số và tiến độ của ván hiện tại sẽ được xóa. Tên đội được giữ lại.</p><div class="question-controls"><button id="reset-confirm" class="primary">Xóa điểm và chơi lại</button><button id="reset-cancel">Giữ ván hiện tại</button></div></div></dialog>
+  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-body"><div class="dialog-top"><h2 id="settings-title">Nhóm & luật chơi</h2><button class="close" id="settings-close" aria-label="Đóng thiết lập">×</button></div><form id="settings-form"><div class="settings-grid"><label class="field"><span>Tổng số nhóm thi</span><select id="team-count"><option value="8">8 nhóm</option></select></label><div id="team-inputs" class="settings-grid"></div></div><ul class="rules"><li>Chọn nhóm đang trả lời trước khi mở một địa phương.</li><li>Đúng ở lần kiểm tra đầu được 10 điểm, lần hai 7 điểm, từ lần ba 5 điểm.</li><li>Câu trả lời chưa đủ dữ liệu sẽ được nhắc bổ sung.</li><li>Xem lời giải được 0 điểm. Mỗi địa phương chỉ chấm điểm một lần.</li><li>Sau một lượt hoàn thành, trò chơi chuyển sang nhóm tiếp theo. Có thể đổi nhóm bằng ô chọn hoặc tab bảng điểm.</li><li>Có tám nhóm thi theo thứ tự Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 4, Nhóm 5, Nhóm 6, Nhóm 7 và Nhóm 9.</li></ul><div id="settings-message" class="live" role="status"></div><div class="question-controls"><button class="primary" type="submit">Lưu thiết lập</button><button id="reset-open" type="button">Chơi lại từ đầu</button></div></form></div></dialog>
+  <dialog id="reset-dialog" aria-labelledby="reset-title"><div class="dialog-body"><h2 id="reset-title">Bắt đầu ván mới?</h2><p>Điểm số và tiến độ của ván hiện tại sẽ được xóa. Danh sách tám nhóm được giữ lại.</p><div class="question-controls"><button id="reset-confirm" class="primary">Xóa điểm và chơi lại</button><button id="reset-cancel">Giữ ván hiện tại</button></div></div></dialog>
   <dialog id="ending-dialog" aria-labelledby="ending-title"><div class="dialog-body ending"><div class="dialog-top"><h2 id="ending-title">Từ trò chơi đến bài thuyết trình</h2><button class="close" id="ending-close" aria-label="Đóng phần dẫn">×</button></div><p id="game-summary" class="winners"></p><div class="two-parts"><div><h3>Phần 1 · Trải nghiệm</h3><p>Nhận diện địa phương, kiểm chứng số liệu và tìm hiểu chất lượng phục vụ.</p></div><div><h3>Phần 2 · Phân tích</h3><p>Quan hệ kinh tế và chính trị qua giáo trình, biểu đồ và bằng chứng thực tế.</p></div></div><blockquote class="bridge" id="bridge-text">Qua trò chơi, chúng ta đã gặp bản đồ mới, số liệu sắp xếp và những thay đổi trong giải quyết hồ sơ. Nếu thời hạn một thủ tục từ 3 ngày còn 1 ngày, doanh nghiệp được lợi gì? Nhu cầu kinh tế đặt ra yêu cầu quản lý như thế nào, và thể chế, bộ máy phù hợp có thể hỗ trợ phát triển ra sao? Phần trình bày tiếp theo sẽ phân tích hai chiều quan hệ ấy bằng giáo trình và dẫn chứng.</blockquote><p class="muted">Câu hỏi mở cho cả lớp</p><h3>Hai ngày chờ được rút ngắn có ý nghĩa gì với hoạt động kinh doanh?</h3><div class="question-controls"><a class="pptx-link" href="../Slide-Chu-de-11-Sau-minigame.pptx" download>Mở bản PowerPoint tiếp theo</a><button id="copy-bridge">Sao chép lời dẫn</button><button id="back-to-game">Tiếp tục trò chơi</button></div><p id="copy-message" class="live" role="status"></p></div></dialog>
 
   <script>
@@ -897,17 +1047,17 @@
     if (className) result.className = className;
     return result;
   };
-  const TEAM_COUNT = 9;
-  const blankState = () => ({version:1,teams:Array.from({length:TEAM_COUNT},(_,index)=>`Đội ${index+1}`),currentTeam:0,records:{},sound:false});
+  const TEAM_NAMES = ['Nhóm 1','Nhóm 2','Nhóm 3','Nhóm 4','Nhóm 5','Nhóm 6','Nhóm 7','Nhóm 9'];
+  const TEAM_COUNT = TEAM_NAMES.length;
+  const blankState = () => ({version:1,rosterVersion:2,teams:[...TEAM_NAMES],currentTeam:0,records:{},sound:false});
   let storageAvailable = true;
   function load() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORE) || 'null');
-      if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.teams) || parsed.teams.length < 2 || parsed.teams.length > TEAM_COUNT) return blankState();
-      parsed.teams = parsed.teams.map((name,i) => String(name || `Đội ${i+1}`).slice(0,30));
-      if (parsed.teams.length < 8) {
-        while (parsed.teams.length < TEAM_COUNT) parsed.teams.push(`Đội ${parsed.teams.length+1}`);
-      }
+      if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.teams) || parsed.teams.length < 2 || parsed.teams.length > 9) return blankState();
+      const migrateNineTeams=parsed.rosterVersion!==2&&parsed.teams.length===9;
+      parsed.teams=[...TEAM_NAMES];parsed.rosterVersion=2;
+      if(migrateNineTeams)parsed.currentTeam=parsed.currentTeam===8?7:parsed.currentTeam===7?0:parsed.currentTeam;
       if (!Number.isInteger(parsed.currentTeam) || parsed.currentTeam < 0 || parsed.currentTeam >= parsed.teams.length) parsed.currentTeam = 0;
       const records = {};
       for (const question of QUESTIONS) {
@@ -918,8 +1068,14 @@
         if(!saved.result&&record.revision!==(question.revision||1)){
           record.draft={};record.attempts=0;record.revision=question.revision||1;
         }
-        if (Number.isInteger(saved.team) && saved.team >= 0 && saved.team < parsed.teams.length) record.team = saved.team;
-        if (saved.result && ['correct','revealed'].includes(saved.result.status) && [0,5,7,10].includes(saved.result.points) && record.team !== undefined) record.result = saved.result;
+        if(saved.retiredTeam)record.retiredTeam=String(saved.retiredTeam).slice(0,40);
+        if(migrateNineTeams&&saved.team===7){
+          if(saved.result)record.retiredTeam='Nhóm 8 (ván trước)';
+          else {record.attempts=0;record.draft={};}
+        }else if(Number.isInteger(saved.team)&&saved.team>=0&&saved.team<(migrateNineTeams?9:TEAM_COUNT)){
+          record.team=migrateNineTeams&&saved.team===8?7:saved.team;
+        }
+        if (saved.result && ['correct','revealed'].includes(saved.result.status) && [0,5,7,10].includes(saved.result.points) && (record.team !== undefined||record.retiredTeam)) record.result = saved.result;
         records[question.id] = record;
       }
       return {...blankState(),...parsed,records};
@@ -932,7 +1088,6 @@
   let memoryTimer = null;
   let memoryFlips = [];
   let audioContext;
-  let settingsNames=[];
   let animateBoardEntrance=true;
   let completedProvince=null;
   const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -953,7 +1108,7 @@
     if(motionPreference.matches)return;
     dialog.querySelector('.celebration')?.remove();
     const layer=node('div',undefined,'celebration');layer.setAttribute('aria-hidden','true');
-    const colors=['#ddbb7d','#8b2937','#e65f73','#397d64','#327aaf','#e5a932'];
+    const colors=['#2454d7','#15998b','#f5b747','#e77d48','#7650c8','#35a6d5'];
     const count=window.innerWidth<600?42:80;
     for(let index=0;index<count;index++){
       const piece=node('i',undefined,'confetti');
@@ -1001,32 +1156,32 @@
   }
   function renderScoreboard() {
     const table=scores();
-    $('score-tab').textContent=`Bảng điểm ${state.teams.length} đội`;
-    $('score-title').textContent=`Bảng điểm ${state.teams.length} đội`;
-    $('standings').setAttribute('aria-label',`Điểm và thứ hạng ${state.teams.length} đội`);
+    $('score-tab').textContent=`Bảng điểm ${state.teams.length} nhóm`;
+    $('score-title').textContent=`Bảng điểm ${state.teams.length} nhóm`;
+    $('standings').setAttribute('aria-label',`Điểm và thứ hạng ${state.teams.length} nhóm`);
     const standings=$('standings');standings.replaceChildren();
     [...table].sort((a,b)=>b.points-a.points||a.index-b.index).forEach(team=>{
       const rank=table.filter(other=>other.points>team.points).length+1;
       const card=node('article',undefined,'standing'+(team.index===state.currentTeam?' active':''));
       card.dataset.teamIndex=team.index;
       card.append(node('span',`Hạng ${rank}`,'rank'),node('h3',team.name),node('strong',String(team.points),'points'),node('span',`${team.correct} câu đúng`,'record-count'));
-      const selectTeam=node('button',team.index===state.currentTeam?'Đội đang trả lời':'Chọn đội trả lời');
+      const selectTeam=node('button',team.index===state.currentTeam?'Nhóm đang trả lời':'Chọn nhóm trả lời');
       selectTeam.dataset.selectTeam=team.index;
       selectTeam.setAttribute('aria-label',`Chọn ${team.name} trả lời`);
       selectTeam.onclick=()=>{state.currentTeam=team.index;save();renderBoard();setTab('game');};
       card.append(selectTeam);standings.append(card);
     });
     const history=$('score-history');history.replaceChildren();
-    let total=0;let count=0;
+    let total=0;let count=0;let retiredCount=0;
     for(const question of QUESTIONS) {
       const record=state.records[question.id];
       if(!record?.result)continue;
       const row=node('tr');
-      row.append(node('td',question.name),node('td',state.teams[record.team]),node('td',record.result.status==='correct'?'Trả lời đúng':'Đã mở lời giải'),node('td',String(record.result.points)));
-      history.append(row);total+=record.result.points;count++;
+      row.append(node('td',question.name),node('td',record.retiredTeam||state.teams[record.team]),node('td',record.result.status==='correct'?'Trả lời đúng':'Đã mở lời giải'),node('td',String(record.result.points)));
+      history.append(row);if(record.retiredTeam)retiredCount++;else total+=record.result.points;count++;
     }
     if(!count){const row=node('tr');const cell=node('td','Điểm sẽ xuất hiện sau khi hoàn thành câu hỏi đầu tiên.');cell.colSpan=4;row.append(cell);history.append(row);}
-    $('score-summary').textContent=`${count} câu đã hoàn thành, tổng ${total} điểm. Mỗi câu chỉ ghi điểm một lần.`;
+    $('score-summary').textContent=`${count} câu đã hoàn thành, tổng ${total} điểm của 8 nhóm.${retiredCount?` Có ${retiredCount} câu của nhóm cũ được lưu trong lịch sử.`:''} Mỗi câu chỉ ghi điểm một lần.`;
   }
   function tone(correct) {
     if (!state.sound) return;
@@ -1047,7 +1202,9 @@
   let inspectedProvince=null;
   let mapZoom=1;
   function inspectProvince(question) {
+    const changed=inspectedProvince!==question.id;
     inspectedProvince=question.id;
+    document.querySelector('.map-info').dataset.region=question.region;
     const result=state.records[question.id]?.result;
     document.querySelectorAll('#board .province').forEach(region=>region.classList.toggle('is-selected',region.dataset.province===question.id));
     $('map-number').textContent=String(QUESTIONS.indexOf(question)+1).padStart(2,'0');
@@ -1057,6 +1214,7 @@
     $('map-open').disabled=!!result;
     $('map-open').textContent=result?'Địa phương đã khóa':'Mở câu hỏi';
     $('map-select').value=question.id;
+    if(changed)animateElement($('map-name'),[{opacity:.3,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'cubic-bezier(.16,1,.3,1)'});
   }
   $('map-select').onchange=event=>{
     const question=QUESTIONS.find(q=>q.id===event.target.value);
@@ -1090,8 +1248,8 @@
     state.teams.forEach((name,index)=>{const option=node('option',name);option.value=index;select.append(option);});
     select.value=state.currentTeam;
     select.onchange=()=>{state.currentTeam=Number(select.value);save();renderBoard();};
-    label.append(node('span','Chọn đội trả lời trước khi mở địa phương'),select,node('strong',`${scores()[state.currentTeam].points} điểm`,'current-points'));
-    const viewScores=node('button',`Xem bảng điểm ${state.teams.length} đội`);viewScores.onclick=()=>setTab('score',true);
+    label.append(node('span','Chọn nhóm trả lời trước khi mở địa phương'),select,node('strong',`${scores()[state.currentTeam].points} điểm`,'current-points'));
+    const viewScores=node('button',`Xem bảng điểm ${state.teams.length} nhóm`);viewScores.onclick=()=>setTab('score',true);
     scoreArea.append(label,viewScores);
     const search = normalize($('search').value);
     const region = $('region').value;
@@ -1144,6 +1302,7 @@
     if(selected)inspectProvince(selected);
     else {
       inspectedProvince=null;
+      delete document.querySelector('.map-info').dataset.region;
       $('map-number').textContent='34';$('map-name').textContent='Di chuột trên bản đồ';
       $('map-type').textContent='Mỗi tỉnh, thành là một thử thách riêng.';
       $('map-state').textContent='Rê chuột để xem · Bấm để chơi';$('map-open').disabled=true;
@@ -1459,26 +1618,19 @@
   $('sound-toggle').onclick=()=>{state.sound=!state.sound;save();renderBoard();if(state.sound)tone(true);};
   $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('notice').textContent='Bạn có thể dùng phím F11 để mở chế độ toàn màn hình.';}};
   function teamInputs() {
-    const count=Number($('team-count').value);
-    [...$('team-inputs').querySelectorAll('input')].forEach((input,index)=>{settingsNames[index]=input.value;});
+    const count=TEAM_COUNT;
     $('team-inputs').replaceChildren();
     for(let i=0;i<count;i++){
-      const label=node('label',undefined,'field');label.append(node('span',`Tên đội ${i+1}`));const field=node('input');field.maxLength=30;field.required=true;field.value=settingsNames[i]??`Đội ${i+1}`;label.append(field);$('team-inputs').append(label);
+      const label=node('label',undefined,'field');label.append(node('span',`Nhóm thi thứ ${i+1}`));const field=node('input');field.readOnly=true;field.value=TEAM_NAMES[i];label.append(field);$('team-inputs').append(label);
     }
   }
-  $('settings-open').onclick=()=>{settingsNames=[...state.teams];$('team-count').value=state.teams.length;$('team-inputs').replaceChildren();teamInputs();$('settings-message').textContent='';showDialog('settings-dialog');};
+  $('settings-open').onclick=()=>{$('team-count').value=TEAM_COUNT;$('team-inputs').replaceChildren();teamInputs();$('settings-message').textContent='';showDialog('settings-dialog');};
   $('team-count').onchange=teamInputs;
   $('score-team-settings').onclick=()=>$('settings-open').click();
   $('settings-close').onclick=()=>$('settings-dialog').close();
   $('settings-form').onsubmit=event=>{
-    event.preventDefault();const names=[...$('team-inputs').querySelectorAll('input')].map(i=>i.value.trim());
-    if(names.some(name=>!name)){$('settings-message').textContent='Hãy nhập tên cho mỗi đội.';return;}
-    if(![8,9].includes(names.length))return;
-    if(Object.values(state.records).some(record=>record.team>=names.length)){
-      $('settings-message').textContent='Đội 9 đã có lượt chơi. Để chuyển sang 8 đội, hãy bấm Chơi lại từ đầu rồi chọn lại số đội.';
-      return;
-    }
-    state.teams=names;state.currentTeam%=names.length;save();renderBoard();$('settings-dialog').close();
+    event.preventDefault();
+    state.teams=[...TEAM_NAMES];state.currentTeam%=TEAM_COUNT;save();renderBoard();$('settings-dialog').close();
   };
   $('reset-open').onclick=()=>showDialog('reset-dialog');$('reset-cancel').onclick=()=>$('reset-dialog').close();
   $('reset-confirm').onclick=()=>{const teams=state.teams;const sound=state.sound;state={...blankState(),teams,sound};animateBoardEntrance=true;completedProvince=null;save();$('reset-dialog').close();$('settings-dialog').close();renderBoard();$('notice').textContent='Ván mới đã sẵn sàng.';};

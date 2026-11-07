@@ -18,6 +18,9 @@ ngày hoàn thành, và (nếu đáng kể) link tới file trong `sessions/`.
 
 | Khu vực | Việc | Hoàn thành | Log |
 |---|---|---|---|
+| minigame | Codex làm mới giao diện nền trắng, màu xanh dương–xanh ngọc–cam, hiệu ứng bản đồ và bảng điểm tám nhóm | 2026-11-07 | [sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md](sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md) |
+| minigame | Codex cố định tám nhóm gồm Nhóm 1–7 và Nhóm 9, đồng bộ điểm và chuyển lượt | 2026-11-07 | [sessions/2026-11-07_1245_minigame_nhom-1-7-9.md](sessions/2026-11-07_1245_minigame_nhom-1-7-9.md) |
+| minigame | Codex tăng chữ câu hỏi, đáp án, bảng điểm và tương phản cho màn chiếu lớp 70 sinh viên | 2026-11-07 | [sessions/2026-11-07_1235_minigame_chu-lon-may-chieu.md](sessions/2026-11-07_1235_minigame_chu-lon-may-chieu.md) |
 | infra/git | Codex cấu hình loại source-recap và video, dựng lại commit cục bộ để gửi MLN tới origin/master | 2026-11-07 | [sessions/2026-11-07_git_day-mln-khong-video.md](sessions/2026-11-07_git_day-mln-khong-video.md) |
 | content, minigame | Codex đồng bộ PPTX 15 trang, 4 biểu đồ, nhạc nhúng, 8 câu hỏi và lịch nghe nhìn, đối chiếu giáo trình | 2026-11-07 | [sessions/2026-11-07_1111_content_pptx-minigame-nghe-nhin.md](sessions/2026-11-07_1111_content_pptx-minigame-nghe-nhin.md) |
 | content | Codex biên tập 15 slide chủ đề 11 theo góp ý giảng viên, thêm dẫn chứng có nguồn, ví dụ thủ tục, lời nối minigame và 4 biểu đồ | 2026-11-07 | [sessions/2026-11-07_1045_content_slide-chu-de-11-dan-chung.md](sessions/2026-11-07_1045_content_slide-chu-de-11-dan-chung.md) |

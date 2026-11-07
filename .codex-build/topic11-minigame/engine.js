@@ -10,17 +10,17 @@
     if (className) result.className = className;
     return result;
   };
-  const TEAM_COUNT = 9;
-  const blankState = () => ({version:1,teams:Array.from({length:TEAM_COUNT},(_,index)=>`Đội ${index+1}`),currentTeam:0,records:{},sound:false});
+  const TEAM_NAMES = ['Nhóm 1','Nhóm 2','Nhóm 3','Nhóm 4','Nhóm 5','Nhóm 6','Nhóm 7','Nhóm 9'];
+  const TEAM_COUNT = TEAM_NAMES.length;
+  const blankState = () => ({version:1,rosterVersion:2,teams:[...TEAM_NAMES],currentTeam:0,records:{},sound:false});
   let storageAvailable = true;
   function load() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORE) || 'null');
-      if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.teams) || parsed.teams.length < 2 || parsed.teams.length > TEAM_COUNT) return blankState();
-      parsed.teams = parsed.teams.map((name,i) => String(name || `Đội ${i+1}`).slice(0,30));
-      if (parsed.teams.length < 8) {
-        while (parsed.teams.length < TEAM_COUNT) parsed.teams.push(`Đội ${parsed.teams.length+1}`);
-      }
+      if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.teams) || parsed.teams.length < 2 || parsed.teams.length > 9) return blankState();
+      const migrateNineTeams=parsed.rosterVersion!==2&&parsed.teams.length===9;
+      parsed.teams=[...TEAM_NAMES];parsed.rosterVersion=2;
+      if(migrateNineTeams)parsed.currentTeam=parsed.currentTeam===8?7:parsed.currentTeam===7?0:parsed.currentTeam;
       if (!Number.isInteger(parsed.currentTeam) || parsed.currentTeam < 0 || parsed.currentTeam >= parsed.teams.length) parsed.currentTeam = 0;
       const records = {};
       for (const question of QUESTIONS) {
@@ -31,8 +31,14 @@
         if(!saved.result&&record.revision!==(question.revision||1)){
           record.draft={};record.attempts=0;record.revision=question.revision||1;
         }
-        if (Number.isInteger(saved.team) && saved.team >= 0 && saved.team < parsed.teams.length) record.team = saved.team;
-        if (saved.result && ['correct','revealed'].includes(saved.result.status) && [0,5,7,10].includes(saved.result.points) && record.team !== undefined) record.result = saved.result;
+        if(saved.retiredTeam)record.retiredTeam=String(saved.retiredTeam).slice(0,40);
+        if(migrateNineTeams&&saved.team===7){
+          if(saved.result)record.retiredTeam='Nhóm 8 (ván trước)';
+          else {record.attempts=0;record.draft={};}
+        }else if(Number.isInteger(saved.team)&&saved.team>=0&&saved.team<(migrateNineTeams?9:TEAM_COUNT)){
+          record.team=migrateNineTeams&&saved.team===8?7:saved.team;
+        }
+        if (saved.result && ['correct','revealed'].includes(saved.result.status) && [0,5,7,10].includes(saved.result.points) && (record.team !== undefined||record.retiredTeam)) record.result = saved.result;
         records[question.id] = record;
       }
       return {...blankState(),...parsed,records};
@@ -45,7 +51,6 @@
   let memoryTimer = null;
   let memoryFlips = [];
   let audioContext;
-  let settingsNames=[];
   let animateBoardEntrance=true;
   let completedProvince=null;
   const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -66,7 +71,7 @@
     if(motionPreference.matches)return;
     dialog.querySelector('.celebration')?.remove();
     const layer=node('div',undefined,'celebration');layer.setAttribute('aria-hidden','true');
-    const colors=['#ddbb7d','#8b2937','#e65f73','#397d64','#327aaf','#e5a932'];
+    const colors=['#2454d7','#15998b','#f5b747','#e77d48','#7650c8','#35a6d5'];
     const count=window.innerWidth<600?42:80;
     for(let index=0;index<count;index++){
       const piece=node('i',undefined,'confetti');
@@ -114,32 +119,32 @@
   }
   function renderScoreboard() {
     const table=scores();
-    $('score-tab').textContent=`Bảng điểm ${state.teams.length} đội`;
-    $('score-title').textContent=`Bảng điểm ${state.teams.length} đội`;
-    $('standings').setAttribute('aria-label',`Điểm và thứ hạng ${state.teams.length} đội`);
+    $('score-tab').textContent=`Bảng điểm ${state.teams.length} nhóm`;
+    $('score-title').textContent=`Bảng điểm ${state.teams.length} nhóm`;
+    $('standings').setAttribute('aria-label',`Điểm và thứ hạng ${state.teams.length} nhóm`);
     const standings=$('standings');standings.replaceChildren();
     [...table].sort((a,b)=>b.points-a.points||a.index-b.index).forEach(team=>{
       const rank=table.filter(other=>other.points>team.points).length+1;
       const card=node('article',undefined,'standing'+(team.index===state.currentTeam?' active':''));
       card.dataset.teamIndex=team.index;
       card.append(node('span',`Hạng ${rank}`,'rank'),node('h3',team.name),node('strong',String(team.points),'points'),node('span',`${team.correct} câu đúng`,'record-count'));
-      const selectTeam=node('button',team.index===state.currentTeam?'Đội đang trả lời':'Chọn đội trả lời');
+      const selectTeam=node('button',team.index===state.currentTeam?'Nhóm đang trả lời':'Chọn nhóm trả lời');
       selectTeam.dataset.selectTeam=team.index;
       selectTeam.setAttribute('aria-label',`Chọn ${team.name} trả lời`);
       selectTeam.onclick=()=>{state.currentTeam=team.index;save();renderBoard();setTab('game');};
       card.append(selectTeam);standings.append(card);
     });
     const history=$('score-history');history.replaceChildren();
-    let total=0;let count=0;
+    let total=0;let count=0;let retiredCount=0;
     for(const question of QUESTIONS) {
       const record=state.records[question.id];
       if(!record?.result)continue;
       const row=node('tr');
-      row.append(node('td',question.name),node('td',state.teams[record.team]),node('td',record.result.status==='correct'?'Trả lời đúng':'Đã mở lời giải'),node('td',String(record.result.points)));
-      history.append(row);total+=record.result.points;count++;
+      row.append(node('td',question.name),node('td',record.retiredTeam||state.teams[record.team]),node('td',record.result.status==='correct'?'Trả lời đúng':'Đã mở lời giải'),node('td',String(record.result.points)));
+      history.append(row);if(record.retiredTeam)retiredCount++;else total+=record.result.points;count++;
     }
     if(!count){const row=node('tr');const cell=node('td','Điểm sẽ xuất hiện sau khi hoàn thành câu hỏi đầu tiên.');cell.colSpan=4;row.append(cell);history.append(row);}
-    $('score-summary').textContent=`${count} câu đã hoàn thành, tổng ${total} điểm. Mỗi câu chỉ ghi điểm một lần.`;
+    $('score-summary').textContent=`${count} câu đã hoàn thành, tổng ${total} điểm của 8 nhóm.${retiredCount?` Có ${retiredCount} câu của nhóm cũ được lưu trong lịch sử.`:''} Mỗi câu chỉ ghi điểm một lần.`;
   }
   function tone(correct) {
     if (!state.sound) return;
@@ -160,7 +165,9 @@
   let inspectedProvince=null;
   let mapZoom=1;
   function inspectProvince(question) {
+    const changed=inspectedProvince!==question.id;
     inspectedProvince=question.id;
+    document.querySelector('.map-info').dataset.region=question.region;
     const result=state.records[question.id]?.result;
     document.querySelectorAll('#board .province').forEach(region=>region.classList.toggle('is-selected',region.dataset.province===question.id));
     $('map-number').textContent=String(QUESTIONS.indexOf(question)+1).padStart(2,'0');
@@ -170,6 +177,7 @@
     $('map-open').disabled=!!result;
     $('map-open').textContent=result?'Địa phương đã khóa':'Mở câu hỏi';
     $('map-select').value=question.id;
+    if(changed)animateElement($('map-name'),[{opacity:.3,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'cubic-bezier(.16,1,.3,1)'});
   }
   $('map-select').onchange=event=>{
     const question=QUESTIONS.find(q=>q.id===event.target.value);
@@ -203,8 +211,8 @@
     state.teams.forEach((name,index)=>{const option=node('option',name);option.value=index;select.append(option);});
     select.value=state.currentTeam;
     select.onchange=()=>{state.currentTeam=Number(select.value);save();renderBoard();};
-    label.append(node('span','Chọn đội trả lời trước khi mở địa phương'),select,node('strong',`${scores()[state.currentTeam].points} điểm`,'current-points'));
-    const viewScores=node('button',`Xem bảng điểm ${state.teams.length} đội`);viewScores.onclick=()=>setTab('score',true);
+    label.append(node('span','Chọn nhóm trả lời trước khi mở địa phương'),select,node('strong',`${scores()[state.currentTeam].points} điểm`,'current-points'));
+    const viewScores=node('button',`Xem bảng điểm ${state.teams.length} nhóm`);viewScores.onclick=()=>setTab('score',true);
     scoreArea.append(label,viewScores);
     const search = normalize($('search').value);
     const region = $('region').value;
@@ -257,6 +265,7 @@
     if(selected)inspectProvince(selected);
     else {
       inspectedProvince=null;
+      delete document.querySelector('.map-info').dataset.region;
       $('map-number').textContent='34';$('map-name').textContent='Di chuột trên bản đồ';
       $('map-type').textContent='Mỗi tỉnh, thành là một thử thách riêng.';
       $('map-state').textContent='Rê chuột để xem · Bấm để chơi';$('map-open').disabled=true;
@@ -572,26 +581,19 @@
   $('sound-toggle').onclick=()=>{state.sound=!state.sound;save();renderBoard();if(state.sound)tone(true);};
   $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('notice').textContent='Bạn có thể dùng phím F11 để mở chế độ toàn màn hình.';}};
   function teamInputs() {
-    const count=Number($('team-count').value);
-    [...$('team-inputs').querySelectorAll('input')].forEach((input,index)=>{settingsNames[index]=input.value;});
+    const count=TEAM_COUNT;
     $('team-inputs').replaceChildren();
     for(let i=0;i<count;i++){
-      const label=node('label',undefined,'field');label.append(node('span',`Tên đội ${i+1}`));const field=node('input');field.maxLength=30;field.required=true;field.value=settingsNames[i]??`Đội ${i+1}`;label.append(field);$('team-inputs').append(label);
+      const label=node('label',undefined,'field');label.append(node('span',`Nhóm thi thứ ${i+1}`));const field=node('input');field.readOnly=true;field.value=TEAM_NAMES[i];label.append(field);$('team-inputs').append(label);
     }
   }
-  $('settings-open').onclick=()=>{settingsNames=[...state.teams];$('team-count').value=state.teams.length;$('team-inputs').replaceChildren();teamInputs();$('settings-message').textContent='';showDialog('settings-dialog');};
+  $('settings-open').onclick=()=>{$('team-count').value=TEAM_COUNT;$('team-inputs').replaceChildren();teamInputs();$('settings-message').textContent='';showDialog('settings-dialog');};
   $('team-count').onchange=teamInputs;
   $('score-team-settings').onclick=()=>$('settings-open').click();
   $('settings-close').onclick=()=>$('settings-dialog').close();
   $('settings-form').onsubmit=event=>{
-    event.preventDefault();const names=[...$('team-inputs').querySelectorAll('input')].map(i=>i.value.trim());
-    if(names.some(name=>!name)){$('settings-message').textContent='Hãy nhập tên cho mỗi đội.';return;}
-    if(![8,9].includes(names.length))return;
-    if(Object.values(state.records).some(record=>record.team>=names.length)){
-      $('settings-message').textContent='Đội 9 đã có lượt chơi. Để chuyển sang 8 đội, hãy bấm Chơi lại từ đầu rồi chọn lại số đội.';
-      return;
-    }
-    state.teams=names;state.currentTeam%=names.length;save();renderBoard();$('settings-dialog').close();
+    event.preventDefault();
+    state.teams=[...TEAM_NAMES];state.currentTeam%=TEAM_COUNT;save();renderBoard();$('settings-dialog').close();
   };
   $('reset-open').onclick=()=>showDialog('reset-dialog');$('reset-cancel').onclick=()=>$('reset-dialog').close();
   $('reset-confirm').onclick=()=>{const teams=state.teams;const sound=state.sound;state={...blankState(),teams,sound};animateBoardEntrance=true;completedProvince=null;save();$('reset-dialog').close();$('settings-dialog').close();renderBoard();$('notice').textContent='Ván mới đã sẵn sàng.';};

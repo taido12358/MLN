@@ -2,7 +2,9 @@
 
 ## Mở và tổ chức chơi
 
-Mở index.html bằng Chrome hoặc Edge. Người điều khiển dùng một máy để chiếu lên màn hình lớp. Bấm “Đội & luật chơi”, chọn tổng cộng 8 hoặc 9 đội thi và đặt tên từng đội. Sau đó chọn đội đang trả lời bằng ô chọn phía trên bảng địa phương.
+Mở index.html bằng Chrome hoặc Edge. Người điều khiển dùng một máy để chiếu lên màn hình lớp. Trò chơi có đúng tám nhóm theo thứ tự Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 4, Nhóm 5, Nhóm 6, Nhóm 7 và Nhóm 9. Chọn nhóm đang trả lời bằng ô chọn phía trên bản đồ. Nút “Nhóm & luật chơi” hiển thị danh sách và luật tính điểm.
+
+Giao diện mặc định ưu tiên màn chiếu cho lớp khoảng 70 sinh viên. Trên máy tính, chữ câu hỏi khoảng 30–44px, đáp án khoảng 26–36px, tên địa phương và bảng điểm được phóng lớn theo màn hình. Bấm “Toàn màn hình” để tận dụng diện tích máy chiếu. Với câu dài, cuộn vùng đáp án trong khi câu hỏi và hàng nút điều khiển luôn hiển thị. Khi hoàn thành, vùng đáp án chuyển sang phần lời giải để cả lớp theo dõi. Bảng điểm dành phần lớn diện tích cho tám nhóm.
 
 Rê chuột lên bản đồ để làm sáng tỉnh, thành và xem tên cùng dạng câu đố. Bấm trực tiếp vào địa phương để mở câu hỏi. Trên điện thoại, chạm để mở. Dùng các nút +, − để phóng to, thanh cuộn để di chuyển bản đồ và “Toàn cảnh” để thu lại. Tab đến từng địa phương rồi Enter hoặc phím cách cũng mở được câu hỏi. Các số trên bản đồ tương ứng thứ tự trong danh sách 34 thử thách bên dưới. Hoàng Sa và Trường Sa được hiển thị trong khung phụ có ghi tên.
 
@@ -10,15 +12,15 @@ Dùng ô tìm kiếm và bộ lọc để làm nổi các địa phương phù h
 
 Mỗi địa phương chỉ tính điểm một lần. Đúng ở lần kiểm tra đầu được 10 điểm, lần hai được 7 điểm, từ lần ba được 5 điểm. Xem lời giải được 0 điểm. Các câu trả lời thiếu dữ liệu sẽ được nhắc bổ sung. Sau một lượt hoàn thành, đội tiếp theo nhận lượt mặc định.
 
-Giao diện có nền ánh sáng chuyển động, chữ chuyển sắc và bản đồ xuất hiện theo nhịp. Rê chuột để làm sáng đường viền địa phương, bấm nút để hiện sóng lan. Câu hỏi bật mở, trả lời đúng có pháo giấy và điểm thưởng bay lên, tab bảng điểm xuất hiện theo nhịp. Màn kết có hiệu ứng chúc mừng.
+Giao diện dùng nền trắng và các màu nhấn xanh dương, xanh ngọc, cam. Rê chuột để làm sáng đường viền địa phương và hiện tên tỉnh theo nhịp, bấm nút để hiện sóng lan. Bảng điểm có màu riêng cho từng nhóm, tám nhóm xếp thành hai hàng trên máy tính. Câu hỏi bật mở, đáp án được chọn đổi sang xanh dương, trả lời đúng có pháo giấy nhiều màu và điểm thưởng bay lên. Màn kết có hiệu ứng chúc mừng. Các hiệu ứng tuân theo cài đặt giảm chuyển động của thiết bị.
 
 Khi hoàn thành và trở về bản đồ, vùng tương ứng chuyển mờ, xám và bị khóa. Trạng thái khóa được giữ sau khi tải lại trang. Xem kết quả trong tab bảng điểm. Bắt đầu ván mới để mở lại các địa phương. Trò chơi hỗ trợ thiết lập giảm chuyển động của thiết bị.
 
-Khi đóng một câu chưa xong, trò chơi giữ bản nháp và đội đã mở câu. Có thể đổi tên đội trong ván. Khi mở ván đã lưu từ bản 2–4 đội, trò chơi bổ sung các đội còn lại thành chín đội và giữ điểm, câu đã hoàn thành cùng bản nháp cũ. Có thể tăng từ 8 lên 9 đội trong ván. Nếu đội 9 đã có lượt chơi, cần bắt đầu ván mới trước khi giảm xuống 8 đội. Tiến độ lưu trên cùng trình duyệt và máy đang dùng. Có xác nhận trước khi xóa điểm để chơi lại.
+Khi đóng một câu chưa xong, trò chơi giữ bản nháp và nhóm đã mở câu. Với ván cũ có chín đội, dữ liệu nhóm 1–7 và nhóm 9 được chuyển đúng về danh sách tám nhóm. Kết quả đã hoàn thành của nhóm 8 cũ được giữ trong lịch sử, câu tương ứng vẫn khóa và điểm đó được tách khỏi tổng điểm tám nhóm hiện tại. Với ván cũ có tám đội, vị trí cuối được đổi tên thành Nhóm 9. Tiến độ lưu trên cùng trình duyệt và máy đang dùng. Có xác nhận trước khi xóa điểm để chơi lại.
 
-## Tab bảng điểm đội thi
+## Tab bảng điểm nhóm thi
 
-Bấm tab “Bảng điểm 8 đội” hoặc “Bảng điểm 9 đội”, theo số đội đã chọn, để xem điểm tổng, số câu đúng và thứ hạng. Các đội bằng điểm có cùng thứ hạng. Bảng chi tiết liệt kê đội trả lời và điểm của từng câu đã hoàn thành. Chọn đội trên tab này để trở về phần trò chơi và giao lượt cho đội đó. Điểm tự cập nhật khi trả lời đúng theo quy tắc 10, 7 hoặc 5 điểm.
+Bấm tab “Bảng điểm 8 nhóm” để xem điểm tổng, số câu đúng và thứ hạng. Các nhóm bằng điểm có cùng thứ hạng. Bảng chi tiết liệt kê nhóm trả lời và điểm của từng câu đã hoàn thành. Chọn nhóm trên tab này để trở về trò chơi và giao lượt cho nhóm đó. Điểm tự cập nhật khi trả lời đúng theo quy tắc 10, 7 hoặc 5 điểm. Sau Nhóm 9, lượt mặc định quay về Nhóm 1.
 
 ## Hai phần của buổi trình bày
 
