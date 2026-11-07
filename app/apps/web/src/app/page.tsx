@@ -7,6 +7,7 @@ import { getSocket } from "@/lib/socket";
 import { readStoredIdentity, writeStoredIdentity } from "@/lib/storage";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { LiXiEnvelope } from "@/components/LiXiEnvelope";
 import { PARTICIPANT_JOIN, type ParticipantJoinAck } from "@mln/shared";
 
 const ROOM_CODE_LENGTH = 6;
@@ -58,14 +59,14 @@ export default function JoinPage() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 180 }}
-          className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-accent to-accent2 text-4xl shadow-glow"
+          className="mx-auto mb-10 flex justify-center pt-4"
         >
-          🎓
+          <LiXiEnvelope symbol="?" />
         </motion.div>
         <h1 className="text-2xl font-extrabold leading-tight">
-          Lớp học <span className="text-accent2">Lý luận chính trị</span>
+          Lớp học <span className="text-accent">Lý luận chính trị</span>
         </h1>
-        <p className="mt-2 text-sm text-white/60">
+        <p className="mt-2 text-sm text-muted">
           Tham gia buổi học tương tác — trả lời trắc nghiệm, thảo luận, leo hạng cùng cả lớp.
         </p>
 
@@ -101,7 +102,7 @@ export default function JoinPage() {
           </form>
         </fieldset>
 
-        <a href="/host" className="mt-8 inline-block text-sm text-white/40 underline-offset-4 hover:text-white/70 hover:underline">
+        <a href="/host" className="mt-8 inline-block text-sm text-muted/80 underline-offset-4 hover:text-muted hover:underline">
           Giáo viên đăng nhập →
         </a>
       </motion.div>

@@ -37,7 +37,7 @@ export default function HostLoginPage() {
         onSubmit={handleLogin}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-xs space-y-4 rounded-2xl bg-panel p-6 shadow-glow"
+        className="w-full max-w-xs space-y-4 rounded-2xl border border-accent2/40 bg-panel p-6 shadow-card"
       >
         <h1 className="text-center text-xl font-extrabold">👩‍🏫 Giáo viên đăng nhập</h1>
         <Input
@@ -50,7 +50,7 @@ export default function HostLoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="tap-target flex items-center justify-center rounded-lg p-2 text-white/50 hover:text-white"
+              className="tap-target flex items-center justify-center rounded-lg p-2 text-muted hover:text-ink"
               aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -61,7 +61,7 @@ export default function HostLoginPage() {
         <Button type="submit" loading={loading} className="w-full">
           {loading ? "Đang đăng nhập…" : "Đăng nhập"}
         </Button>
-        <a href="/" className="block text-center text-xs text-white/40 hover:text-white/70">
+        <a href="/" className="block text-center text-xs text-muted/80 hover:text-muted">
           ← Về trang sinh viên
         </a>
       </motion.form>

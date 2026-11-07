@@ -4,9 +4,9 @@ import clsx from "clsx";
 export function ProgressBar({ percent, className, barClassName }: { percent: number; className?: string; barClassName?: string }) {
   const clamped = Math.max(0, Math.min(100, percent));
   return (
-    <div className={clsx("h-2 w-full overflow-hidden rounded-full bg-white/10", className)}>
+    <div className={clsx("h-2 w-full overflow-hidden rounded-full bg-ink/10", className)}>
       <div
-        className={clsx("h-full rounded-full bg-gradient-to-r from-accent to-accent2 transition-[width]", barClassName)}
+        className={clsx("h-full rounded-full bg-gradient-to-r from-accent via-[#ef6c3b] to-gold transition-[width]", barClassName)}
         style={{ width: `${clamped}%` }}
       />
     </div>

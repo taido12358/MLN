@@ -25,10 +25,10 @@ export function QuizOptionTile({
   onClick?: () => void;
 }) {
   const classes = clsx(
-    "flex flex-col items-center justify-center gap-2 rounded-2xl text-center font-bold text-white shadow-lg transition",
+    "flex flex-col items-center justify-center gap-2 rounded-2xl text-center font-bold text-white shadow-lg transition hover:brightness-110",
     OPTION_STYLES[index],
     size === "lg" ? "p-6 text-xl" : "min-h-[110px] p-3 text-sm",
-    selected && "ring-4 ring-white",
+    selected && "ring-4 ring-gold",
     disabled && !selected && "opacity-50"
   );
 

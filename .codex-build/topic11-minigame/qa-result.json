@@ -1,0 +1,12 @@
+{
+  "provinces": 34,
+  "formats": 34,
+  "correctFlows": 34,
+  "totalScore": 340,
+  "persistence": true,
+  "preventDoubleScore": true,
+  "mobileNoOverflow": true,
+  "fileProtocol": true,
+  "retryScore": 7,
+  "pageErrors": []
+}

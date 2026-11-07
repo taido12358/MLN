@@ -1,0 +1,18 @@
+{
+  "teams": 9,
+  "scoreRules": [
+    10,
+    7,
+    5
+  ],
+  "scoreTotal": 22,
+  "tabSwitch": true,
+  "keyboardTabs": true,
+  "persistence": true,
+  "migration": true,
+  "legacyDraft": true,
+  "reset": true,
+  "noDuplicateScore": true,
+  "mobileNoOverflow": true,
+  "errors": []
+}

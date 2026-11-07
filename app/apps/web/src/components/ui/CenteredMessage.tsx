@@ -24,9 +24,16 @@ export function CenteredMessage({
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-        <div className={clsx("inline-block rounded-full text-5xl", pulse && "pulse-ring")}>{emoji}</div>
-        <h1 className="mt-4 text-xl font-extrabold">{title}</h1>
-        {subtitle && <p className="mx-auto mt-2 max-w-sm text-sm text-white/60">{subtitle}</p>}
+        <div
+          className={clsx(
+            "inline-flex h-24 w-24 items-center justify-center rounded-full border-2 border-gold bg-panel text-5xl shadow-card",
+            pulse && "pulse-ring animate-float-y"
+          )}
+        >
+          {emoji}
+        </div>
+        <h1 className="mt-5 text-xl font-extrabold text-ink">{title}</h1>
+        {subtitle && <p className="mx-auto mt-2 max-w-sm text-sm text-muted">{subtitle}</p>}
         {children && <div className="mt-6 flex flex-wrap items-center justify-center gap-3">{children}</div>}
       </motion.div>
     </main>

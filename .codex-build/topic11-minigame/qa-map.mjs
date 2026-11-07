@@ -1,0 +1,38 @@
+import {createRequire} from 'node:module';
+import fs from 'node:fs/promises';
+const require=createRequire('C:/Users/ADMIN/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/package.json');
+const {chromium}=require('playwright');
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1500,height:1050},reducedMotion:'reduce'});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+const url='file:///C:/Users/ADMIN/Downloads/MLN/Presents/11-doi-moi-kinh-te-chinh-tri-tinh-gon-bo-may/minigame/index.html';
+const assert=(value,message)=>{if(!value)throw Error(message);};
+await page.goto(url);await page.evaluate(()=>localStorage.clear());await page.reload();
+const regions=await page.evaluate(()=>MAP_REGIONS.map(region=>({id:region.id,x:region.x,y:region.y})));
+for(const region of regions){
+ await page.locator('#vietnam-map').scrollIntoViewIfNeeded();
+ const point=await page.evaluate(r=>{const p=new DOMPoint(r.x,r.y).matrixTransform(document.querySelector('#vietnam-map').getScreenCTM());return {x:p.x,y:p.y};},region);
+ await page.mouse.move(point.x,point.y);
+ assert(await page.locator('#map-select').inputValue()===region.id,'Hover '+region.id);
+ await page.mouse.click(point.x,point.y);
+ assert(await page.locator('#question-dialog').evaluate(el=>el.open),'Click '+region.id);
+ await page.locator('#question-close').click();
+}
+await page.locator('[data-province="ha-noi"]').focus();await page.keyboard.press('Enter');
+await page.locator('[data-answer-key="choice"][data-answer-index="1"]').click();await page.locator('#check').click();await page.locator('#round-done').click();
+assert(await page.locator('[data-province="ha-noi"]').getAttribute('aria-disabled')==='true','Completed lock');
+assert(await page.locator('[data-team-index="0"] .points').textContent()==='10','Points preserved');
+await page.locator('[data-province="ha-noi"]').focus();await page.keyboard.press('Enter');
+assert(!await page.locator('#question-dialog').evaluate(el=>el.open),'Cannot reopen');
+await page.reload();assert(await page.locator('[data-province="ha-noi"]').getAttribute('aria-disabled')==='true','Persistent lock');
+await page.locator('#search').fill('Bac Ninh');assert(await page.locator('.province:not(.is-filtered)').count()===1,'Search filtering');
+await page.locator('#map-select').selectOption('bac-ninh');await page.locator('#map-open').click();assert((await page.locator('#question-title').textContent()).includes('Bắc Ninh'),'Quick picker');await page.locator('#question-close').click();await page.locator('#search').fill('');
+await page.locator('#map-zoom-in').click();assert(await page.locator('#map-zoom-level').textContent()==='150%','Zoom');
+assert(await page.locator('#map-viewport').evaluate(el=>el.scrollHeight>el.clientHeight),'Zoom scroll');await page.locator('#map-reset').click();
+await page.locator('#game-panel').scrollIntoViewIfNeeded();await page.screenshot({path:'.codex-build/topic11-minigame/map-desktop.png',fullPage:true});
+await page.setViewportSize({width:390,height:844});await page.locator('#map-reset').click();
+assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Mobile overflow');
+await page.screenshot({path:'.codex-build/topic11-minigame/map-mobile.png',fullPage:true});
+assert(errors.length===0,errors.join('\n'));
+console.log('PASS: real pointer hover and click on all 34 province interiors, keyboard, points, lock, reload, search, quick picker, zoom and mobile.');
+await browser.close();

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import confetti from "canvas-confetti";
+import { tetConfetti } from "@/lib/confetti";
 import { getSocket } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
 import { LeaderboardList } from "@/components/LeaderboardList";
@@ -52,7 +52,7 @@ export default function StandaloneLeaderboardPage({ params }: { params: { roomCo
   useEffect(() => {
     if (store.ended && !fired.current) {
       fired.current = true;
-      confetti({ particleCount: 220, spread: 130, origin: { y: 0.4 } });
+      tetConfetti({ particleCount: 220, spread: 130, origin: { y: 0.4 } });
     }
   }, [store.ended]);
 
@@ -70,12 +70,12 @@ export default function StandaloneLeaderboardPage({ params }: { params: { roomCo
       )}
 
       <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-        <span className="block text-lg font-bold text-white/60">🏆 Bảng xếp hạng</span>
-        <span className="mt-1 block text-5xl font-black tracking-widest text-accent2">{roomCode}</span>
+        <span className="block text-lg font-bold text-muted">🏆 Bảng xếp hạng</span>
+        <span className="mt-1 block text-5xl font-black tracking-widest text-gold-shine">{roomCode}</span>
       </motion.h1>
 
       <div className="mt-10 w-full max-w-2xl">
-        {rows.length === 0 && <p className="text-center text-white/40">Chưa có dữ liệu — chờ giáo viên mở bảng xếp hạng.</p>}
+        {rows.length === 0 && <p className="text-center text-muted/80">Chưa có dữ liệu — chờ giáo viên mở bảng xếp hạng.</p>}
         <LeaderboardList rows={rows} size="lg" staggered badgesByParticipant={store.ended?.badgesByParticipant} />
       </div>
     </main>

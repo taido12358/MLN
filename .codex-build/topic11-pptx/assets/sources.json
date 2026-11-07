@@ -1,0 +1,22 @@
+[
+  {
+    "id": "V1",
+    "error": "HTTP Error 400: Bad Request"
+  },
+  {
+    "id": "V2",
+    "error": "HTTP Error 400: Bad Request"
+  },
+  {
+    "id": "V3",
+    "error": "HTTP Error 400: Bad Request"
+  },
+  {
+    "id": "V4",
+    "error": "HTTP Error 400: Bad Request"
+  },
+  {
+    "id": "M1",
+    "error": "HTTP Error 406: Not Acceptable"
+  }
+]

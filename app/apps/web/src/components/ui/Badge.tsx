@@ -4,11 +4,11 @@ import clsx from "clsx";
 type Tone = "neutral" | "accent" | "success" | "warning" | "danger";
 
 const TONE_CLASSES: Record<Tone, string> = {
-  neutral: "bg-white/10 text-white/70",
-  accent: "bg-accent2/15 text-accent2",
-  success: "bg-correct/15 text-correct",
-  warning: "bg-amber-400/15 text-amber-300",
-  danger: "bg-wrong/15 text-wrong",
+  neutral: "bg-ink/10 text-muted",
+  accent: "bg-accent/10 text-accent",
+  success: "bg-correct/10 text-correct",
+  warning: "bg-accent2/20 text-gold-deep",
+  danger: "bg-wrong/10 text-wrong",
 };
 
 /** Small status pill — used for AI/manual source, difficulty, draft/published, and any other

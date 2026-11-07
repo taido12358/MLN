@@ -8,7 +8,7 @@ import { CenteredMessage } from "@/components/ui/CenteredMessage";
 export default function NotFound() {
   return (
     <CenteredMessage emoji="🧭" title="Không tìm thấy trang" subtitle="Đường dẫn này không tồn tại — kiểm tra lại link hoặc quay về trang chủ.">
-      <a href="/" className="tap-target flex items-center rounded-2xl bg-gradient-to-r from-accent to-accent2 px-5 py-3 font-bold text-ink">
+      <a href="/" className="tap-target flex items-center rounded-2xl btn-shine bg-red-envelope ring-1 ring-inset ring-gold/60 shadow-glow px-5 py-3 font-bold text-gold">
         Về trang chủ
       </a>
     </CenteredMessage>

@@ -1,0 +1,21 @@
+CÂY TÀI LỘC – THỰC TIỄN VÀ CHÂN LÝ
+
+MỞ TRÒ CHƠI
+Nhấp đúp vào index.html để mở bằng Microsoft Edge, Google Chrome hoặc Firefox phiên bản mới. Trò chơi không cần mạng, đăng nhập, cài đặt hay máy chủ. Toàn bộ mã nguồn, đồ họa và âm thanh nằm trong một tệp này.
+
+TRÌNH CHIẾU
+Trên Windows, nhấn F11 (hoặc Fn + F11) để bật/tắt chế độ toàn màn hình. Bố cục ưu tiên 1920 × 1080. Có thể chơi trên điện thoại và máy tính bảng; cuộn trong hộp câu hỏi nếu màn hình nhỏ.
+
+CÁCH CHƠI
+Chọn một trong 15 bao lì xì. Chọn đáp án, rồi nhấn Chốt đáp án trong 25 giây. Câu chọn nhiều phải chọn đủ và không chọn thừa. Mỗi câu đúng được 10 điểm; câu đúng thứ ba liên tiếp và những câu đúng tiếp theo được thêm 5 điểm. Sai hoặc hết giờ sẽ đưa chuỗi về 0. Điểm tối đa: 215.
+Xem lời giải rồi nhấn Tiếp tục hái lộc. Chơi lại sẽ xóa kết quả và xáo trộn câu hỏi. Tải lại trang cũng bắt đầu lượt mới; trò chơi không lưu kết quả.
+Nút Âm thanh bật/tắt toàn bộ âm thanh. Âm thanh chỉ được tạo sau tương tác đầu tiên.
+Bàn phím: Tab / Shift+Tab chuyển nút, Enter hoặc Space chọn nút. Hộp câu hỏi không thể đóng bằng Escape hoặc nhấp ra ngoài.
+
+CHỈNH SỬA CÂU HỎI
+Mở index.html bằng trình soạn thảo văn bản (ví dụ Notepad). Tìm const QUESTIONS hoặc chú thích CHỈNH SỬA CÂU HỎI TẠI ĐÂY.
+Mỗi mục có id, question (câu hỏi), options (đúng 4 lựa chọn), correct (mảng chỉ số đáp án đúng), explanation (giải thích).
+Chỉ số: A = 0, B = 1, C = 2, D = 3. Ví dụ correct: [1] là B; correct: [0, 1, 2] là A, B, C. Nhãn chọn một/chọn nhiều được xác định tự động từ correct. Giữ đúng 15 câu. Lưu tệp bằng UTF-8 rồi tải lại trang.
+
+TỰ KIỂM TRA
+Đã kiểm tra tự động bằng trình duyệt Edge: chọn một, chọn nhiều và bỏ chọn, đúng/sai, thưởng từ câu thứ ba, hết giờ, khóa câu đã trả lời, điểm và tiến độ, hoàn thành cả 15 câu, kết quả, chơi lại/xáo trộn, nút âm thanh và chặn Escape. Đã kiểm tra bố cục 1920 × 1080 và 390 × 844, không tràn ngang. Kiểm tra âm thanh bằng trạng thái điều khiển/API; cần nghe thử trên loa của máy trình chiếu để chọn âm lượng phù hợp.

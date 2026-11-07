@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
+import { tetConfetti } from "@/lib/confetti";
 import { getSocket } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
 import { badgeInfo } from "@/lib/badges";
@@ -83,7 +83,7 @@ export default function PlayPage({ params }: { params: { roomCode: string } }) {
   if (joinError) {
     return (
       <CenteredMessage emoji="😕" title="Không vào được phòng" subtitle={joinError}>
-        <a href="/" className="tap-target flex items-center rounded-2xl bg-gradient-to-r from-accent to-accent2 px-5 py-3 font-bold text-ink">
+        <a href="/" className="tap-target flex items-center rounded-2xl btn-shine bg-red-envelope ring-1 ring-inset ring-gold/60 shadow-glow px-5 py-3 font-bold text-gold">
           Quay lại
         </a>
       </CenteredMessage>
@@ -130,7 +130,7 @@ function RoomView({ roomCode }: { roomCode: string }) {
 
 function PeopleBadge({ count }: { count: number }) {
   if (!count) return null;
-  return <p className="mt-4 text-sm text-white/50">{count} người đang tham gia</p>;
+  return <p className="mt-4 text-sm text-muted">{count} người đang tham gia</p>;
 }
 
 function QuizQuestionView({ roomCode }: { roomCode: string }) {
@@ -174,9 +174,9 @@ function QuizQuestionView({ roomCode }: { roomCode: string }) {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col px-4 py-6">
-      <div className="flex items-center justify-between text-sm text-white/60">
+      <div className="flex items-center justify-between text-sm text-muted">
         <span>{answerCount ? `${answerCount.answeredCount}/${answerCount.totalParticipants} đã trả lời` : " "}</span>
-        <span className={`font-bold ${remainingSec <= 5 ? "text-wrong" : "text-white"}`}>{remainingSec}s</span>
+        <span className={`font-bold ${remainingSec <= 5 ? "text-wrong" : "text-ink"}`}>{remainingSec}s</span>
       </div>
       <ProgressBar percent={pct * 100} className="mt-2" barClassName="transition-[width] duration-100 ease-linear" />
 
@@ -204,7 +204,7 @@ function QuizQuestionView({ roomCode }: { roomCode: string }) {
       </div>
 
       {selected !== null && !myLastAnswer && (
-        <p className="mt-4 text-center text-sm text-white/50">Đã gửi đáp án — chờ giáo viên đóng câu hỏi…</p>
+        <p className="mt-4 text-center text-sm text-muted">Đã gửi đáp án — chờ giáo viên đóng câu hỏi…</p>
       )}
     </main>
   );
@@ -217,7 +217,7 @@ function QuizReviewView() {
   useEffect(() => {
     if (myLastAnswer?.correct && !fired.current) {
       fired.current = true;
-      confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+      tetConfetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
     }
   }, [myLastAnswer]);
 
@@ -233,23 +233,23 @@ function QuizReviewView() {
           <h1 className={`mt-3 text-2xl font-extrabold ${myLastAnswer.correct ? "text-correct" : "text-wrong"}`}>
             {myLastAnswer.correct ? "Chính xác!" : "Chưa đúng"}
           </h1>
-          <p className="mt-1 text-white/70">
+          <p className="mt-1 text-muted">
             +{myLastAnswer.pointsAwarded} điểm{myLastAnswer.streak > 1 ? ` · chuỗi ${myLastAnswer.streak}` : ""}
           </p>
         </motion.div>
       ) : (
-        <h1 className="text-xl font-bold text-white/70">Bạn chưa trả lời kịp câu này</h1>
+        <h1 className="text-xl font-bold text-muted">Bạn chưa trả lời kịp câu này</h1>
       )}
 
-      <p className="mt-6 text-sm font-semibold text-white/50">{questionClosed.explanation}</p>
+      <p className="mt-6 text-sm font-semibold text-muted">{questionClosed.explanation}</p>
 
       <div className="mt-6 w-full space-y-2">
         {questionClosed.optionCounts.map((c, i) => (
           <div key={i} className="flex items-center gap-2">
             <span className="w-6 text-sm">{OPTION_SHAPES[i]}</span>
-            <div className="h-6 flex-1 overflow-hidden rounded-full bg-white/10">
+            <div className="h-6 flex-1 overflow-hidden rounded-full bg-ink/10">
               <div
-                className={`h-full ${i === questionClosed.correctIndex ? "bg-correct" : "bg-white/30"}`}
+                className={`h-full ${i === questionClosed.correctIndex ? "bg-correct" : "bg-ink/20"}`}
                 style={{ width: `${(c / maxCount) * 100}%` }}
               />
             </div>
@@ -282,7 +282,7 @@ function DiscussionView({ roomCode, open }: { roomCode: string; open: boolean })
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col px-4 py-6">
       <h1 className="text-lg font-extrabold leading-snug">{discussionQuestion?.question ?? "Thảo luận"}</h1>
-      {!open && <p className="mt-1 text-sm text-white/50">Thảo luận đã đóng — chờ giáo viên tiếp tục.</p>}
+      {!open && <p className="mt-1 text-sm text-muted">Thảo luận đã đóng — chờ giáo viên tiếp tục.</p>}
 
       {open && (
         <div className="mt-4 flex gap-2">
@@ -294,7 +294,7 @@ function DiscussionView({ roomCode, open }: { roomCode: string; open: boolean })
             maxLength={DISCUSSION_MAX_LENGTH}
             className="py-3"
           />
-          <button onClick={post} className="tap-target shrink-0 rounded-2xl bg-accent px-4 py-3 font-bold text-ink">
+          <button onClick={post} className="tap-target shrink-0 btn-shine rounded-2xl bg-red-envelope px-4 py-3 font-bold text-gold ring-1 ring-inset ring-gold/60 shadow-glow">
             Gửi
           </button>
         </div>
@@ -310,24 +310,24 @@ function DiscussionView({ roomCode, open }: { roomCode: string; open: boolean })
                 key={p.postId}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-start justify-between gap-3 rounded-xl bg-panel p-3"
+                className="flex items-start justify-between gap-3 rounded-xl border border-accent2/30 bg-panel p-3 shadow-card"
               >
                 <div>
-                  <p className="text-xs font-semibold text-accent2">{p.nickname}</p>
+                  <p className="text-xs font-semibold text-accent">{p.nickname}</p>
                   <p className="text-sm">{p.content}</p>
                 </div>
                 <button
                   onClick={() => upvote(p.postId)}
                   disabled={p.participantId === participantId || upvoted.has(p.postId)}
                   aria-label={`Upvote bài của ${p.nickname}, hiện có ${p.upvotes} lượt`}
-                  className="tap-target flex shrink-0 flex-col items-center rounded-lg bg-white/5 px-3 py-1 text-sm font-bold disabled:opacity-40"
+                  className="tap-target flex shrink-0 flex-col items-center rounded-lg bg-ink/5 px-3 py-1 text-sm font-bold disabled:opacity-40"
                 >
                   ▲<span>{p.upvotes}</span>
                 </button>
               </motion.div>
             ))}
         </AnimatePresence>
-        {posts.length === 0 && <p className="text-center text-sm text-white/40">Chưa có ý kiến nào — hãy là người đầu tiên!</p>}
+        {posts.length === 0 && <p className="text-center text-sm text-muted/80">Chưa có ý kiến nào — hãy là người đầu tiên!</p>}
       </div>
     </main>
   );
@@ -352,8 +352,8 @@ function LeaderboardView({ roomCode }: { roomCode: string }) {
         <LeaderboardList rows={leaderboard} highlightParticipantId={participantId} />
       </div>
       {!inTop && mine && (
-        <div className="mt-4 rounded-xl border border-dashed border-white/20 p-3 text-center">
-          <p className="text-sm text-white/50">Vị trí của bạn</p>
+        <div className="mt-4 rounded-xl border border-dashed border-accent2/40 p-3 text-center">
+          <p className="text-sm text-muted">Vị trí của bạn</p>
           <p className="font-bold">#{mine.rank} · {mine.score} điểm</p>
         </div>
       )}
@@ -369,7 +369,7 @@ function EndedView() {
   useEffect(() => {
     if (!fired.current) {
       fired.current = true;
-      confetti({ particleCount: 160, spread: 100, origin: { y: 0.5 } });
+      tetConfetti({ particleCount: 160, spread: 100, origin: { y: 0.5 } });
     }
   }, []);
 
@@ -387,11 +387,11 @@ function EndedView() {
                 initial={{ scale: 0, rotate: -10 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring" }}
-                className="rounded-2xl bg-panel p-4"
+                className="rounded-2xl border border-gold bg-panel p-4 shadow-card"
               >
                 <div className="text-3xl">{b.emoji}</div>
                 <p className="mt-1 text-sm font-bold">{b.name}</p>
-                <p className="text-xs text-white/50">{b.desc}</p>
+                <p className="text-xs text-muted">{b.desc}</p>
               </motion.div>
             );
           })}
@@ -402,7 +402,7 @@ function EndedView() {
         <LeaderboardList rows={leaderboard.slice(0, 10)} highlightParticipantId={participantId} />
       </div>
 
-      <a href="/" className="mt-8 rounded-xl bg-white/10 px-5 py-3 font-bold">
+      <a href="/" className="mt-8 rounded-xl bg-ink/10 px-5 py-3 font-bold">
         Về trang chủ
       </a>
     </main>

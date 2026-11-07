@@ -41,3 +41,32 @@ Thumbs.db
 
 # Docker volumes / local data
 docker/volumes/
+
+# Local recap media
+/source-recap/
+
+# Video files (case-insensitive extensions)
+*.[mM][pP]4
+*.[mM][oO][vV]
+*.[mM]4[vV]
+*.[aA][vV][iI]
+*.[mM][kK][vV]
+*.[wW][eE][bB][mM]
+*.[wW][mM][vV]
+*.[fF][lL][vV]
+*.[mM][pP][eE][gG]
+*.[mM][pP][gG]
+*.[mM][pP][eE]
+*.[mM][pP][vV]
+*.3[gG][pP]
+*.3[gG]2
+*.[mM][tT][sS]
+*.[mM]2[tT][sS]
+*.[vV][oO][bB]
+*.[oO][gG][vV]
+*.[mM][xX][fF]
+*.[fF]4[vV]
+*.[aA][sS][fF]
+*.[rR][mM]
+*.[rR][mM][vV][bB]
+*.[dD][iI][vV][xX]

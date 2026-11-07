@@ -21,10 +21,10 @@ export default function ErrorBoundary({ error, reset }: { error: Error & { diges
       title="Đã có lỗi xảy ra"
       subtitle="Trang gặp sự cố ngoài dự kiến. Thử lại — nếu vẫn lỗi, quay về trang chủ và tham gia lại phòng."
     >
-      <button onClick={reset} className="tap-target rounded-2xl bg-gradient-to-r from-accent to-accent2 px-5 py-3 font-bold text-ink">
+      <button onClick={reset} className="tap-target rounded-2xl btn-shine bg-red-envelope ring-1 ring-inset ring-gold/60 shadow-glow px-5 py-3 font-bold text-gold">
         Thử lại
       </button>
-      <a href="/" className="tap-target flex items-center rounded-2xl bg-white/10 px-5 py-3 font-bold">
+      <a href="/" className="tap-target flex items-center rounded-2xl bg-ink/10 px-5 py-3 font-bold">
         Về trang chủ
       </a>
     </CenteredMessage>

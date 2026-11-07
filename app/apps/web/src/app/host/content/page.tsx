@@ -103,13 +103,13 @@ export default function ContentAdminPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-4 px-4 py-6 lg:flex-row">
       <aside className="w-full shrink-0 space-y-2 lg:w-56">
-        <h2 className="px-2 text-xs font-bold uppercase tracking-wide text-white/40">Môn học</h2>
+        <h2 className="px-2 text-xs font-bold uppercase tracking-wide text-muted/80">Môn học</h2>
         {subjects.map((s) => (
           <button
             key={s.id}
             onClick={() => openSubject(s)}
             className={`block w-full rounded-xl px-3 py-2 text-left text-sm ${
-              activeSubject?.id === s.id ? "bg-accent text-ink font-bold" : "bg-panel hover:bg-panel2"
+              activeSubject?.id === s.id ? "bg-accent text-white font-bold" : "bg-panel hover:bg-panel2"
             }`}
           >
             {s.name}
@@ -118,15 +118,15 @@ export default function ContentAdminPage() {
         ))}
 
         <Card className="space-y-2 p-3">
-          <h3 className="text-xs font-bold uppercase text-white/40">Sinh hàng loạt</h3>
-          <p className="text-[11px] text-white/50">Sinh câu hỏi AI cho mọi chủ đề/chương chưa có câu hỏi nào.</p>
+          <h3 className="text-xs font-bold uppercase text-muted/80">Sinh hàng loạt</h3>
+          <p className="text-[11px] text-muted">Sinh câu hỏi AI cho mọi chủ đề/chương chưa có câu hỏi nào.</p>
           <Button size="sm" variant="secondary" loading={batchStarting} disabled={batchActive} onClick={startBatchGenerate} className="w-full">
             ✨ Sinh câu hỏi cho nội dung chưa có
           </Button>
           {batchStatus && batchTotal > 0 && (
             <div className="space-y-1">
               <ProgressBar percent={batchDonePct} />
-              <p className="text-[11px] text-white/50">
+              <p className="text-[11px] text-muted">
                 {batchActive ? "Đang chạy… " : "Hoàn tất — "}
                 {batchStatus.doneCount} xong · {batchStatus.failedCount} lỗi · {batchStatus.pending + batchStatus.runningJobs} còn lại
               </p>
@@ -136,14 +136,14 @@ export default function ContentAdminPage() {
       </aside>
 
       <section className="flex-1 space-y-2">
-        <h2 className="px-1 text-xs font-bold uppercase tracking-wide text-white/40">
+        <h2 className="px-1 text-xs font-bold uppercase tracking-wide text-muted/80">
           {activeSubject ? `Chủ đề / chương — ${activeSubject.name}` : "Chọn một môn học bên trái"}
         </h2>
-        <div className="max-h-[70vh] space-y-1 overflow-y-auto rounded-xl bg-panel p-2">
+        <div className="max-h-[70vh] space-y-1 overflow-y-auto rounded-xl border border-accent2/30 bg-panel p-2">
           {units.map((u) => (
             <div key={u.id} className="flex items-center gap-1 rounded-lg px-1 py-1 hover:bg-panel2">
               <label
-                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg hover:bg-white/10"
+                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg hover:bg-ink/10"
                 title="Thêm vào phòng học"
               >
                 <input
@@ -153,25 +153,25 @@ export default function ContentAdminPage() {
                   onChange={() => toggleCart({ id: u.id, title: u.title })}
                 />
               </label>
-              <button onClick={() => setActiveUnitId(u.id)} className="flex-1 rounded-lg py-1.5 pl-1 text-left text-sm hover:bg-white/5">
-                {u.chapterLabel ? <span className="text-white/40">{u.chapterLabel} · </span> : null}
+              <button onClick={() => setActiveUnitId(u.id)} className="flex-1 rounded-lg py-1.5 pl-1 text-left text-sm hover:bg-ink/5">
+                {u.chapterLabel ? <span className="text-muted/80">{u.chapterLabel} · </span> : null}
                 {u.title}
               </button>
-              <span className="shrink-0 pr-1 text-xs text-white/40">
+              <span className="shrink-0 pr-1 text-xs text-muted/80">
                 {u.publishedCount} xuất bản / {u.draftCount} nháp
               </span>
             </div>
           ))}
-          {activeSubject && unitsLoading && <p className="p-2 text-sm text-white/40">Đang tải…</p>}
-          {activeSubject && !unitsLoading && units.length === 0 && <p className="p-2 text-sm text-white/40">Chưa có nội dung.</p>}
+          {activeSubject && unitsLoading && <p className="p-2 text-sm text-muted/80">Đang tải…</p>}
+          {activeSubject && !unitsLoading && units.length === 0 && <p className="p-2 text-sm text-muted/80">Chưa có nội dung.</p>}
         </div>
 
         {activeUnitId && token && <LessonUnitPanel id={activeUnitId} token={token} />}
       </section>
 
       <aside className="w-full shrink-0 space-y-3 lg:w-72">
-        <h2 className="px-2 text-xs font-bold uppercase tracking-wide text-white/40">Tạo phòng học ({cart.length} mục)</h2>
-        <div className="max-h-56 space-y-1 overflow-y-auto rounded-xl bg-panel p-2">
+        <h2 className="px-2 text-xs font-bold uppercase tracking-wide text-muted/80">Tạo phòng học ({cart.length} mục)</h2>
+        <div className="max-h-56 space-y-1 overflow-y-auto rounded-xl border border-accent2/30 bg-panel p-2">
           {cart.map((c) => (
             <div key={c.id} className="flex items-center justify-between gap-2 rounded-lg bg-panel2 px-2 py-1 text-xs">
               <span className="truncate">{c.title}</span>
@@ -180,18 +180,18 @@ export default function ContentAdminPage() {
               </button>
             </div>
           ))}
-          {cart.length === 0 && <p className="p-2 text-xs text-white/40">Tick chọn chủ đề/chương ở giữa để thêm vào phòng.</p>}
+          {cart.length === 0 && <p className="p-2 text-xs text-muted/80">Tick chọn chủ đề/chương ở giữa để thêm vào phòng.</p>}
         </div>
         <Button onClick={createRoom} disabled={cart.length === 0} className="w-full">
           Tạo phòng học
         </Button>
         {roomResult && (
           <Card className="text-center">
-            <p className="text-xs text-white/50">Mã phòng</p>
-            <p className="text-2xl font-black tracking-widest text-accent2">{roomResult.code}</p>
+            <p className="text-xs text-muted">Mã phòng</p>
+            <p className="text-2xl font-black tracking-widest text-gold-shine">{roomResult.code}</p>
             <a
               href={`/host/rooms/${roomResult.code}?hostToken=${roomResult.hostToken}`}
-              className="mt-2 block rounded-lg bg-accent px-3 py-2 text-sm font-bold text-ink"
+              className="mt-2 block rounded-lg bg-accent px-3 py-2 text-sm font-bold text-white"
             >
               Vào Host Console →
             </a>
@@ -249,10 +249,10 @@ function LessonUnitPanel({ id, token }: { id: string; token: string }) {
     );
   }
 
-  if (!detail) return <p className="text-sm text-white/40">Đang tải…</p>;
+  if (!detail) return <p className="text-sm text-muted/80">Đang tải…</p>;
 
   return (
-    <div className="space-y-4 rounded-xl bg-panel p-4">
+    <div className="space-y-4 rounded-xl border border-accent2/30 bg-panel p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-bold">{detail.title}</h3>
         <Button size="sm" variant="secondary" loading={generating} onClick={generate}>
@@ -264,11 +264,11 @@ function LessonUnitPanel({ id, token }: { id: string; token: string }) {
       {/* Fetched but never shown before this pass — lets the host cross-check AI-generated
           questions against the actual source text without leaving this screen. */}
       <div>
-        <button onClick={() => setContentOpen((v) => !v)} className="text-xs font-bold uppercase text-white/40 hover:text-white/70">
+        <button onClick={() => setContentOpen((v) => !v)} className="text-xs font-bold uppercase text-muted/80 hover:text-muted">
           {contentOpen ? "▾" : "▸"} Nội dung gốc
         </button>
         {contentOpen && (
-          <div className="mt-1 max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg bg-panel2 p-3 text-xs text-white/70">
+          <div className="mt-1 max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg bg-panel2 p-3 text-xs text-muted">
             {detail.contentMarkdown}
           </div>
         )}
@@ -276,12 +276,12 @@ function LessonUnitPanel({ id, token }: { id: string; token: string }) {
 
       {detail.discussionQuestions.length > 0 && (
         <div>
-          <h4 className="text-xs font-bold uppercase text-white/40">Câu hỏi thảo luận</h4>
-          <ul className="mt-1 space-y-2 text-sm text-white/70">
+          <h4 className="text-xs font-bold uppercase text-muted/80">Câu hỏi thảo luận</h4>
+          <ul className="mt-1 space-y-2 text-sm text-muted">
             {detail.discussionQuestions.map((q) => (
               <li key={q.id}>
                 <p>• {q.question}</p>
-                {q.suggestedAnswer && <p className="mt-0.5 pl-3 text-xs italic text-white/40">Gợi ý: {q.suggestedAnswer}</p>}
+                {q.suggestedAnswer && <p className="mt-0.5 pl-3 text-xs italic text-muted/80">Gợi ý: {q.suggestedAnswer}</p>}
               </li>
             ))}
           </ul>
@@ -289,12 +289,12 @@ function LessonUnitPanel({ id, token }: { id: string; token: string }) {
       )}
 
       <div>
-        <h4 className="text-xs font-bold uppercase text-white/40">Câu hỏi trắc nghiệm ({detail.quizQuestions.length})</h4>
+        <h4 className="text-xs font-bold uppercase text-muted/80">Câu hỏi trắc nghiệm ({detail.quizQuestions.length})</h4>
         <div className="mt-2 space-y-2">
           {detail.quizQuestions.map((q) => (
             <QuizQuestionRow key={q.id} q={q} token={token} onChanged={load} />
           ))}
-          {detail.quizQuestions.length === 0 && <p className="text-sm text-white/40">Chưa có câu hỏi — bấm &quot;Sinh câu hỏi AI&quot;.</p>}
+          {detail.quizQuestions.length === 0 && <p className="text-sm text-muted/80">Chưa có câu hỏi — bấm &quot;Sinh câu hỏi AI&quot;.</p>}
         </div>
       </div>
     </div>
@@ -351,22 +351,22 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
           <Badge tone="neutral">{difficultyLabel}</Badge>
         </div>
         <div className="flex gap-1 text-xs">
-          <button onClick={() => setEditing((e) => !e)} className="rounded bg-white/10 px-2 py-1">
+          <button onClick={() => setEditing((e) => !e)} className="rounded bg-ink/10 px-2 py-1">
             Sửa
           </button>
           {q.status === "DRAFT" && (
-            <button onClick={publish} disabled={busy} className="rounded bg-correct/80 px-2 py-1 font-bold text-ink">
+            <button onClick={publish} disabled={busy} className="rounded bg-correct/80 px-2 py-1 font-bold text-white">
               Publish
             </button>
           )}
-          <button onClick={() => setConfirmDelete(true)} disabled={busy} className="rounded bg-wrong/80 px-2 py-1 font-bold">
+          <button onClick={() => setConfirmDelete(true)} disabled={busy} className="rounded bg-wrong/90 text-white px-2 py-1 font-bold">
             Xoá
           </button>
         </div>
       </div>
 
       {q.status === "PUBLISHED" && editing && (
-        <p className="mt-2 rounded-lg bg-amber-400/10 px-2 py-1.5 text-xs text-amber-300">
+        <p className="mt-2 rounded-lg bg-accent2/15 px-2 py-1.5 text-xs text-gold-deep">
           ⚠ Câu này đang xuất bản — sửa sẽ ảnh hưởng ngay tới nội dung học viên có thể gặp trong phòng đang mở.
         </p>
       )}
@@ -374,7 +374,7 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
       {!editing ? (
         <>
           <p className="mt-2 text-sm font-semibold">{q.question}</p>
-          <ul className="mt-1 space-y-0.5 text-xs text-white/60">
+          <ul className="mt-1 space-y-0.5 text-xs text-muted">
             {q.options.map((o, i) => (
               <li key={i} className={i === q.correctIndex ? "font-bold text-correct" : ""}>
                 {i === q.correctIndex ? "✓ " : "· "}
@@ -382,13 +382,13 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
               </li>
             ))}
           </ul>
-          <p className="mt-1 text-xs italic text-white/40">{q.explanation}</p>
+          <p className="mt-1 text-xs italic text-muted/80">{q.explanation}</p>
           {q.sourceQuote && (
             <div className="mt-1">
-              <button onClick={() => setQuoteOpen((v) => !v)} className="text-[11px] font-semibold text-accent2 hover:underline">
+              <button onClick={() => setQuoteOpen((v) => !v)} className="text-[11px] font-semibold text-accent hover:underline">
                 {quoteOpen ? "▾ Ẩn trích dẫn nguồn" : "▸ Xem trích dẫn nguồn (fact-check)"}
               </button>
-              {quoteOpen && <blockquote className="mt-1 border-l-2 border-accent2/50 pl-2 text-xs italic text-white/50">“{q.sourceQuote}”</blockquote>}
+              {quoteOpen && <blockquote className="mt-1 border-l-2 border-accent2/70 pl-2 text-xs italic text-muted">“{q.sourceQuote}”</blockquote>}
             </div>
           )}
         </>
@@ -418,7 +418,7 @@ function QuizQuestionRow({ q, token, onChanged }: { q: QuizQuestion; token: stri
             onChange={(e) => setDraft({ ...draft, explanation: e.target.value })}
             className="w-full rounded bg-panel px-2 py-1 text-xs"
           />
-          <button onClick={save} disabled={busy} className="rounded bg-accent px-3 py-1.5 text-xs font-bold text-ink">
+          <button onClick={save} disabled={busy} className="rounded bg-accent px-3 py-1.5 text-xs font-bold text-white">
             Lưu
           </button>
         </div>

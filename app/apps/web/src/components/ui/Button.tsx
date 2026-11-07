@@ -8,10 +8,12 @@ type Variant = "primary" | "secondary" | "danger" | "ghost";
 type Size = "md" | "sm";
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: "bg-gradient-to-r from-accent to-accent2 text-ink shadow-glow hover:brightness-110",
-  secondary: "bg-white/10 text-white hover:bg-white/15",
-  danger: "bg-wrong/15 text-wrong border border-wrong/30 hover:bg-wrong/25",
-  ghost: "bg-transparent text-white/70 hover:text-white hover:bg-white/5",
+  // Lì-xì red with a thin gold rim + light sweep on hover (globals.css `.btn-shine`).
+  primary:
+    "btn-shine bg-red-envelope text-gold ring-1 ring-inset ring-gold/60 shadow-glow hover:brightness-110 hover:-translate-y-px active:translate-y-0",
+  secondary: "bg-panel text-ink ring-1 ring-inset ring-accent2/50 shadow-card hover:bg-panel2",
+  danger: "bg-wrong/10 text-wrong ring-1 ring-inset ring-wrong/40 hover:bg-wrong/20",
+  ghost: "bg-transparent text-muted hover:text-ink hover:bg-ink/5",
 };
 
 const SIZE_CLASSES: Record<Size, string> = {

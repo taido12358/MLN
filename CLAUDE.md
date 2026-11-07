@@ -23,8 +23,10 @@ xuất người dùng chạy `git init` để có version control thật (xem `l
 ## Cấu trúc thư mục
 
 - `app/` — ứng dụng web (xem chi tiết bên dưới). Đây là phần code chính.
-- `Presents/` — 10 chủ đề thuyết trình gốc (`01..10-*/slides.md` +
-  `cau-hoi-phan-bien.md`). Chỉ đọc, dùng làm nguồn nội dung để ingest vào app.
+- `Presents/` — 11 chủ đề thuyết trình (`01..11-*/slides.md` +
+  `cau-hoi-phan-bien.md`); chủ đề 05 và 11 có thêm tài liệu học tập chi tiết.
+  Dùng làm nguồn nội dung để ingest vào app. Chủ đề 11 được bổ sung ngày 2026-11-01
+  theo yêu cầu người dùng; phiên biên soạn không chạy ingest hoặc cập nhật database.
 - `giao-trinh-llct/md/` — 5 giáo trình LLCT đầy đủ dạng markdown. Chỉ đọc. Tên thư mục
   đã được đổi từ tiếng Việt có dấu sang ASCII để tránh lỗi Unicode NFC/NFD qua
   Docker/tool khác nhau — **không đổi lại**.

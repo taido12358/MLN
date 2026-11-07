@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       ref={ref}
       id={id}
       className={clsx(
-        "w-full rounded-2xl border border-white/10 bg-panel2 px-4 py-3 text-base text-white placeholder:text-white/30 outline-none transition focus:border-accent/60 focus:ring-2 focus:ring-accent/40 disabled:opacity-50",
+        "w-full rounded-2xl border border-accent2/40 bg-panel px-4 py-3 text-base text-ink shadow-[inset_0_1px_2px_rgba(120,40,10,0.08)] placeholder:text-muted/50 outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50",
         trailing && "pr-11",
         className
       )}
@@ -30,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={id} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/50">
+        <label htmlFor={id} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted">
           {label}
         </label>
       )}

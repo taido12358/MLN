@@ -15,16 +15,16 @@ import { THEME } from "../theme-tokens";
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="vi">
-      <body>
-        <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center", background: THEME.ink, color: "#fff" }}>
+      <body style={{ margin: 0 }}>
+        <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center", background: THEME.bg, color: THEME.ink, fontFamily: "system-ui, sans-serif" }}>
           <div style={{ fontSize: "48px" }}>😵</div>
           <h1 style={{ marginTop: "16px", fontSize: "20px", fontWeight: 800 }}>Đã có lỗi xảy ra</h1>
-          <p style={{ marginTop: "8px", maxWidth: "360px", fontSize: "14px", opacity: 0.6 }}>
+          <p style={{ marginTop: "8px", maxWidth: "360px", fontSize: "14px", color: THEME.muted }}>
             Trang gặp sự cố nghiêm trọng. Thử tải lại trang.
           </p>
           <button
             onClick={reset}
-            style={{ marginTop: "24px", borderRadius: "12px", background: THEME.accent, padding: "12px 20px", fontWeight: 700, color: THEME.ink, minHeight: 44, minWidth: 44 }}
+            style={{ marginTop: "24px", borderRadius: "12px", border: `1px solid ${THEME.gold}`, background: THEME.accent, padding: "12px 20px", fontWeight: 700, color: THEME.gold, minHeight: 44, minWidth: 44, cursor: "pointer" }}
           >
             Thử lại
           </button>

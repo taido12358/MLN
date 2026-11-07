@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import confetti from "canvas-confetti";
+import { tetConfetti } from "@/lib/confetti";
 import { getSocket, emitWithAck, type HostAuth } from "@/lib/socket";
 import { useRoomStore } from "@/store/useRoomStore";
 import { useAdminToken } from "@/hooks/useAdminToken";
@@ -77,7 +77,7 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
   }, [roomCode, adminToken]);
 
   useEffect(() => {
-    if (store.ended) confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
+    if (store.ended) tetConfetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.ended]);
 
@@ -198,7 +198,7 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
   }
 
   if (error) return <CenteredMessage emoji="😕" title="Không vào được phòng" subtitle={error} />;
-  if (!room) return <p className="p-8 text-center text-white/50">Đang tải phòng…</p>;
+  if (!room) return <p className="p-8 text-center text-muted">Đang tải phòng…</p>;
 
   const activeDiscussionQuestion = activeUnit?.discussionQuestions.find(
     (dq) => dq.id === store.discussionQuestion?.discussionQuestionId,
@@ -206,29 +206,29 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
 
   return (
     <main className="flex min-h-screen flex-col lg:flex-row">
-      <section className="flex flex-1 items-center justify-center bg-black/20 p-8">
+      <section className="flex flex-1 items-center justify-center bg-ink/5 p-8">
         <ProjectorView onRequestDeletePost={setDeletePostId} />
       </section>
 
-      <aside className="w-full space-y-4 overflow-y-auto border-t border-white/10 bg-panel p-4 lg:w-96 lg:border-l lg:border-t-0">
+      <aside className="w-full space-y-4 overflow-y-auto border-t border-accent2/40 bg-panel p-4 lg:w-96 lg:border-l lg:border-t-0">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-extrabold">
-            Phòng <span className="text-accent2">{roomCode}</span>
+            Phòng <span className="text-gold-shine">{roomCode}</span>
           </h1>
-          <span className="text-xs text-white/40">{store.participantCount} người</span>
+          <span className="text-xs text-muted/80">{store.participantCount} người</span>
         </div>
 
         {actionError && <p className="rounded-lg bg-wrong/15 px-3 py-2 text-xs text-wrong">{actionError}</p>}
 
         <div>
-          <h2 className="mb-1 text-xs font-bold uppercase text-white/40">Danh sách chủ đề</h2>
+          <h2 className="mb-1 text-xs font-bold uppercase text-muted/80">Danh sách chủ đề</h2>
           <div className="max-h-40 space-y-1 overflow-y-auto rounded-lg bg-panel2 p-1">
             {room.playlistItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => loadUnit(item.lessonUnitId)}
                 className={`block w-full rounded px-2 py-1.5 text-left text-sm ${
-                  activeUnit?.id === item.lessonUnitId ? "bg-accent text-ink font-bold" : "hover:bg-white/5"
+                  activeUnit?.id === item.lessonUnitId ? "bg-accent text-white font-bold" : "hover:bg-ink/5"
                 }`}
               >
                 {item.lessonUnit.chapterLabel ? `${item.lessonUnit.chapterLabel} · ` : ""}
@@ -236,20 +236,20 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
               </button>
             ))}
           </div>
-          <button onClick={nextStep} className="mt-2 w-full rounded-lg bg-white/10 py-2 text-sm font-bold">
+          <button onClick={nextStep} className="mt-2 w-full rounded-lg bg-ink/10 py-2 text-sm font-bold">
             ⏭ Chủ đề tiếp theo
           </button>
         </div>
 
         {activeUnit && (
           <div className="space-y-3 rounded-lg bg-panel2 p-3">
-            <button onClick={() => startLessonUnit(activeUnit.id)} className="w-full rounded-lg bg-accent py-2 text-sm font-bold text-ink">
+            <button onClick={() => startLessonUnit(activeUnit.id)} className="w-full rounded-lg bg-accent py-2 text-sm font-bold text-white">
               ▶ Bắt đầu chủ đề này
             </button>
 
             <div>
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase text-white/40">Câu hỏi trắc nghiệm (đã xuất bản)</h3>
+                <h3 className="text-xs font-bold uppercase text-muted/80">Câu hỏi trắc nghiệm (đã xuất bản)</h3>
                 <input
                   type="number"
                   value={timeLimitSec}
@@ -267,34 +267,34 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
                 {activeUnit.quizQuestions
                   .filter((q) => q.status === "PUBLISHED")
                   .map((q) => (
-                    <button key={q.id} onClick={() => openQuestion(q)} className="block w-full truncate rounded bg-panel px-2 py-1.5 text-left text-xs hover:bg-accent hover:text-ink">
+                    <button key={q.id} onClick={() => openQuestion(q)} className="block w-full truncate rounded bg-panel px-2 py-1.5 text-left text-xs hover:bg-accent hover:text-white">
                       {q.question}
                     </button>
                   ))}
                 {activeUnit.quizQuestions.filter((q) => q.status === "PUBLISHED").length === 0 && (
-                  <p className="text-xs text-white/40">Chưa có câu hỏi đã xuất bản cho chủ đề này.</p>
+                  <p className="text-xs text-muted/80">Chưa có câu hỏi đã xuất bản cho chủ đề này.</p>
                 )}
               </div>
               <div className="mt-1 flex gap-1">
-                <button onClick={forceClose} className="flex-1 rounded bg-wrong/70 py-1.5 text-xs font-bold">
+                <button onClick={forceClose} className="flex-1 rounded bg-wrong/80 text-white py-1.5 text-xs font-bold">
                   Đóng câu hỏi sớm
                 </button>
                 {store.roomState === "QUIZ_QUESTION" && (
-                  <button onClick={extendTime} className="flex-1 rounded bg-accent2/80 py-1.5 text-xs font-bold text-ink">
+                  <button onClick={extendTime} className="flex-1 rounded bg-accent2 py-1.5 text-xs font-bold text-ink">
                     +10 giây
                   </button>
                 )}
               </div>
               {unanswered.length > 0 && (
-                <div className="mt-1 rounded bg-panel px-2 py-1.5 text-xs text-white/60">
-                  <span className="font-bold text-white/40">Chưa trả lời ({unanswered.length}): </span>
+                <div className="mt-1 rounded bg-panel px-2 py-1.5 text-xs text-muted">
+                  <span className="font-bold text-muted/80">Chưa trả lời ({unanswered.length}): </span>
                   {unanswered.map((p) => p.nickname).join(", ")}
                 </div>
               )}
             </div>
 
             <div>
-              <h3 className="text-xs font-bold uppercase text-white/40">Thảo luận</h3>
+              <h3 className="text-xs font-bold uppercase text-muted/80">Thảo luận</h3>
               <div className="mt-1 max-h-32 space-y-1 overflow-y-auto">
                 {activeUnit.discussionQuestions.map((dq) => (
                   <button key={dq.id} onClick={() => openDiscussion(dq.id)} className="block w-full truncate rounded bg-panel px-2 py-1.5 text-left text-xs hover:bg-accent2 hover:text-ink">
@@ -303,11 +303,11 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
                 ))}
               </div>
               {activeDiscussionQuestion?.suggestedAnswer && (
-                <p className="mt-1 rounded bg-panel px-2 py-1.5 text-xs italic text-white/50">
+                <p className="mt-1 rounded bg-panel px-2 py-1.5 text-xs italic text-muted">
                   💡 Gợi ý dẫn dắt: {activeDiscussionQuestion.suggestedAnswer}
                 </p>
               )}
-              <button onClick={closeDiscussion} className="mt-1 w-full rounded bg-white/10 py-1.5 text-xs font-bold">
+              <button onClick={closeDiscussion} className="mt-1 w-full rounded bg-ink/10 py-1.5 text-xs font-bold">
                 Đóng thảo luận
               </button>
             </div>
@@ -315,10 +315,10 @@ export default function HostRoomPage({ params }: { params: { roomCode: string } 
         )}
 
         <div className="flex gap-2">
-          <button onClick={showLeaderboard} className="flex-1 rounded-lg bg-white/10 py-2 text-sm font-bold">
+          <button onClick={showLeaderboard} className="flex-1 rounded-lg bg-ink/10 py-2 text-sm font-bold">
             🏆 Bảng xếp hạng
           </button>
-          <button onClick={() => setConfirmEndRoom(true)} className="flex-1 rounded-lg bg-wrong/80 py-2 text-sm font-bold">
+          <button onClick={() => setConfirmEndRoom(true)} className="flex-1 rounded-lg bg-wrong/90 text-white py-2 text-sm font-bold">
             ⏹ Kết thúc
           </button>
         </div>
@@ -378,7 +378,7 @@ function ProjectorView({ onRequestDeletePost }: { onRequestDeletePost: (postId: 
     return (
       <div className="w-full max-w-3xl text-center">
         <h1 className="text-3xl font-black leading-snug">{s.currentQuestion.question}</h1>
-        <p className="mt-4 text-xl text-white/60">
+        <p className="mt-4 text-xl text-muted">
           {s.answerCount ? `${s.answerCount.answeredCount}/${s.answerCount.totalParticipants} đã trả lời` : "Đang chờ trả lời…"}
         </p>
         <div className="mt-8 grid grid-cols-2 gap-4">
@@ -395,12 +395,12 @@ function ProjectorView({ onRequestDeletePost }: { onRequestDeletePost: (postId: 
     return (
       <div className="w-full max-w-3xl text-center">
         <h1 className="text-3xl font-black">Kết quả</h1>
-        <p className="mt-2 text-lg text-white/60">{s.questionClosed.explanation}</p>
+        <p className="mt-2 text-lg text-muted">{s.questionClosed.explanation}</p>
         <div className="mt-6 space-y-3">
           {s.questionClosed.optionCounts.map((c, i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="h-8 flex-1 overflow-hidden rounded-full bg-white/10">
-                <div className={`h-full ${i === s.questionClosed!.correctIndex ? "bg-correct" : "bg-white/30"}`} style={{ width: `${(c / max) * 100}%` }} />
+              <div className="h-8 flex-1 overflow-hidden rounded-full bg-ink/10">
+                <div className={`h-full ${i === s.questionClosed!.correctIndex ? "bg-correct" : "bg-ink/20"}`} style={{ width: `${(c / max) * 100}%` }} />
               </div>
               <span className="w-8 text-xl font-bold">{c}</span>
             </div>
@@ -420,10 +420,10 @@ function ProjectorView({ onRequestDeletePost }: { onRequestDeletePost: (postId: 
             .sort((a, b) => b.upvotes - a.upvotes)
             .slice(0, 8)
             .map((p) => (
-              <div key={p.postId} className="flex items-center gap-3 rounded-xl bg-panel px-5 py-3 text-left text-lg">
+              <div key={p.postId} className="flex items-center gap-3 rounded-xl border border-accent2/30 bg-panel px-5 py-3 text-left text-lg">
                 <div className="flex-1">
-                  <span className="font-bold text-accent2">{p.nickname}: </span>
-                  {p.content} <span className="text-white/40">▲{p.upvotes}</span>
+                  <span className="font-bold text-accent">{p.nickname}: </span>
+                  {p.content} <span className="text-muted/80">▲{p.upvotes}</span>
                 </div>
                 <button
                   onClick={() => onRequestDeletePost(p.postId)}
@@ -441,8 +441,8 @@ function ProjectorView({ onRequestDeletePost }: { onRequestDeletePost: (postId: 
 
   return (
     <div className="text-center">
-      <p className="text-2xl text-white/40">Màn hình lớp sẽ hiện tại đây khi bắt đầu chủ đề.</p>
-      <p className="mt-2 text-white/30">{s.participantCount} người đã tham gia</p>
+      <p className="text-2xl text-muted/80">Màn hình lớp sẽ hiện tại đây khi bắt đầu chủ đề.</p>
+      <p className="mt-2 text-muted/60">{s.participantCount} người đã tham gia</p>
     </div>
   );
 }
