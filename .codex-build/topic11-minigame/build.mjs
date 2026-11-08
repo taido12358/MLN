@@ -45,7 +45,7 @@ Phần 1 là trò chơi này. Chọn số lượt phù hợp thời gian của n
 
 Màn kết hiển thị điểm và lời dẫn nối sang phần 2. Nút mở PowerPoint trỏ tới ../Slide-Chu-de-11-Sau-minigame.pptx. Trình duyệt có thể tải hoặc mở tệp theo thiết lập của máy. Có thể mở sẵn PPTX và chuyển cửa sổ sau khi công bố kết quả.
 
-Phần 2 gồm 15 slide. Slide 2 có câu mở đầu và ghi chú lời nói khoảng 40–50 giây. Nhạc đã nhúng và phát khi bấm dòng “Nghe nhạc”. Video mở qua liên kết nguồn và cần Internet. Các liên kết nguồn tham khảo trong trò chơi cũng cần Internet, còn câu hỏi và chấm điểm chạy ngay trong HTML.
+Phần 2 gồm 15 slide. Slide 2 có câu mở đầu và ghi chú lời nói khoảng 40–50 giây. Video được chiếu thủ công sau slide tương ứng, âm thanh phát bằng trình phát riêng theo kế hoạch MD. Các liên kết nguồn tham khảo trong trò chơi cần Internet, còn câu hỏi và chấm điểm chạy ngay trong HTML. Xem [kế hoạch video và âm thanh](../ke-hoach-video-am-thanh.md) để điều phối phần trình bày.
 
 ## Câu hỏi nối với bản slide đã cập nhật
 

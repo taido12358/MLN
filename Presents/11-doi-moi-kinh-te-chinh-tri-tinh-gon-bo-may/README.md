@@ -12,12 +12,12 @@ Kinh tế quyết định chính trị xét đến cùng; chính trị có tính
 |---|---|
 | [Minigame 34 tỉnh, thành](./minigame/index.html) | Phần 1, HTML chạy trực tiếp, 34 dạng thử thách, tám nhóm gồm Nhóm 1–7 và Nhóm 9, bảng điểm tự cập nhật và lưu tiến độ |
 | [Hướng dẫn minigame](./minigame/README.md) | Cách mở trò chơi, điều phối đội, danh sách thử thách và chuyển sang phần 2 |
-| [PowerPoint sau minigame](./Slide-Chu-de-11-Sau-minigame.pptx) | Bản cập nhật theo góp ý giảng viên và đối chiếu giáo trình, 15 slide, 4 biểu đồ và 3 bảng chỉnh sửa được, ghi chú lời nói, nhạc nhúng ở slide 1, 7, 15 và video VTV qua liên kết |
+| [PowerPoint sau minigame](./Slide-Chu-de-11-Sau-minigame.pptx) | Bản theo góp ý giảng viên và đối chiếu giáo trình, 15 slide, 4 biểu đồ và 3 bảng chỉnh sửa được, ghi chú lời nói. Video và âm thanh được điều phối thủ công bằng trình phát riêng theo kế hoạch MD |
 | [Lý thuyết chi tiết](./ly-thuyet-chi-tiet.md) | Bài phân tích đầy đủ: khái niệm, hai chiều tác động, bài học Đổi mới, trường hợp sáp nhập, hạn chế và giải pháp |
 | [Tóm tắt lý thuyết](./tom-tat-ly-thuyet.md) | Ôn nhanh, ghi nhớ luận điểm và chuẩn bị trả lời miệng |
 | [Dàn ý slide](./slides.md) | Bản biên tập theo góp ý giảng viên ngày 07/11/2026, 15 slide, lời nối từ minigame, số liệu có nguồn, ví dụ thủ tục và bốn biểu đồ, dự kiến 18–20 phút |
-| [Kế hoạch video và âm thanh](./ke-hoach-video-am-thanh.md) | Lịch 15 slide khoảng 19 phút 30 giây, 4 lượt video ở slide 7, 9, 10, 11, 3 đoạn nhạc và lời dẫn đồng bộ với PPTX |
-| [Thư mục âm thanh](./am-thanh/) | Ba đoạn MP3 8, 15 và 12 giây để nghe thử và điều phối phần nhạc |
+| [Kế hoạch video và âm thanh](./ke-hoach-video-am-thanh.md) | Trình bày xong slide 7, 9, 10, 11 rồi chiếu video thủ công. Nhạc có lịch phát riêng. Nội dung khoảng 19 phút 30 giây, cộng thời gian chuyển cửa sổ |
+| [Thư mục âm thanh](./am-thanh/) | Ba đoạn MP3 8, 15 và 12 giây để phát thủ công bằng trình phát âm thanh riêng |
 | [Mở đầu](./hook.md) | Tiểu phẩm tình huống giả định 2–3 phút để dẫn vào vấn đề |
 | [Câu hỏi phản biện](./cau-hoi-phan-bien.md) | 12 câu hỏi tự luận kèm gợi ý trả lời |
 | [Câu hỏi từ dễ đến khó](./cau-hoi-tu-de-den-kho.md) | 15 câu trắc nghiệm có đáp án và giải thích |

@@ -19,6 +19,7 @@ ngày hoàn thành, và (nếu đáng kể) link tới file trong `sessions/`.
 | Khu vực | Việc | Hoàn thành | Log |
 |---|---|---|---|
 | content | Codex viết lại chi tiết lời nói 15 slide theo bố cục hook → slide → minigame → recap | 2026-11-08 | [sessions/2026-11-08_1727_content_loi-thuyet-trinh-bo-cuc-moi.md](sessions/2026-11-08_1727_content_loi-thuyet-trinh-bo-cuc-moi.md) |
+| content | Codex chuyển video và âm thanh sang phát thủ công, đồng bộ kế hoạch MD và PPTX 15 trang | 2026-11-07 | [sessions/2026-11-07_1325_content_nghe-nhin-thu-cong.md](sessions/2026-11-07_1325_content_nghe-nhin-thu-cong.md) |
 | minigame | Codex làm mới giao diện nền trắng, màu xanh dương–xanh ngọc–cam, hiệu ứng bản đồ và bảng điểm tám nhóm | 2026-11-07 | [sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md](sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md) |
 | minigame | Codex cố định tám nhóm gồm Nhóm 1–7 và Nhóm 9, đồng bộ điểm và chuyển lượt | 2026-11-07 | [sessions/2026-11-07_1245_minigame_nhom-1-7-9.md](sessions/2026-11-07_1245_minigame_nhom-1-7-9.md) |
 | minigame | Codex tăng chữ câu hỏi, đáp án, bảng điểm và tương phản cho màn chiếu lớp 70 sinh viên | 2026-11-07 | [sessions/2026-11-07_1235_minigame_chu-lon-may-chieu.md](sessions/2026-11-07_1235_minigame_chu-lon-may-chieu.md) |
