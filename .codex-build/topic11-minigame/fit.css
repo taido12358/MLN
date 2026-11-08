@@ -1,0 +1,73 @@
+/* Taller exploration map and a quiz that fits the viewport. */
+.map-viewport{height:clamp(760px,105dvh,1280px)}
+@media(min-width:1000px){.map-viewport{height:clamp(820px,108dvh,1440px)}}
+@media(max-width:720px){.map-viewport{height:max(760px,110dvh)}}
+html:has(#question-dialog[open]){overflow:hidden}
+#question-dialog{width:min(1640px,calc(100vw - 24px));height:auto;max-width:none;max-height:calc(100dvh - 24px);margin:auto;padding:0;overflow:hidden;box-sizing:border-box}
+#question-dialog .dialog-body{display:block;height:auto;max-height:none;min-height:0;padding:16px 24px;overflow:visible;box-sizing:border-box;transform-origin:top left}
+#question-dialog .dialog-top{align-items:center;gap:14px;margin:0}
+#question-dialog .dialog-top>div{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+#question-dialog .dialog-top h2{font-size:clamp(30px,2.6vw,46px);line-height:1.12;margin:0}
+#question-dialog .dialog-top .tag{font-size:clamp(18px,1.35vw,25px);margin:0;letter-spacing:0}
+#question-dialog .dialog-top .close{font-size:30px;padding:2px 13px;min-height:42px}
+#question-dialog .question-meta{font-size:clamp(17px,1.2vw,23px);line-height:1.25;margin:8px 0}
+#question-dialog .prompt{font-size:clamp(24px,2vw,35px);line-height:1.28;margin:10px 0 16px;max-width:none}
+#question-dialog #quiz-form{display:flex;flex-direction:column;flex:none;min-height:0;overflow:visible;gap:0}
+#question-dialog #quiz-area{display:block;flex:none;min-width:0;min-height:0;overflow:visible;padding:0;margin:0;scrollbar-gutter:auto;font-size:clamp(22px,1.6vw,29px);line-height:1.25}
+#question-dialog .choice-set{margin:0 0 12px;min-width:0}
+#question-dialog .choice-set legend{font-size:clamp(19px,1.35vw,25px);line-height:1.2;margin-bottom:8px;padding:0}
+#question-dialog .options{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#question-dialog .option{font-size:clamp(22px,1.65vw,30px);min-height:54px;padding:12px 16px;line-height:1.25}
+#question-dialog .field{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(180px,1fr);align-items:center;gap:16px;margin:0}
+#question-dialog .field>span{font-size:clamp(22px,1.65vw,30px);line-height:1.25}
+#question-dialog .field input,#question-dialog .field select,#question-dialog .pair-row select{width:100%;font-size:clamp(21px,1.5vw,28px);line-height:1.2;padding:10px 12px;min-width:0;min-height:48px}
+#question-dialog .rows{display:grid;gap:14px}
+#question-dialog .rows .field+ .field{padding-top:12px;border-top:1px solid #dce5f2}
+#question-dialog #quiz-area>.field{margin:12px 0}
+#question-dialog .quotation{font-size:clamp(22px,1.65vw,30px);line-height:1.25;padding:12px 16px;margin:0 0 16px}
+#question-dialog .token{font-size:clamp(24px,1.85vw,34px);min-width:46px;min-height:48px;padding:8px 13px;margin:3px}
+#question-dialog .answer-strip{min-height:58px;padding:6px;margin-bottom:10px}
+#question-dialog .answer-strip .token{font-size:inherit}
+#question-dialog .answer-strip .placeholder{font-size:22px}
+#question-dialog .order-list{margin:0;padding:0}
+#question-dialog .order-list li{font-size:clamp(22px,1.6vw,29px);grid-template-columns:30px 1fr 94px;gap:10px;padding:10px 14px;margin-bottom:8px}
+#question-dialog .order-buttons button{font-size:22px;padding:4px 10px}
+#question-dialog .memory-grid{gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+#question-dialog .memory-card{font-size:clamp(21px,1.5vw,28px);line-height:1.25;min-height:96px;padding:12px}
+#question-dialog .word-grid{grid-template-columns:repeat(7,min(48px,5.8dvh));gap:5px;margin:0 auto}
+#question-dialog .word-grid button{height:min(48px,5.8dvh);font-size:clamp(24px,4.4dvh,29px);padding:0}
+#question-dialog .cross-grid{grid-template-columns:repeat(7,min(44px,5.7dvh));grid-template-rows:repeat(9,min(44px,5.7dvh));gap:3px;margin:0 auto}
+#question-dialog .cross-grid input{width:100%;height:100%;font-size:25px;padding:0}
+#question-dialog .pin input{width:64px;height:64px;font-size:34px}
+#question-dialog .hint{font-size:23px;line-height:1.25;margin:8px 0}
+#question-dialog .range-output{font-size:56px;line-height:1.1;margin:0}
+#question-dialog .bucket-buttons{display:flex;gap:10px;flex-wrap:wrap}
+#question-dialog .bucket-buttons button,#question-dialog .bucket-zone button{font-size:23px;line-height:1.2;padding:9px 12px}
+#question-dialog .bucket-zone{padding:10px 12px;margin:10px 0;min-height:58px}
+#question-dialog .bucket-zone h3{font-size:21px;margin:0 0 5px}
+#question-dialog .budget-total{font-size:24px;margin:12px 0}
+#question-dialog #feedback{flex:none;max-height:none;overflow:visible}
+#question-dialog .feedback{font-size:clamp(23px,1.8vw,33px);line-height:1.35;padding:16px 20px;margin:12px 0 0}
+#question-dialog .feedback h3{font-size:1.12em;margin:0 0 10px}
+#question-dialog .feedback p{margin:10px 0}
+#question-dialog .feedback a{font-size:.8em}
+#question-dialog #quiz-form:has(#quiz-area:disabled) #quiz-area{display:none}
+#question-dialog #quiz-form:has(#quiz-area:disabled) #feedback{flex:none;max-height:none;min-height:0}
+#question-dialog .question-controls{flex:none;display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0;padding:12px 0 0;border-color:#dce5f2}
+#question-dialog .question-controls button{font-size:clamp(20px,1.4vw,26px);min-height:46px;padding:10px 15px}
+#question-dialog .step-block:empty{display:none}
+@media(min-width:721px){
+ #question-dialog[data-kind="wordsearch"] #quiz-area{display:grid;grid-template-columns:auto minmax(180px,1fr);align-items:center;column-gap:30px}
+ #question-dialog[data-kind="wordsearch"] .word-grid{grid-column:1;grid-row:1 / span 2}
+ #question-dialog[data-kind="wordsearch"] .counter{grid-column:2;grid-row:1;margin:0;font-size:26px}
+ #question-dialog[data-kind="wordsearch"] #quiz-area>button{grid-column:2;grid-row:2;justify-self:start;align-self:start}
+}
+@media(max-width:720px){
+ #question-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+ #question-dialog .dialog-body{padding:14px}
+ #question-dialog .dialog-top>div{gap:5px 12px}
+ #question-dialog .options{grid-template-columns:1fr}
+ #question-dialog .field{grid-template-columns:1fr;gap:6px}
+ #question-dialog .memory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #question-dialog .question-controls button{flex:1}
+}

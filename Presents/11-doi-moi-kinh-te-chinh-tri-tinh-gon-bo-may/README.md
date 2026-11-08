@@ -10,6 +10,7 @@ Kinh tế quyết định chính trị xét đến cùng; chính trị có tính
 
 | Tài liệu | Nội dung và cách dùng |
 |---|---|
+| [PowerPoint thiết kế mới](./Slide-Chu-de-11-Thiet-ke-moi.pptx) | Bản nền sáng, xanh ngọc–xanh đậm, 14 trang theo PPTX người dùng đã chỉnh, thêm ảnh minh họa, giữ 4 biểu đồ và 3 bảng chỉnh sửa được; ghi chú dùng lời nói rút gọn. Video và âm thanh phát riêng |
 | [Minigame 34 tỉnh, thành](./minigame/index.html) | Phần 1, HTML chạy trực tiếp, 34 dạng thử thách, tám nhóm gồm Nhóm 1–7 và Nhóm 9, bảng điểm tự cập nhật và lưu tiến độ |
 | [Hướng dẫn minigame](./minigame/README.md) | Cách mở trò chơi, điều phối đội, danh sách thử thách và chuyển sang phần 2 |
 | [PowerPoint sau minigame](./Slide-Chu-de-11-Sau-minigame.pptx) | Bản theo góp ý giảng viên và đối chiếu giáo trình, 15 slide, 4 biểu đồ và 3 bảng chỉnh sửa được, ghi chú lời nói. Video và âm thanh được điều phối thủ công bằng trình phát riêng theo kế hoạch MD |

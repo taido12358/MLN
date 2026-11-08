@@ -4,7 +4,7 @@
 
 Mở index.html bằng Chrome hoặc Edge. Người điều khiển dùng một máy để chiếu lên màn hình lớp. Trò chơi có đúng tám nhóm theo thứ tự Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 4, Nhóm 5, Nhóm 6, Nhóm 7 và Nhóm 9. Chọn nhóm đang trả lời bằng ô chọn phía trên bản đồ. Nút “Nhóm & luật chơi” hiển thị danh sách và luật tính điểm.
 
-Giao diện mặc định ưu tiên màn chiếu cho lớp khoảng 70 sinh viên. Trên máy tính, chữ câu hỏi khoảng 30–44px, đáp án khoảng 26–36px, tên địa phương và bảng điểm được phóng lớn theo màn hình. Bấm “Toàn màn hình” để tận dụng diện tích máy chiếu. Với câu dài, cuộn vùng đáp án trong khi câu hỏi và hàng nút điều khiển luôn hiển thị. Khi hoàn thành, vùng đáp án chuyển sang phần lời giải để cả lớp theo dõi. Bảng điểm dành phần lớn diện tích cho tám nhóm.
+Giao diện ưu tiên màn chiếu cho lớp khoảng 70 sinh viên. Vùng “Khám phá Việt Nam” được kéo dài, trên máy tính cao ít nhất 820px để bản đồ lớn và dễ chọn hơn. Bấm “Toàn màn hình” để tận dụng máy chiếu. Câu hỏi mở trong popup; bố cục và cỡ chữ tự điều chỉnh theo diện tích để cả câu hỏi, đáp án và nút thao tác vừa popup, không phải cuộn. Khi hoàn thành, phần nhập đáp án được thay bằng lời giải cũng tự vừa khung. Tám nhóm và bảng điểm được giữ nguyên.
 
 Rê chuột lên bản đồ để làm sáng tỉnh, thành và xem tên cùng dạng câu đố. Bấm trực tiếp vào địa phương để mở câu hỏi. Trên điện thoại, chạm để mở. Dùng các nút +, − để phóng to, thanh cuộn để di chuyển bản đồ và “Toàn cảnh” để thu lại. Tab đến từng địa phương rồi Enter hoặc phím cách cũng mở được câu hỏi. Các số trên bản đồ tương ứng thứ tự trong danh sách 34 thử thách bên dưới. Hoàng Sa và Trường Sa được hiển thị trong khung phụ có ghi tên.
 
@@ -22,17 +22,17 @@ Khi đóng một câu chưa xong, trò chơi giữ bản nháp và nhóm đã m�
 
 Bấm tab “Bảng điểm 8 nhóm” để xem điểm tổng, số câu đúng và thứ hạng. Các nhóm bằng điểm có cùng thứ hạng. Bảng chi tiết liệt kê nhóm trả lời và điểm của từng câu đã hoàn thành. Chọn nhóm trên tab này để trở về trò chơi và giao lượt cho nhóm đó. Điểm tự cập nhật khi trả lời đúng theo quy tắc 10, 7 hoặc 5 điểm. Sau Nhóm 9, lượt mặc định quay về Nhóm 1.
 
-## Hai phần của buổi trình bày
+## Vị trí trong chương trình
 
-Phần 1 là trò chơi này. Chọn số lượt phù hợp thời gian của nhóm. Nút “Kết thúc & dẫn vào bài” hoạt động cả khi chưa chơi hết 34 ô.
+Trình tự hiện tại là video hook → thuyết trình slide → minigame 34 tỉnh, thành → video recap. Chọn số lượt phù hợp thời gian. Nút “Kết thúc & tổng kết” hoạt động cả khi chưa chơi hết 34 tỉnh.
 
-Màn kết hiển thị điểm và lời dẫn nối sang phần 2. Nút mở PowerPoint trỏ tới ../Slide-Chu-de-11-Sau-minigame.pptx. Trình duyệt có thể tải hoặc mở tệp theo thiết lập của máy. Có thể mở sẵn PPTX và chuyển cửa sổ sau khi công bố kết quả.
+Màn kết hiển thị điểm và lời dẫn sang video recap, góc nhìn của nhóm 8. Người điều phối phát video riêng sau khi công bố kết quả. Nút “Xem lại PowerPoint” mở bản thiết kế mới nếu cần ôn lại kiến thức.
 
-Phần 2 gồm 15 slide. Slide 2 có câu mở đầu và ghi chú lời nói khoảng 40–50 giây. Video được chiếu thủ công sau slide tương ứng, âm thanh phát bằng trình phát riêng theo kế hoạch MD. Các liên kết nguồn tham khảo trong trò chơi cần Internet, còn câu hỏi và chấm điểm chạy ngay trong HTML. Xem [kế hoạch video và âm thanh](../ke-hoach-video-am-thanh.md) để điều phối phần trình bày.
+Bản PowerPoint thiết kế mới có 14 trang. Liên kết tham khảo cần Internet, còn bản đồ, câu hỏi và chấm điểm chạy ngay trong HTML. Giữ nguyên tám nhóm gồm Nhóm 1–7 và Nhóm 9. Các file video và âm thanh được phát bằng trình phát riêng.
 
 ## Câu hỏi nối với bản slide đã cập nhật
 
-Tám câu hỏi được biên tập lại theo nội dung slide. Hà Nội kiểm tra quan hệ kinh tế và chính trị trong giáo trình. Hà Tĩnh chọn nguồn khảo sát PCI. Đắk Lắk phân biệt thời hạn thủ tục được công bố với phân tích tác động kinh tế. Quảng Ninh kiểm tra số liệu C/O và yêu cầu đánh giá năng suất. TP.HCM dùng bài toán nguồn lực giả định và kinh nghiệm Quận 3. Đồng Tháp đánh giá mức giảm chi thường xuyên. Cà Mau kiểm tra số liệu cơ cấu. Nghệ An phân loại chỉ số cơ cấu và kết quả phục vụ.
+17 câu được nâng độ khó theo hướng vận dụng cho sinh viên đại học, vẫn đủ 34 dạng chơi. Ví dụ: Ninh Bình tính tiết kiệm sau chi phí chuyển đổi; Lai Châu tính tỷ lệ chung có trọng số; Cần Thơ phân biệt điểm phần trăm và quan hệ nhân quả; Lào Cai ghép nguyên nhân với giải pháp; Phú Thọ chọn cách đánh giá cải cách. Các dữ liệu mô phỏng được ghi rõ GIẢ ĐỊNH. Hà Nội, Đắk Lắk, Quảng Ninh và các câu dẫn chứng tiếp tục nối với lý luận, số liệu trên slide. Số slide trong lời giải theo bản PowerPoint thiết kế mới gồm 14 trang.
 
 Khi xem lời giải, nguồn riêng và số slide liên quan xuất hiện cùng bài học. Câu đã hoàn thành tiếp tục giữ điểm và trạng thái khóa của ván đang lưu. Với câu đã sửa nội dung nhưng chưa hoàn thành, trò chơi làm mới bản nháp và số lần thử của câu đó để phù hợp phiên bản mới.
 
@@ -40,40 +40,40 @@ Khi xem lời giải, nguồn riêng và số slide liên quan xuất hiện cù
 
 | Số | Địa phương | Dạng thử thách | Slide liên hệ |
 |---|---|---|---|
-| 01 | Hà Nội | Có hay không | 3 |
-| 02 | Bắc Ninh | Ghép chữ | Địa giới và quản trị |
-| 03 | Phú Thọ | Chọn đúng hai | 9 |
-| 04 | Tuyên Quang | Điền tên còn thiếu | Địa giới và quản trị |
-| 05 | Lào Cai | Nối cặp địa phương | Địa giới và quản trị |
+| 01 | Hà Nội | Có hay không | 2 |
+| 02 | Bắc Ninh | Ghép chữ | 5 |
+| 03 | Phú Thọ | Chọn đúng hai | 13 |
+| 04 | Tuyên Quang | Điền giải pháp còn thiếu | 5 |
+| 05 | Lào Cai | Nối vướng mắc với giải pháp | 5 |
 | 06 | Thái Nguyên | Khôi phục nguyên âm | Địa giới và quản trị |
-| 07 | Hưng Yên | Sửa bản tin | Địa giới và quản trị |
-| 08 | Hải Phòng | Loại tên lạc nhóm | Địa giới và quản trị |
-| 09 | Ninh Bình | Phép tính hợp nhất | Địa giới và quản trị |
-| 10 | Quảng Ninh | Bảng đúng sai | 11 |
-| 11 | Cao Bằng | Lật thẻ ghi nhớ | Địa giới và quản trị |
-| 12 | Điện Biên | Tính nhanh con số | 9 |
-| 13 | Lai Châu | Thanh trượt thống kê | Địa giới và quản trị |
-| 14 | Lạng Sơn | Tìm chữ trong lưới | Địa giới và quản trị |
-| 15 | Sơn La | Ngã rẽ quản trị | Địa giới và quản trị |
-| 16 | Thanh Hóa | Xếp bước xử lý | Địa giới và quản trị |
-| 17 | Nghệ An | Phân loại nhiệm vụ | 14 |
-| 18 | Hà Tĩnh | Chọn nguồn kiểm chứng | 5 |
+| 07 | Hưng Yên | Sửa bản tin | 13 |
+| 08 | Hải Phòng | Tìm suy luận thiếu căn cứ | 13 |
+| 09 | Ninh Bình | Tính chi phí chuyển đổi | 12 |
+| 10 | Quảng Ninh | Bảng đúng sai | 10 |
+| 11 | Cao Bằng | Lật thẻ ghi nhớ | 5 |
+| 12 | Điện Biên | Tính nhanh con số | 13 |
+| 13 | Lai Châu | Thanh trượt tỷ lệ tổng hợp | 13 |
+| 14 | Lạng Sơn | Tìm chữ trong lưới | 5 |
+| 15 | Sơn La | Ngã rẽ quản trị | 13 |
+| 16 | Thanh Hóa | Xếp bước xử lý | 13 |
+| 17 | Nghệ An | Phân loại nhiệm vụ | 13 |
+| 18 | Hà Tĩnh | Chọn nguồn kiểm chứng | 4 |
 | 19 | Quảng Trị | Dòng thời gian | Địa giới và quản trị |
-| 20 | Huế | Ba câu liên tiếp | Địa giới và quản trị |
+| 20 | Huế | Ba câu liên tiếp | 13 |
 | 21 | Đà Nẵng | Nối điểm hợp nhất | Địa giới và quản trị |
 | 22 | Quảng Ngãi | Ô chữ giao nhau | Địa giới và quản trị |
 | 23 | Gia Lai | Mở gợi ý đoán tên | Địa giới và quản trị |
 | 24 | Khánh Hòa | Sắp câu bản tin | Địa giới và quản trị |
-| 25 | Đắk Lắk | Sự kiện hay phân tích | 8 |
-| 26 | Lâm Đồng | Chọn bộ ba | Địa giới và quản trị |
-| 27 | TP.HCM | Phân bổ nguồn lực | 10 |
+| 25 | Đắk Lắk | Sự kiện hay phân tích | 7 |
+| 26 | Lâm Đồng | Chọn bộ ba | 13 |
+| 27 | TP.HCM | Phân bổ nguồn lực | 9 |
 | 28 | Đồng Nai | Lắp sơ đồ trước sau | Địa giới và quản trị |
 | 29 | Tây Ninh | Mật mã bốn số | Địa giới và quản trị |
-| 30 | Cần Thơ | Đọc tin điền bảng | Địa giới và quản trị |
-| 31 | Đồng Tháp | Ai nói đúng | 13 |
+| 30 | Cần Thơ | Đọc tin điền bảng | 13 |
+| 31 | Đồng Tháp | Ai nói đúng | 12 |
 | 32 | Vĩnh Long | Chuyển thẻ vào nhóm | Địa giới và quản trị |
-| 33 | Cà Mau | Khóa nhị phân | 9 |
-| 34 | An Giang | Ghép lập luận ba bước | 15 |
+| 33 | Cà Mau | Khóa nhị phân | 8 |
+| 34 | An Giang | Ghép lập luận ba bước | 14 |
 
 ## Căn cứ nội dung
 

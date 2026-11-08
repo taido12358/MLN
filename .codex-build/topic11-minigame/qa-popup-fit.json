@@ -1,0 +1,1227 @@
+{
+  "fitChecks1366": [
+    {
+      "available": 736,
+      "kind": "binary",
+      "name": "Hà Nội",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 380
+    },
+    {
+      "available": 736,
+      "kind": "letters",
+      "name": "Bắc Ninh",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 477
+    },
+    {
+      "available": 736,
+      "kind": "cloze",
+      "name": "Tuyên Quang",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 415
+    },
+    {
+      "available": 736,
+      "kind": "matching",
+      "name": "Lào Cai",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 459
+    },
+    {
+      "available": 736,
+      "kind": "vowels",
+      "name": "Thái Nguyên",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 436
+    },
+    {
+      "available": 736,
+      "kind": "correction",
+      "name": "Hưng Yên",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 380
+    },
+    {
+      "available": 736,
+      "kind": "odd",
+      "name": "Hải Phòng",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 445
+    },
+    {
+      "available": 736,
+      "kind": "truth-matrix",
+      "name": "Quảng Ninh",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 497
+    },
+    {
+      "available": 736,
+      "kind": "memory",
+      "name": "Cao Bằng",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 555
+    },
+    {
+      "available": 736,
+      "kind": "number",
+      "name": "Điện Biên",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 354
+    },
+    {
+      "available": 736,
+      "kind": "slider",
+      "name": "Lai Châu",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 402
+    },
+    {
+      "available": 736,
+      "kind": "wordsearch",
+      "name": "Lạng Sơn",
+      "overflow": 0,
+      "promptPx": 25.104921856,
+      "scale": 0.918652,
+      "used": 734.9216
+    },
+    {
+      "available": 736,
+      "kind": "decision",
+      "name": "Sơn La",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 478
+    },
+    {
+      "available": 736,
+      "kind": "policy-order",
+      "name": "Thanh Hóa",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 581
+    },
+    {
+      "available": 736,
+      "kind": "classification",
+      "name": "Nghệ An",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 459
+    },
+    {
+      "available": 736,
+      "kind": "evidence",
+      "name": "Hà Tĩnh",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 572
+    },
+    {
+      "available": 736,
+      "kind": "timeline",
+      "name": "Quảng Trị",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 469
+    },
+    {
+      "available": 736,
+      "kind": "rapid",
+      "name": "Huế",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 405
+    },
+    {
+      "available": 736,
+      "kind": "connect",
+      "name": "Đà Nẵng",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 475
+    },
+    {
+      "available": 736,
+      "kind": "crossword",
+      "name": "Quảng Ngãi",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 700
+    },
+    {
+      "available": 736,
+      "kind": "hints",
+      "name": "Gia Lai",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 379
+    },
+    {
+      "available": 736,
+      "kind": "sentence",
+      "name": "Khánh Hòa",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 442
+    },
+    {
+      "available": 736,
+      "kind": "fact-inference",
+      "name": "Đắk Lắk",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 497
+    },
+    {
+      "available": 736,
+      "kind": "triple",
+      "name": "Lâm Đồng",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 511
+    },
+    {
+      "available": 736,
+      "kind": "budget",
+      "name": "TP.HCM",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 577
+    },
+    {
+      "available": 736,
+      "kind": "assembly",
+      "name": "Đồng Nai",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 453
+    },
+    {
+      "available": 736,
+      "kind": "pin",
+      "name": "Tây Ninh",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 346
+    },
+    {
+      "available": 736,
+      "kind": "reading",
+      "name": "Cần Thơ",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 444
+    },
+    {
+      "available": 736,
+      "kind": "two-claims",
+      "name": "Đồng Tháp",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 541
+    },
+    {
+      "available": 736,
+      "kind": "buckets",
+      "name": "Vĩnh Long",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 562
+    },
+    {
+      "available": 736,
+      "kind": "binary-lock",
+      "name": "Cà Mau",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 553
+    },
+    {
+      "available": 736,
+      "kind": "argument",
+      "name": "An Giang",
+      "overflow": 0,
+      "promptPx": 27.328,
+      "scale": 1,
+      "used": 453
+    }
+  ],
+  "fitChecks1024": [
+    {
+      "available": 568,
+      "kind": "binary",
+      "name": "Hà Nội",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 401
+    },
+    {
+      "available": 568,
+      "kind": "letters",
+      "name": "Bắc Ninh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 467
+    },
+    {
+      "available": 568,
+      "kind": "cloze",
+      "name": "Tuyên Quang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 405
+    },
+    {
+      "available": 568,
+      "kind": "matching",
+      "name": "Lào Cai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 454
+    },
+    {
+      "available": 568,
+      "kind": "vowels",
+      "name": "Thái Nguyên",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 431
+    },
+    {
+      "available": 568,
+      "kind": "correction",
+      "name": "Hưng Yên",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 375
+    },
+    {
+      "available": 568,
+      "kind": "odd",
+      "name": "Hải Phòng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 490
+    },
+    {
+      "available": 568,
+      "kind": "truth-matrix",
+      "name": "Quảng Ninh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 489
+    },
+    {
+      "available": 568,
+      "kind": "memory",
+      "name": "Cao Bằng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 547
+    },
+    {
+      "available": 568,
+      "kind": "number",
+      "name": "Điện Biên",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 345
+    },
+    {
+      "available": 568,
+      "kind": "slider",
+      "name": "Lai Châu",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 393
+    },
+    {
+      "available": 568,
+      "kind": "wordsearch",
+      "name": "Lạng Sơn",
+      "overflow": 0,
+      "promptPx": 18.9,
+      "scale": 0.7875,
+      "used": 567
+    },
+    {
+      "available": 568,
+      "kind": "decision",
+      "name": "Sơn La",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 496
+    },
+    {
+      "available": 568,
+      "kind": "policy-order",
+      "name": "Thanh Hóa",
+      "overflow": 0,
+      "promptPx": 23.800776,
+      "scale": 0.991699,
+      "used": 567.251828
+    },
+    {
+      "available": 568,
+      "kind": "classification",
+      "name": "Nghệ An",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 485
+    },
+    {
+      "available": 568,
+      "kind": "evidence",
+      "name": "Hà Tĩnh",
+      "overflow": 0,
+      "promptPx": 22.127352,
+      "scale": 0.921973,
+      "used": 567.935368
+    },
+    {
+      "available": 568,
+      "kind": "timeline",
+      "name": "Quảng Trị",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 464
+    },
+    {
+      "available": 568,
+      "kind": "rapid",
+      "name": "Huế",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 458
+    },
+    {
+      "available": 568,
+      "kind": "connect",
+      "name": "Đà Nẵng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 469
+    },
+    {
+      "available": 568,
+      "kind": "crossword",
+      "name": "Quảng Ngãi",
+      "overflow": 0,
+      "promptPx": 22.525776,
+      "scale": 0.938574,
+      "used": 567.83727
+    },
+    {
+      "available": 568,
+      "kind": "hints",
+      "name": "Gia Lai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 405
+    },
+    {
+      "available": 568,
+      "kind": "sentence",
+      "name": "Khánh Hòa",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 436
+    },
+    {
+      "available": 568,
+      "kind": "fact-inference",
+      "name": "Đắk Lắk",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 492
+    },
+    {
+      "available": 568,
+      "kind": "triple",
+      "name": "Lâm Đồng",
+      "overflow": 0,
+      "promptPx": 23.362488,
+      "scale": 0.973437,
+      "used": 567.513771
+    },
+    {
+      "available": 568,
+      "kind": "budget",
+      "name": "TP.HCM",
+      "overflow": 0,
+      "promptPx": 23.641416,
+      "scale": 0.985059,
+      "used": 560.498571
+    },
+    {
+      "available": 568,
+      "kind": "assembly",
+      "name": "Đồng Nai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 449
+    },
+    {
+      "available": 568,
+      "kind": "pin",
+      "name": "Tây Ninh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 337
+    },
+    {
+      "available": 568,
+      "kind": "reading",
+      "name": "Cần Thơ",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 467
+    },
+    {
+      "available": 568,
+      "kind": "two-claims",
+      "name": "Đồng Tháp",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 526
+    },
+    {
+      "available": 568,
+      "kind": "buckets",
+      "name": "Vĩnh Long",
+      "overflow": 0,
+      "promptPx": 23.123448,
+      "scale": 0.963477,
+      "used": 567.4879530000001
+    },
+    {
+      "available": 568,
+      "kind": "binary-lock",
+      "name": "Cà Mau",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 544
+    },
+    {
+      "available": 568,
+      "kind": "argument",
+      "name": "An Giang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 449
+    }
+  ],
+  "resultFitChecks": [
+    {
+      "available": 568,
+      "kind": "binary",
+      "name": "Hà Nội",
+      "overflow": 0,
+      "promptPx": 22.68516,
+      "scale": 0.945215,
+      "used": 557.6768500000001
+    },
+    {
+      "available": 568,
+      "kind": "letters",
+      "name": "Bắc Ninh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "cloze",
+      "name": "Tuyên Quang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "matching",
+      "name": "Lào Cai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 478
+    },
+    {
+      "available": 568,
+      "kind": "vowels",
+      "name": "Thái Nguyên",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 446
+    },
+    {
+      "available": 568,
+      "kind": "correction",
+      "name": "Hưng Yên",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 478
+    },
+    {
+      "available": 568,
+      "kind": "odd",
+      "name": "Hải Phòng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "truth-matrix",
+      "name": "Quảng Ninh",
+      "overflow": 0,
+      "promptPx": 23.123448,
+      "scale": 0.963477,
+      "used": 567.4879530000001
+    },
+    {
+      "available": 568,
+      "kind": "memory",
+      "name": "Cao Bằng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "slider",
+      "name": "Lai Châu",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "wordsearch",
+      "name": "Lạng Sơn",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "decision",
+      "name": "Sơn La",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "policy-order",
+      "name": "Thanh Hóa",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "classification",
+      "name": "Nghệ An",
+      "overflow": 0,
+      "promptPx": 23.043744,
+      "scale": 0.960156,
+      "used": 567.452196
+    },
+    {
+      "available": 568,
+      "kind": "evidence",
+      "name": "Hà Tĩnh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 559
+    },
+    {
+      "available": 568,
+      "kind": "timeline",
+      "name": "Quảng Trị",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 478
+    },
+    {
+      "available": 568,
+      "kind": "rapid",
+      "name": "Huế",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "connect",
+      "name": "Đà Nẵng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 446
+    },
+    {
+      "available": 568,
+      "kind": "crossword",
+      "name": "Quảng Ngãi",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 477
+    },
+    {
+      "available": 568,
+      "kind": "hints",
+      "name": "Gia Lai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 477
+    },
+    {
+      "available": 568,
+      "kind": "sentence",
+      "name": "Khánh Hòa",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 446
+    },
+    {
+      "available": 568,
+      "kind": "fact-inference",
+      "name": "Đắk Lắk",
+      "overflow": 0,
+      "promptPx": 23.003904,
+      "scale": 0.958496,
+      "used": 566.471136
+    },
+    {
+      "available": 568,
+      "kind": "triple",
+      "name": "Lâm Đồng",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "budget",
+      "name": "TP.HCM",
+      "overflow": 0,
+      "promptPx": 21.808584,
+      "scale": 0.908691,
+      "used": 567.931875
+    },
+    {
+      "available": 568,
+      "kind": "assembly",
+      "name": "Đồng Nai",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 446
+    },
+    {
+      "available": 568,
+      "kind": "pin",
+      "name": "Tây Ninh",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 508
+    },
+    {
+      "available": 568,
+      "kind": "reading",
+      "name": "Cần Thơ",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 478
+    },
+    {
+      "available": 568,
+      "kind": "two-claims",
+      "name": "Đồng Tháp",
+      "overflow": 0,
+      "promptPx": 23.123448,
+      "scale": 0.963477,
+      "used": 567.4879530000001
+    },
+    {
+      "available": 568,
+      "kind": "buckets",
+      "name": "Vĩnh Long",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 477
+    },
+    {
+      "available": 568,
+      "kind": "binary-lock",
+      "name": "Cà Mau",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 559
+    },
+    {
+      "available": 568,
+      "kind": "argument",
+      "name": "An Giang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 562
+    }
+  ],
+  "mobileChecks": [
+    {
+      "available": 824,
+      "kind": "equation",
+      "name": "Ninh Bình",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 738
+    },
+    {
+      "available": 824,
+      "kind": "equation",
+      "name": "Ninh Bình",
+      "overflow": 0,
+      "promptPx": 22.047648,
+      "scale": 0.918652,
+      "used": 770.7490280000001
+    },
+    {
+      "available": 824,
+      "kind": "crossword",
+      "name": "Quảng Ngãi",
+      "overflow": 0,
+      "promptPx": 22.64532,
+      "scale": 0.943555,
+      "used": 822.7799600000001
+    },
+    {
+      "available": 824,
+      "kind": "crossword",
+      "name": "Quảng Ngãi",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 726
+    },
+    {
+      "available": 824,
+      "kind": "evidence",
+      "name": "Hà Tĩnh",
+      "overflow": 0,
+      "promptPx": 20.573448,
+      "scale": 0.857227,
+      "used": 822.93792
+    },
+    {
+      "available": 824,
+      "kind": "evidence",
+      "name": "Hà Tĩnh",
+      "overflow": 0,
+      "promptPx": 22.725,
+      "scale": 0.946875,
+      "used": 823.78125
+    },
+    {
+      "available": 824,
+      "kind": "budget",
+      "name": "TP.HCM",
+      "overflow": 0,
+      "promptPx": 22.047648,
+      "scale": 0.918652,
+      "used": 822.19354
+    },
+    {
+      "available": 824,
+      "kind": "budget",
+      "name": "TP.HCM",
+      "overflow": 0,
+      "promptPx": 20.334384,
+      "scale": 0.847266,
+      "used": 803.208168
+    },
+    {
+      "available": 824,
+      "kind": "reading",
+      "name": "Cần Thơ",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 765
+    },
+    {
+      "available": 824,
+      "kind": "reading",
+      "name": "Cần Thơ",
+      "overflow": 0,
+      "promptPx": 23.521872,
+      "scale": 0.980078,
+      "used": 823.26552
+    },
+    {
+      "available": 824,
+      "kind": "argument",
+      "name": "An Giang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 698
+    },
+    {
+      "available": 824,
+      "kind": "argument",
+      "name": "An Giang",
+      "overflow": 0,
+      "promptPx": 24,
+      "scale": 1,
+      "used": 811
+    }
+  ],
+  "wideChecks": [
+    {
+      "available": 1048,
+      "kind": "binary",
+      "name": "Hà Nội",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 437
+    },
+    {
+      "available": 1048,
+      "kind": "letters",
+      "name": "Bắc Ninh",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 548
+    },
+    {
+      "available": 1048,
+      "kind": "double",
+      "name": "Phú Thọ",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 549
+    },
+    {
+      "available": 1048,
+      "kind": "cloze",
+      "name": "Tuyên Quang",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 474
+    },
+    {
+      "available": 1048,
+      "kind": "matching",
+      "name": "Lào Cai",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 518
+    },
+    {
+      "available": 1048,
+      "kind": "vowels",
+      "name": "Thái Nguyên",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 492
+    },
+    {
+      "available": 1048,
+      "kind": "correction",
+      "name": "Hưng Yên",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 429
+    },
+    {
+      "available": 1048,
+      "kind": "odd",
+      "name": "Hải Phòng",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 512
+    },
+    {
+      "available": 1048,
+      "kind": "truth-matrix",
+      "name": "Quảng Ninh",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 576
+    },
+    {
+      "available": 1048,
+      "kind": "memory",
+      "name": "Cao Bằng",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 618
+    },
+    {
+      "available": 1048,
+      "kind": "number",
+      "name": "Điện Biên",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 403
+    },
+    {
+      "available": 1048,
+      "kind": "slider",
+      "name": "Lai Châu",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 444
+    },
+    {
+      "available": 1048,
+      "kind": "wordsearch",
+      "name": "Lạng Sơn",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 688
+    },
+    {
+      "available": 1048,
+      "kind": "decision",
+      "name": "Sơn La",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 552
+    },
+    {
+      "available": 1048,
+      "kind": "policy-order",
+      "name": "Thanh Hóa",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 621
+    },
+    {
+      "available": 1048,
+      "kind": "classification",
+      "name": "Nghệ An",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 518
+    },
+    {
+      "available": 1048,
+      "kind": "timeline",
+      "name": "Quảng Trị",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 499
+    },
+    {
+      "available": 1048,
+      "kind": "rapid",
+      "name": "Huế",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 516
+    },
+    {
+      "available": 1048,
+      "kind": "connect",
+      "name": "Đà Nẵng",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 541
+    },
+    {
+      "available": 1048,
+      "kind": "hints",
+      "name": "Gia Lai",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 438
+    },
+    {
+      "available": 1048,
+      "kind": "sentence",
+      "name": "Khánh Hòa",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 504
+    },
+    {
+      "available": 1048,
+      "kind": "fact-inference",
+      "name": "Đắk Lắk",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 588
+    },
+    {
+      "available": 1048,
+      "kind": "triple",
+      "name": "Lâm Đồng",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 586
+    },
+    {
+      "available": 1048,
+      "kind": "assembly",
+      "name": "Đồng Nai",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 513
+    },
+    {
+      "available": 1048,
+      "kind": "pin",
+      "name": "Tây Ninh",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 386
+    },
+    {
+      "available": 1048,
+      "kind": "two-claims",
+      "name": "Đồng Tháp",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 634
+    },
+    {
+      "available": 1048,
+      "kind": "buckets",
+      "name": "Vĩnh Long",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 593
+    },
+    {
+      "available": 1048,
+      "kind": "binary-lock",
+      "name": "Cà Mau",
+      "overflow": 0,
+      "promptPx": 35,
+      "scale": 1,
+      "used": 632
+    }
+  ]
+}

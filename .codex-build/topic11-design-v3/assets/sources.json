@@ -1,0 +1,51 @@
+[
+  {
+    "file": "factory.jpg",
+    "url": "https://image.vietnamnews.vn/uploadvnnews/Article/2025/6/11/429920_263975_hgfd.jpeg",
+    "page": "https://vietnamnews.vn/economy/1719385/nghe-an-to-build-new-high-tech-industrial-cluster.html",
+    "credit": "Vietnam News / VNA",
+    "use": "Minh họa sản xuất, không gắn với số liệu PCI"
+  },
+  {
+    "file": "service.jpg",
+    "url": "https://images2.thanhnien.vn/528068263637045248/2025/7/3/nguoi-dan-lam-thu-tuc-xin-cap-so-nha-tai-trung-tam-phuc-vu-hanh-chinh-cong-xa-hoc-mon-tphcm-175158339915291510146.jpg",
+    "page": "https://www.vietnam.vn/en/cap-xa-sau-sap-nhap-quyen-nhieu-hon-trach-nhiem-lon-hon",
+    "credit": "Thanh Nien, anh Trung tam Phuc vu hanh chinh cong xa Hoc Mon",
+    "use": "Minh hoa phuc vu cong, khong phai Dak Lak"
+  },
+  {
+    "file": "q3.jpg",
+    "url": "https://images.hcmcpv.org.vn/res/news/2018/10/25-10-2018-nhieu-mo-hinh-rut-ngan-thoi-gian-giai-quyet-thu-tuc-hanh-chinh-cho-nguoi-dan-19D95347-details.JPG?vs=25102018120213",
+    "page": "https://hcmcpv.org.vn/tin-tuc/nhieu-mo-hinh-rut-ngan-thoi-gian-giai-quyet-thu-tuc-hanh-chinh-cho-nguoi-dan-1491848993",
+    "credit": "Trang tin Thành ủy TP.HCM, 25/10/2018",
+    "use": "Ảnh từ tư liệu về cải cách thủ tục"
+  },
+  {
+    "file": "bridge.jpg",
+    "url": "https://cdn.nhandan.vn/images/1ef398c4e2fb4bf07980a2ded785b3efebdfef547ce1db9d88ead678aabb6d1f879356969c75d69ee8ed85ed640f841d64a25046fd43bca4750b56cbed913a66/004-5161-7839.jpg",
+    "page": "https://nhandan.vn/can-canh-cau-day-vang-binh-khanh-sau-gan-2-nam-tai-khoi-cong-post864415.html",
+    "credit": "Báo Nhân Dân, ảnh cầu Bình Khánh",
+    "use": "Minh họa hạ tầng; không khẳng định được tài trợ từ khoản tiết kiệm tinh gọn"
+  },
+  {
+    "file": "tpthuan.jpg",
+    "url": "https://mkt.1cdn.vn/2023/07/09/1fff.jpeg",
+    "page": "https://markettimes.vn/binh-chanh-cu-chi-hoc-mon-tp-thu-duc-se-co-mot-loat-trung-tam-logistics-quy-mo-toi-750ha-33644.html",
+    "credit": "MarketTimes, anh tu lieu logistics TPHCM, 2023",
+    "use": "Minh họa liên kết đô thị và cảng; tư liệu trước sáp nhập"
+  },
+  {
+    "file": "ecosys.jpg",
+    "url": "https://media.tapchithangmay.vn/share/web/image/2025/07/tu-hom-nay-1-7-cap-giay-chung-nhan-xuat-xu-hang-hoa-c-o-hoan-toan-qua-he-thong-ecosys.jpg",
+    "page": "https://tapchithangmay.vn/tu-hom-nay-0172025-cap-giay-chung-nhan-xuat-xu-hang-hoa-co-hoan-toan-qua-he-thong-ecosys-p22006.html",
+    "credit": "Giao diện eCoSys / ảnh Tạp chí Thang máy",
+    "use": "Minh họa hệ thống C/O, không phải bằng chứng thời gian xử lý"
+  },
+  {
+    "file": "closing.jpg",
+    "url": "https://cdn.daidoanket.vn/w1200/uploaded/images/2025/10/22/00c1801e-786d-40d3-a51a-f5eb260d189e.jpg",
+    "page": "https://daidoanket.vn/chinh-quyen-vi-dan-lam-viec-ca-thu-bay-cung-vi-dan.html",
+    "credit": "Bao Dai Doan Ket, anh dich vu cong Ha Tinh",
+    "use": "Minh hoa phuc vu nguoi dan"
+  }
+]

@@ -1,7 +1,7 @@
 export const source = "https://baochinhphu.vn/nghi-quyet-cua-quoc-hoi-ve-sap-xep-don-vi-hanh-chinh-cap-tinh-102250612191145158.htm";
 export const policySource = "https://xaydungchinhsach.chinhphu.vn/cong-bo-cac-nghi-dinh-ve-phan-cap-phan-quyen-phan-dinh-tham-quyen-119250612134828114.htm";
 
-// 34 provinces keep 34 distinct formats. Revised questions connect to the 15-slide presentation.
+// 34 provinces, 34 formats. Slide refs match the current 14-slide deck.
 export const questions = [
   {
     "id": "ha-noi",
@@ -16,9 +16,9 @@ export const questions = [
     ],
     "answer": 1,
     "explanation": "Kinh tế quyết định chính trị xét đến cùng. Chính trị có tính độc lập tương đối và tác động trở lại kinh tế. Giáo trình nhấn mạnh lấy đổi mới kinh tế làm trọng tâm, đồng thời đổi mới chính trị từng bước phù hợp.",
-    "lesson": "Liên hệ slide 3 và 15. Kết hợp đổi mới kinh tế và đổi mới chính trị trong điều kiện thực tiễn.",
+    "lesson": "Kết hợp đổi mới kinh tế và đổi mới chính trị trong điều kiện thực tiễn.",
     "revision": 2,
-    "slide": 3,
+    "slide": 2,
     "sourceUrl": "../../../giao-trinh-llct/md/Giao_trinh_Triet_hoc_ML.md",
     "sourceLabel": "Giáo trình Triết học Mác – Lênin trong dự án"
   },
@@ -28,19 +28,23 @@ export const questions = [
     "region": "bac",
     "kind": "letters",
     "type": "Ghép chữ",
-    "prompt": "Bắc Giang hợp nhất với Bắc Ninh. Bấm các chữ theo thứ tự để ghép tên tỉnh sau sắp xếp.",
+    "prompt": "GIẢ ĐỊNH tại Bắc Ninh: cơ quan đã được giao nhiệm vụ nhưng không có quyền ra quyết định. Ghép thuật ngữ 9 chữ chỉ yếu tố còn thiếu.",
     "tokens": [
+      "Q",
+      "Ề",
+      "T",
+      "Y",
+      "M",
       "N",
-      "Ắ",
-      "H",
-      "B",
-      "I",
-      "N",
-      "C"
+      "Ẩ",
+      "U",
+      "H"
     ],
-    "answer": "BẮCNINH",
-    "explanation": "Tên tỉnh sau hợp nhất là Bắc Ninh.",
-    "lesson": "Tên gọi mới cần đi cùng cách vận hành thống nhất."
+    "answer": "THẨMQUYỀN",
+    "explanation": "Thuật ngữ là THẨM QUYỀN. Giao nhiệm vụ phải đi cùng quyền quyết định và trách nhiệm tương ứng.",
+    "lesson": "Phân cấp cần bảo đảm cơ quan có quyền và điều kiện thực hiện nhiệm vụ.",
+    "revision": 2,
+    "slide": 5
   },
   {
     "id": "phu-tho",
@@ -48,62 +52,67 @@ export const questions = [
     "region": "bac",
     "kind": "double",
     "type": "Chọn đúng hai",
-    "prompt": "Chọn ĐÚNG HAI nhận định về tỉnh Phú Thọ sau sắp xếp năm 2025.",
+    "prompt": "Phú Thọ sau sắp xếp: muốn đánh giá tác động đến doanh nghiệp, chọn ĐÚNG HAI cách kiểm tra có cơ sở.",
     "options": [
-      "Hình thành từ ba tỉnh trước sắp xếp.",
-      "Bao gồm Vĩnh Phúc và Hòa Bình trước sắp xếp.",
-      "Có thêm Hà Giang trước sắp xếp.",
-      "Tên tỉnh sau sắp xếp là Vĩnh Phúc."
+      "So sánh cùng thủ tục, cùng cách tính thời gian.",
+      "Đo thêm số lượt đi lại và chi phí bổ sung hồ sơ.",
+      "Dùng thời hạn niêm yết thay cho mọi thời gian thực tế.",
+      "Suy ra hiệu quả kinh tế từ tỷ lệ giảm đầu mối."
     ],
     "answer": [
       0,
       1
     ],
-    "explanation": "Phú Thọ mới gồm Phú Thọ, Vĩnh Phúc và Hòa Bình trước sắp xếp. Hai nhận định đầu đúng.",
-    "lesson": "Liên hệ slide 9. Quy mô sắp xếp cần đi cùng đo kết quả phục vụ.",
-    "slide": 9
+    "explanation": "Cần nhóm hồ sơ tương đồng và dữ liệu trải nghiệm thực tế. Thời hạn niêm yết, thời gian thực tế và số đầu mối phản ánh các mặt khác nhau.",
+    "lesson": "Chọn đúng chỉ tiêu trước khi kết luận tác động của sáp nhập.",
+    "slide": 13,
+    "revision": 2
   },
   {
     "id": "tuyen-quang",
     "name": "Tuyên Quang",
     "region": "bac",
     "kind": "cloze",
-    "type": "Điền tên còn thiếu",
-    "prompt": "Hoàn thành thông tin về hai tỉnh trước sắp xếp.",
-    "sentence": "_____ và Tuyên Quang hợp nhất thành tỉnh Tuyên Quang.",
+    "type": "Điền giải pháp còn thiếu",
+    "prompt": "GIẢ ĐỊNH tại Tuyên Quang: hồ sơ cũ có mã và định dạng khác nhau. Chọn việc ưu tiên để hạn chế yêu cầu người dân khai lại.",
+    "sentence": "Trước khi liên thông hồ sơ, cần _____ để dữ liệu nhận diện đúng và dùng lại được.",
     "options": [
-      "Hà Giang",
-      "Yên Bái",
-      "Lào Cai"
+      "đối soát và chuẩn hóa dữ liệu",
+      "thống nhất tên cơ quan trên báo cáo",
+      "đổi màu biểu mẫu tiếp nhận"
     ],
-    "answer": "Hà Giang",
-    "explanation": "Tuyên Quang mới hình thành từ Hà Giang và Tuyên Quang trước sắp xếp.",
-    "lesson": "Quy mô địa bàn thay đổi cần năng lực phục vụ tương ứng."
+    "answer": "đối soát và chuẩn hóa dữ liệu",
+    "explanation": "Chuẩn hóa giúp dữ liệu từ các đơn vị cũ tương thích; đối soát giúp phát hiện trùng hoặc sai. Đổi tên cơ quan chưa giải quyết sự khác biệt dữ liệu.",
+    "lesson": "Cơ cấu mới cần khả năng liên thông dữ liệu và quy trình.",
+    "revision": 2,
+    "slide": 5
   },
   {
     "id": "lao-cai",
     "name": "Lào Cai",
     "region": "bac",
     "kind": "matching",
-    "type": "Nối cặp địa phương",
-    "prompt": "Nối mỗi tỉnh trước sắp xếp với tên tỉnh tương ứng sau hợp nhất.",
+    "type": "Nối vướng mắc với giải pháp",
+    "prompt": "GIẢ ĐỊNH tại Lào Cai sau hợp nhất: nối mỗi vướng mắc với giải pháp trực tiếp nhất.",
     "rows": [
-      "Yên Bái",
-      "Hà Giang",
-      "Bắc Giang"
+      "Cấp dưới nhận việc nhưng thiếu quyền quyết định.",
+      "Hồ sơ bị yêu cầu nhập lại tại hai đầu mối.",
+      "Chưa biết người dân còn phải đi lại bao nhiêu lần."
     ],
     "options": [
-      "Bắc Ninh",
-      "Lào Cai",
-      "Tuyên Quang"
+      "Liên thông dữ liệu",
+      "Phân định thẩm quyền",
+      "Đo kết quả phục vụ"
     ],
     "answer": [
-      "Lào Cai",
-      "Tuyên Quang",
-      "Bắc Ninh"
+      "Phân định thẩm quyền",
+      "Liên thông dữ liệu",
+      "Đo kết quả phục vụ"
     ],
-    "explanation": "Yên Bái thuộc Lào Cai mới, Hà Giang thuộc Tuyên Quang mới, Bắc Giang thuộc Bắc Ninh mới.",
-    "lesson": "Thông tin rõ giúp người dân nhận biết đầu mối mới."
+    "explanation": "Thiếu quyền cần phân định thẩm quyền; nhập lại cần liên thông; thiếu dữ liệu trải nghiệm cần đo kết quả phục vụ.",
+    "lesson": "Giải pháp cần đi vào nguyên nhân của vướng mắc.",
+    "revision": 2,
+    "slide": 5
   },
   {
     "id": "thai-nguyen",
@@ -125,50 +134,57 @@ export const questions = [
     "region": "bac",
     "kind": "correction",
     "type": "Sửa bản tin",
-    "prompt": "Bản tin sau có một tên tỉnh sai. Thay phần được đánh dấu để bản tin chính xác.",
-    "sentence": "Thái Bình và [Nam Định] hợp nhất thành Hưng Yên.",
+    "prompt": "Sửa phần suy luận vượt quá bằng chứng trong bản tin về Hưng Yên sau sắp xếp.",
+    "sentence": "Việc giảm đầu mối [chứng minh thời gian thực tế đã giảm] dù chưa có dữ liệu hồ sơ.",
     "options": [
-      "Hưng Yên",
-      "Hải Dương",
-      "Bắc Ninh"
+      "tạo điều kiện cải tiến nhưng cần đo thời gian thực tế",
+      "cho phép lấy thời hạn niêm yết thay cho thời gian thực tế",
+      "đủ để quy mọi thay đổi kinh doanh cho sáp nhập"
     ],
-    "answer": "Hưng Yên",
-    "explanation": "Cặp đúng là Thái Bình và Hưng Yên.",
-    "lesson": "Dữ liệu và thông tin cần thống nhất sau sắp xếp."
+    "answer": "tạo điều kiện cải tiến nhưng cần đo thời gian thực tế",
+    "explanation": "Thay đổi cơ cấu mở ra điều kiện cải tiến. Muốn xác nhận thời gian giảm phải có dữ liệu hồ sơ so sánh phù hợp.",
+    "lesson": "Phân biệt cơ hội cải cách với kết quả đã được kiểm chứng.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "hai-phong",
     "name": "Hải Phòng",
     "region": "bac",
     "kind": "odd",
-    "type": "Loại tên lạc nhóm",
-    "prompt": "Chọn tên KHÔNG thuộc các địa phương trước sắp xếp hình thành Hải Phòng mới.",
+    "type": "Tìm suy luận thiếu căn cứ",
+    "prompt": "Nhóm đánh giá Hải Phòng sau hợp nhất. Chọn nhận định KHÔNG đủ căn cứ để kết luận hiệu quả kinh tế.",
     "options": [
-      "Hải Phòng",
-      "Hải Dương",
-      "Quảng Ninh"
+      "Cần so sánh cùng tuyến vận tải và loại hàng.",
+      "Cần tính chi phí phối hợp và chuyển đổi.",
+      "Mức giảm đầu mối bằng đúng mức tăng năng suất.",
+      "Cần theo dõi trách nhiệm xử lý dự án liên khu vực."
     ],
     "answer": 2,
-    "explanation": "Hải Phòng mới gồm Hải Phòng và Hải Dương trước sắp xếp. Quảng Ninh thuộc nhóm không sắp xếp cấp tỉnh.",
-    "lesson": "Hiểu đúng phạm vi giúp xác định trách nhiệm phối hợp."
+    "explanation": "Số đầu mối và năng suất là hai chỉ tiêu khác nhau. Năng suất cần đo sản lượng hoặc khối lượng việc trên nguồn lực tương ứng.",
+    "lesson": "Số liệu cơ cấu không tự xác định mức tăng năng suất.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "ninh-binh",
     "name": "Ninh Bình",
     "region": "bac",
     "kind": "equation",
-    "type": "Phép tính hợp nhất",
-    "prompt": "Tại Ninh Bình, Hà Nam + Nam Định + Ninh Bình trước sắp xếp tạo thành một tỉnh. Điền số vào hai ô.",
+    "type": "Tính chi phí chuyển đổi",
+    "prompt": "GIẢ ĐỊNH tại Ninh Bình: trước hợp nhất có 3 đầu mối, mỗi nơi chi 240 triệu/năm. Sau hợp nhất chi vận hành 360 triệu/năm, chuyển đổi một lần 180 triệu. Tính số tiết kiệm.",
     "labels": [
-      "Số tỉnh trước hợp nhất",
-      "Số tỉnh sau hợp nhất"
+      "Năm đầu, sau chi chuyển đổi (triệu đồng)",
+      "Mỗi năm sau, nếu chi vận hành giữ nguyên (triệu đồng)"
     ],
     "answer": [
-      3,
-      1
+      180,
+      360
     ],
-    "explanation": "Ba tỉnh trước sắp xếp hợp nhất thành một tỉnh Ninh Bình.",
-    "lesson": "Giảm số đơn vị cần đi cùng cải thiện hiệu quả hoạt động."
+    "explanation": "Trước: 3 × 240 = 720 triệu/năm. Năm đầu: 720 − 360 − 180 = 180 triệu. Năm sau: 720 − 360 = 360 triệu. Toàn bộ số liệu là giả định.",
+    "lesson": "Lợi ích ròng cần tính chi phí chuyển đổi và thời kỳ đánh giá.",
+    "revision": 2,
+    "slide": 12
   },
   {
     "id": "quang-ninh",
@@ -192,9 +208,9 @@ export const questions = [
       "Đúng"
     ],
     "explanation": "Nguồn địa phương nêu 15/21 loại C/O trực tuyến và thời gian còn 1–2 giờ. Muốn đánh giá năng suất cần thêm dữ liệu nhân lực và khối lượng công việc. Quảng Ninh giữ nguyên cấp tỉnh trong đợt 2025.",
-    "lesson": "Liên hệ slide 11. Phân cấp và dữ liệu trực tuyến tạo điều kiện phục vụ xuất khẩu.",
+    "lesson": "Phân cấp và dữ liệu trực tuyến tạo điều kiện phục vụ xuất khẩu.",
     "revision": 2,
-    "slide": 11,
+    "slide": 10,
     "sourceUrl": "https://www.quangninh.gov.vn/Trang/ChiTietTinTuc.aspx?nid=160925",
     "sourceLabel": "Nguồn số liệu C/O Quảng Ninh"
   },
@@ -204,27 +220,29 @@ export const questions = [
     "region": "bac",
     "kind": "memory",
     "type": "Lật thẻ ghi nhớ",
-    "prompt": "Tìm bốn cặp “địa phương trước sắp xếp” và “kết quả tương ứng”. Cao Bằng là một địa phương giữ nguyên.",
+    "prompt": "Cao Bằng giữ nguyên cấp tỉnh nhưng vẫn cần đổi mới quản trị. Lật và ghép bốn công cụ với tác dụng trực tiếp của chúng.",
     "pairs": [
       [
-        "Cao Bằng",
-        "Cao Bằng giữ nguyên"
+        "Phân cấp",
+        "Giao quyền quyết định"
       ],
       [
-        "Bắc Giang",
-        "Bắc Ninh mới"
+        "Liên thông dữ liệu",
+        "Giảm khai lại thông tin"
       ],
       [
-        "Yên Bái",
-        "Lào Cai mới"
+        "Trách nhiệm giải trình",
+        "Làm rõ trách nhiệm xử lý"
       ],
       [
-        "Hà Giang",
-        "Tuyên Quang mới"
+        "Đo thời gian thực tế",
+        "Kiểm tra mức chờ đợi"
       ]
     ],
-    "explanation": "Cao Bằng giữ nguyên. Ba cặp còn lại minh họa các địa phương sau hợp nhất.",
-    "lesson": "Ghi nhớ địa giới là điểm bắt đầu để tìm hiểu tổ chức mới."
+    "explanation": "Bốn cặp gắn công cụ quản trị với tác dụng trực tiếp. Hiệu quả cuối cùng còn phụ thuộc cách triển khai.",
+    "lesson": "Đổi mới quản trị cần thiết cả ở nơi giữ nguyên địa giới.",
+    "revision": 2,
+    "slide": 5
   },
   {
     "id": "dien-bien",
@@ -232,24 +250,29 @@ export const questions = [
     "region": "bac",
     "kind": "number",
     "type": "Tính nhanh con số",
-    "prompt": "Điện Biên thuộc nhóm giữ nguyên. Trên cả nước, số đơn vị cấp tỉnh chuyển từ 63 xuống 34. Giảm bao nhiêu đơn vị?",
-    "answer": 29,
-    "explanation": "63 − 34 = 29 đơn vị. Con số này là mức giảm số đơn vị, cần phân biệt với số phương án hợp nhất.",
-    "lesson": "Liên hệ slide 9. Cả nước giảm 29 đơn vị cấp tỉnh, tương đương khoảng 46,0%.",
-    "slide": 9
+    "prompt": "GIẢ ĐỊNH tại Điện Biên: trong 120 hồ sơ, 70 hồ sơ giảm được 2 lượt đi lại, 50 hồ sơ giảm được 1 lượt. Tổng số lượt đi lại giảm là bao nhiêu?",
+    "answer": 190,
+    "explanation": "70 × 2 + 50 × 1 = 190 lượt. Đây là tổng số lượt giảm trong tình huống giả định, không phải số hồ sơ hay tỷ lệ phần trăm.",
+    "lesson": "Đo lợi ích phục vụ bằng đúng đơn vị và đúng nhóm hồ sơ.",
+    "slide": 13,
+    "inputLabel": "Tổng số lượt đi lại giảm",
+    "revision": 2
   },
   {
     "id": "lai-chau",
     "name": "Lai Châu",
     "region": "bac",
     "kind": "slider",
-    "type": "Thanh trượt thống kê",
-    "prompt": "Lai Châu là một tỉnh giữ nguyên. Kéo thanh đến số tỉnh, thành không thực hiện sắp xếp cấp tỉnh theo Nghị quyết 202.",
+    "type": "Thanh trượt tỷ lệ tổng hợp",
+    "prompt": "GIẢ ĐỊNH tại Lai Châu: khu trung tâm có 60/80 hồ sơ đúng hạn, vùng xa có 10/20. Kéo đến tỷ lệ đúng hạn CHUNG (%), không lấy trung bình hai tỷ lệ.",
     "min": 0,
-    "max": 34,
-    "answer": 11,
-    "explanation": "Có 11 tỉnh, thành không thực hiện sắp xếp cấp tỉnh trong đợt này.",
-    "lesson": "Phương án tổ chức cần phù hợp điều kiện từng địa phương."
+    "max": 100,
+    "answer": 70,
+    "explanation": "Tỷ lệ chung = (60 + 10) / (80 + 20) × 100% = 70%. Trung bình 75% và 50% cho 62,5% sẽ sai vì hai nhóm có quy mô khác nhau.",
+    "lesson": "Tỷ lệ tổng hợp cần tính theo số hồ sơ của từng nhóm.",
+    "rangeLabel": "Tỷ lệ hồ sơ đúng hạn chung, phần trăm",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "lang-son",
@@ -257,19 +280,21 @@ export const questions = [
     "region": "bac",
     "kind": "wordsearch",
     "type": "Tìm chữ trong lưới",
-    "prompt": "Tìm tên LANGSON theo một hàng ngang, từ trái sang phải. Đây là một tỉnh giữ nguyên trong đợt sắp xếp cấp tỉnh.",
+    "prompt": "Tại Lạng Sơn, giao quyền quyết định cho cấp dưới là công cụ quản trị nào? Tìm thuật ngữ 7 chữ KHÔNG DẤU trên một hàng, từ trái sang phải.",
     "grid": [
-      "BACNINH",
-      "PHUTHOA",
-      "HAINOIX",
-      "LANGSON",
-      "YENBAIX",
-      "CAOBANG",
-      "DANANGX"
+      "HOSOCAP",
+      "DULIEUX",
+      "TRACNHI",
+      "PHANCAP",
+      "THAMQYA",
+      "NGUONLC",
+      "PHAPLYX"
     ],
-    "answer": "LANGSON",
-    "explanation": "Lạng Sơn thuộc nhóm không thực hiện sắp xếp cấp tỉnh năm 2025.",
-    "lesson": "Mỗi địa phương có điều kiện riêng khi đổi mới quản trị."
+    "answer": "PHANCAP",
+    "explanation": "PHÂN CẤP là việc giao thẩm quyền phù hợp cho cấp dưới, gắn với trách nhiệm và điều kiện thực hiện.",
+    "lesson": "Giao quyền phải đi cùng năng lực, nguồn lực và kiểm tra.",
+    "revision": 2,
+    "slide": 5
   },
   {
     "id": "son-la",
@@ -277,27 +302,29 @@ export const questions = [
     "region": "bac",
     "kind": "decision",
     "type": "Ngã rẽ quản trị",
-    "prompt": "Sơn La giữ nguyên cấp tỉnh. Trong tình huống giả định có hồ sơ chậm, hãy đi qua hai ngã rẽ để chọn cách xử lý phù hợp.",
+    "prompt": "GIẢ ĐỊNH tại Sơn La: tỷ lệ đúng hạn tăng nhưng người dân đi lại nhiều hơn. Chọn cách đánh giá rồi cách xử lý phù hợp.",
     "steps": [
       {
-        "label": "Bước đầu tiên",
+        "label": "Cần bổ sung dữ liệu nào?",
         "options": [
-          "Rà soát điểm chậm và trách nhiệm xử lý",
-          "Chỉ đổi tên bộ phận tiếp nhận"
+          "Số lượt đi lại và lần bổ sung hồ sơ",
+          "Chỉ thời hạn xử lý hồ sơ đã hợp lệ"
         ],
         "answer": 0
       },
       {
-        "label": "Sau khi tìm được điểm chậm",
+        "label": "Phát hiện hai đầu mối yêu cầu nhập lại thông tin. Ưu tiên gì?",
         "options": [
-          "Cắt thêm người mà chưa xem khối lượng việc",
-          "Điều chỉnh quy trình và năng lực tương ứng"
+          "Tăng số quầy nhưng giữ nguyên bước nhập lại",
+          "Đối soát, liên thông và làm rõ trách nhiệm"
         ],
         "answer": 1
       }
     ],
-    "explanation": "Trong tình huống giả định, cần xác định nguyên nhân rồi điều chỉnh cách thực hiện và điều kiện làm việc.",
-    "lesson": "Thực tiễn cung cấp căn cứ để sửa cơ chế."
+    "explanation": "Chỉ số đúng hạn chưa phản ánh toàn bộ trải nghiệm. Cần đo công sức người dân và xử lý nguyên nhân nhập lại dữ liệu.",
+    "lesson": "Đánh giá cải cách từ cả quy trình nội bộ và trải nghiệm người sử dụng.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "thanh-hoa",
@@ -305,19 +332,23 @@ export const questions = [
     "region": "trung",
     "kind": "policy-order",
     "type": "Xếp bước xử lý",
-    "prompt": "Thanh Hóa giữ nguyên cấp tỉnh. Trong tình huống giả định, xếp ba bước theo quy trình đã cho: xác định việc, chuẩn bị điều kiện, rồi đánh giá kết quả.",
+    "prompt": "GIẢ ĐỊNH tại Thanh Hóa: xếp bốn bước cải tiến để có căn cứ trước can thiệp, quyền hạn trước thực thi và kiểm chứng sau thí điểm.",
     "items": [
-      "Đo kết quả phục vụ",
+      "So sánh kết quả với dữ liệu ban đầu",
       "Làm rõ nhiệm vụ và thẩm quyền",
-      "Bố trí cán bộ, dữ liệu và công cụ"
+      "Đo hiện trạng, xác định khâu gây chậm",
+      "Bố trí nguồn lực, thí điểm quy trình mới"
     ],
     "answer": [
-      1,
       2,
+      1,
+      3,
       0
     ],
-    "explanation": "Theo quy trình của tình huống, phải rõ nhiệm vụ trước, bố trí điều kiện thực hiện rồi đo kết quả.",
-    "lesson": "Đổi mới cần gắn tổ chức với điều kiện thực thi."
+    "explanation": "Đo hiện trạng → làm rõ quyền hạn → bố trí nguồn lực và thí điểm → so sánh kết quả. Cần dữ liệu ban đầu để đánh giá thay đổi.",
+    "lesson": "Thiết kế cải cách cần gắn chẩn đoán, thực hiện và kiểm chứng.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "nghe-an",
@@ -341,9 +372,9 @@ export const questions = [
       "Kết quả phục vụ"
     ],
     "explanation": "Số đơn vị phản ánh cơ cấu. Thời gian chờ và số lượt đi lại phản ánh kết quả phục vụ mà người dân trải nghiệm.",
-    "lesson": "Liên hệ slide 14. Đo hiệu quả bằng cùng loại thủ tục và cùng cách tính thời gian.",
+    "lesson": "Đo hiệu quả bằng cùng loại thủ tục và cùng cách tính thời gian.",
     "revision": 2,
-    "slide": 14
+    "slide": 13
   },
   {
     "id": "ha-tinh",
@@ -351,24 +382,24 @@ export const questions = [
     "region": "trung",
     "kind": "evidence",
     "type": "Chọn nguồn kiểm chứng",
-    "prompt": "Trong nhóm thảo luận tại Hà Tĩnh, bạn muốn kiểm chứng số liệu năm 2024 về tỷ lệ doanh nghiệp dành trên 10% thời gian cho quy định pháp luật. Chọn nguồn và lý do.",
+    "prompt": "Nhóm Hà Tĩnh cần kiểm chứng tỷ lệ doanh nghiệp dành trên 10% thời gian cho quy định pháp luật NĂM 2024 trên phạm vi cả nước. Chọn nguồn và lý do.",
     "options": [
-      "Báo cáo PCI 2024 của VCCI, trang 20",
-      "Một ảnh biểu đồ không có nguồn",
-      "Bình luận được chia sẻ nhiều"
+      "Báo cáo PCI 2024 của VCCI, đúng chỉ tiêu",
+      "Báo cáo địa phương về hồ sơ đúng hạn năm 2024",
+      "Khảo sát doanh nghiệp năm 2025 với chỉ tiêu khác"
     ],
     "reasons": [
-      "Nguồn khảo sát công bố chỉ tiêu, năm và số liệu",
-      "Nguồn có nhiều lượt thích"
+      "Khớp năm, phạm vi và định nghĩa chỉ tiêu cần kiểm chứng",
+      "Dữ liệu mới hơn luôn thay thế được mọi chỉ tiêu cũ"
     ],
     "answer": [
       0,
       0
     ],
-    "explanation": "Báo cáo PCI 2024 ghi gần 24% doanh nghiệp dành trên 10% thời gian tìm hiểu và thực hiện quy định pháp luật, so với khoảng 20% năm 2023. Đây là số liệu khảo sát toàn quốc.",
-    "lesson": "Liên hệ slide 5. Số liệu chi phí tuân thủ giúp xác định nhu cầu cải cách.",
-    "revision": 2,
-    "slide": 5,
+    "explanation": "PCI 2024 nêu gần 24% doanh nghiệp dành trên 10% thời gian cho quy định, so với khoảng 20% năm 2023. Cần kiểm tra đúng chỉ tiêu, năm và phạm vi.",
+    "lesson": "Nguồn đáng tin cần phù hợp chính xác với câu hỏi nghiên cứu.",
+    "revision": 3,
+    "slide": 4,
     "sourceUrl": "https://pcivietnam.vn/uploads/VN-Bao-cao-dai-PCI/Layout-PCI-2024_VN.pdf#page=20",
     "sourceLabel": "Báo cáo PCI 2024, trang 20"
   },
@@ -398,35 +429,37 @@ export const questions = [
     "region": "trung",
     "kind": "rapid",
     "type": "Ba câu liên tiếp",
-    "prompt": "Huế thuộc nhóm giữ nguyên cấp tỉnh. Trả lời lần lượt ba câu để mở bước tiếp theo.",
+    "prompt": "Huế giữ nguyên cấp tỉnh. Hoàn thành ba tình huống về cách kiểm chứng hiệu quả đổi mới quản trị.",
     "steps": [
       {
-        "label": "Huế có thực hiện sắp xếp cấp tỉnh trong đợt Nghị quyết 202?",
+        "label": "Hai nơi có thời gian xử lý khác nhau nhưng cơ cấu hồ sơ khác nhau. Nên?",
+        "options": [
+          "Chọn nhóm hồ sơ tương đồng để đối chiếu",
+          "Xếp hạng ngay theo thời gian trung bình"
+        ],
+        "answer": 0
+      },
+      {
+        "label": "Khối lượng hồ sơ tăng nhưng nhân lực cũng tăng. Có thể suy ra năng suất tăng cùng tỷ lệ?",
         "options": [
           "Có",
-          "Không"
+          "Chưa đủ dữ liệu"
         ],
         "answer": 1
       },
       {
-        "label": "Sau sắp xếp cả nước có bao nhiêu thành phố trực thuộc Trung ương?",
+        "label": "Tỷ lệ đúng hạn tăng nhưng số lượt bổ sung tăng. Nên?",
         "options": [
-          "6",
-          "8"
-        ],
-        "answer": 0
-      },
-      {
-        "label": "Đổi mới quản trị ở nơi giữ nguyên địa giới có cần thiết?",
-        "options": [
-          "Có",
-          "Không"
+          "Bổ sung dữ liệu trải nghiệm và rà lại quy trình",
+          "Kết luận hoàn thành cải cách theo một chỉ tiêu"
         ],
         "answer": 0
       }
     ],
-    "explanation": "Huế giữ nguyên trong đợt sắp xếp này. Cơ cấu sau sắp xếp có 6 thành phố trực thuộc Trung ương. Đổi mới quản trị vẫn cần thiết.",
-    "lesson": "Sự cần thiết của đổi mới bắt nguồn từ yêu cầu phát triển."
+    "explanation": "Cần so sánh đối tượng tương đồng, tính đến nguồn lực và theo dõi trải nghiệm. Một chỉ tiêu riêng lẻ chưa đủ để đánh giá toàn bộ cải cách.",
+    "lesson": "Kết luận cần tương xứng với bằng chứng.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "da-nang",
@@ -528,9 +561,9 @@ export const questions = [
       "Phân tích vận dụng"
     ],
     "explanation": "Hai dữ kiện đầu là thời hạn địa phương công bố năm 2024. Mức giảm lần lượt 1 ngày (33,3%) và 2 ngày (66,7%). Câu cuối phân tích cơ chế tác động. Kết quả từng hồ sơ cần được đo riêng.",
-    "lesson": "Liên hệ slide 8. Cải cách quy trình có thể được vận dụng khi tổ chức bộ máy mới.",
+    "lesson": "Cải cách quy trình có thể được vận dụng khi tổ chức bộ máy mới.",
     "revision": 2,
-    "slide": 8,
+    "slide": 7,
     "sourceUrl": "https://daklak.gov.vn/thong-tin-tuyen-truyen/-/asset_publisher/eTFgYrRjRQin/content/rut-ngan-thoi-gian-giai-quyet-mot-so-thu-tuc-hanh-chinh-thuoc-linh-vuc-ang-ky-doanh-nghiep",
     "sourceLabel": "Thông báo Đắk Lắk ngày 21/03/2024"
   },
@@ -540,21 +573,23 @@ export const questions = [
     "region": "trung",
     "kind": "triple",
     "type": "Chọn bộ ba",
-    "prompt": "Chọn đúng BA tỉnh trước sắp xếp hình thành tỉnh Lâm Đồng mới.",
+    "prompt": "Lâm Đồng có địa bàn rộng sau hợp nhất. Chọn đúng BA biện pháp giúp giảm đầu mối gắn với chất lượng phục vụ.",
     "options": [
-      "Lâm Đồng",
-      "Đắk Nông",
-      "Bình Thuận",
-      "Ninh Thuận",
-      "Đắk Lắk"
+      "Bố trí điểm hỗ trợ phù hợp dân cư và địa bàn.",
+      "Chuẩn hóa dữ liệu, giảm khai lại thông tin.",
+      "Đo thời gian thực tế và chi phí người dân.",
+      "Tập trung mọi việc tại một nơi dù phải đi xa.",
+      "Đánh giá hiệu quả chỉ bằng số cán bộ đã giảm."
     ],
     "answer": [
       0,
       1,
       2
     ],
-    "explanation": "Lâm Đồng mới gồm Lâm Đồng, Đắk Nông và Bình Thuận trước sắp xếp.",
-    "lesson": "Địa bàn mở rộng cần dịch vụ và nguồn lực phù hợp."
+    "explanation": "Điểm phục vụ phù hợp, dữ liệu liên thông và đo kết quả giúp gắn tinh gọn với trải nghiệm người dân. Địa bàn mở rộng cần điều kiện thực thi tương ứng.",
+    "lesson": "Tinh gọn cần đi cùng khả năng tiếp cận dịch vụ.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "tp-hcm",
@@ -577,9 +612,9 @@ export const questions = [
     ],
     "total": 100,
     "explanation": "Ví dụ 30 + 30 + 20 + 20 = 100 đáp ứng các ngưỡng. Bài toán minh họa việc bố trí điều kiện thực hiện, số ngân sách là giả định. Tại Quận 3 trước đây, nguồn năm 2018 ghi nhận quy trình đăng ký hộ kinh doanh trong 4 giờ so với mốc 5 ngày trước cải tiến.",
-    "lesson": "Liên hệ slide 10 và 12. Quy hoạch thống nhất cần đi cùng quy trình và năng lực phục vụ.",
+    "lesson": "Quy hoạch thống nhất cần đi cùng quy trình và năng lực phục vụ.",
     "revision": 2,
-    "slide": 10,
+    "slide": 9,
     "sourceUrl": "https://plo.vn/4-gio-xong-thu-tuc-dang-ky-kinh-doanh-post495617.html",
     "sourceLabel": "Kinh nghiệm đăng ký hộ kinh doanh Quận 3"
   },
@@ -641,32 +676,34 @@ export const questions = [
     "region": "nam",
     "kind": "reading",
     "type": "Đọc tin điền bảng",
-    "prompt": "Đọc thẻ tin rồi hoàn thành hai ô thông tin.",
-    "passage": "Cần Thơ trước sắp xếp cùng Sóc Trăng và Hậu Giang hợp nhất thành thành phố Cần Thơ.",
+    "prompt": "Đọc dữ liệu GIẢ ĐỊNH tại Cần Thơ rồi chọn kết quả tính toán và kết luận phù hợp.",
+    "passage": "Trước cải tiến: 60/80 hồ sơ đúng hạn. Sau cải tiến: 90/100 hồ sơ đúng hạn. Chưa biết cơ cấu hồ sơ và nhân lực hai kỳ.",
     "fields": [
       {
-        "label": "Số địa phương trước hợp nhất",
+        "label": "Tỷ lệ đúng hạn tăng bao nhiêu?",
         "options": [
-          "2",
-          "3",
-          "4"
+          "15 điểm phần trăm",
+          "30 điểm phần trăm",
+          "15% so với tỷ lệ trước"
         ]
       },
       {
-        "label": "Tên thành phố sau hợp nhất",
+        "label": "Có thể kết luận gì về nguyên nhân?",
         "options": [
-          "Cần Thơ",
-          "Sóc Trăng",
-          "Hậu Giang"
+          "Chưa đủ căn cứ quy toàn bộ mức tăng cho cải tiến",
+          "Đã chứng minh toàn bộ mức tăng do cải tiến",
+          "Đã chứng minh năng suất mỗi cán bộ tăng 50%"
         ]
       }
     ],
     "answer": [
-      "3",
-      "Cần Thơ"
+      "15 điểm phần trăm",
+      "Chưa đủ căn cứ quy toàn bộ mức tăng cho cải tiến"
     ],
-    "explanation": "Ba địa phương hình thành thành phố Cần Thơ sau sắp xếp.",
-    "lesson": "Thông tin rõ giúp người dân hiểu mô hình tổ chức mới."
+    "explanation": "60/80 = 75%; 90/100 = 90%; tăng 15 điểm phần trăm, tương đương tăng tương đối 20%. Cần thêm dữ liệu để đánh giá nguyên nhân và năng suất.",
+    "lesson": "Phân biệt điểm phần trăm, phần trăm tăng và quan hệ nhân quả.",
+    "revision": 2,
+    "slide": 13
   },
   {
     "id": "dong-thap",
@@ -688,9 +725,9 @@ export const questions = [
       0
     ],
     "explanation": "Mức giảm chi thường xuyên được nêu trong báo cáo tổng kết tinh gọn bộ máy. Cần thêm chi phí chuyển đổi và quyết định phân bổ để đánh giá lợi ích cuối cùng.",
-    "lesson": "Liên hệ slide 13. Tinh gọn tạo dư địa sử dụng nguồn lực cho phát triển.",
+    "lesson": "Tinh gọn tạo dư địa sử dụng nguồn lực cho phát triển.",
     "revision": 2,
-    "slide": 13,
+    "slide": 12,
     "sourceUrl": "https://baochinhphu.vn/thu-tuong-doi-moi-dot-pha-manh-me-hon-nua-nhat-la-trong-huy-dong-nguon-luc-phat-trien-102251012161852286.htm",
     "sourceLabel": "Báo cáo được công bố ngày 12/10/2025"
   },
@@ -737,9 +774,9 @@ export const questions = [
     ],
     "answer": "1101",
     "explanation": "Hai số liệu cơ cấu và yêu cầu đo chất lượng phục vụ là đúng. Hiệu quả thủ tục phụ thuộc quy trình và thực thi. Mã đúng là 1101.",
-    "lesson": "Liên hệ slide 9 và 14. Quy mô tổ chức và kết quả phục vụ cần được theo dõi cùng nhau.",
+    "lesson": "Quy mô tổ chức và kết quả phục vụ cần được theo dõi cùng nhau.",
     "revision": 2,
-    "slide": 9,
+    "slide": 8,
     "sourceUrl": "https://www.mof.gov.vn/bo-tai-chinh/dua-nghi-quyet-cua-dang-vao-cuoc-song/qua-trinh-hoan-thien-the-che-chinh-sach-ve-chinh-quyen-dia-phuong-2-cap-duoc-trien-khai-dong-bo-toan-dien",
     "sourceLabel": "Bộ Tài chính tổng hợp sắp xếp năm 2025"
   },
@@ -779,7 +816,7 @@ export const questions = [
       "Quy hoạch, nguồn lực và trách nhiệm phù hợp"
     ],
     "explanation": "Sự kiện địa giới tạo bối cảnh mới. Cơ hội phát triển cần điều kiện quản trị để trở thành kết quả thực tế.",
-    "lesson": "Liên hệ slide 15. Chính trị mở đường thông qua thể chế, tổ chức và năng lực thực thi phù hợp.",
-    "slide": 15
+    "lesson": "Chính trị mở đường thông qua thể chế, tổ chức và năng lực thực thi phù hợp.",
+    "slide": 14
   }
 ];

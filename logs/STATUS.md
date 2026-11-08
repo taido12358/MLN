@@ -18,6 +18,9 @@ ngày hoàn thành, và (nếu đáng kể) link tới file trong `sessions/`.
 
 | Khu vực | Việc | Hoàn thành | Log |
 |---|---|---|---|
+| minigame | Codex kéo dài bản đồ, làm popup tự vừa khung, nâng độ khó 17 câu và kiểm tra chấm điểm | 2026-11-08 | [sessions/2026-11-08_2350_minigame_popup-vua-khung-cau-hoi-van-dung.md](sessions/2026-11-08_2350_minigame_popup-vua-khung-cau-hoi-van-dung.md) |
+| content | Codex thêm ảnh, thiết kế lại PPTX 14 trang nền sáng, giữ biểu đồ và bảng chỉnh sửa được | 2026-11-08 | [sessions/2026-11-08_2324_content_pptx-them-anh-thiet-ke-moi.md](sessions/2026-11-08_2324_content_pptx-them-anh-thiet-ke-moi.md) |
+| content | Codex rút gọn 57% lời thoại slides.md, giữ giải thích số liệu và trình tự hook → slide → minigame → recap | 2026-11-08 | [sessions/2026-11-08_2244_content_rut-gon-loi-thoai-slide.md](sessions/2026-11-08_2244_content_rut-gon-loi-thoai-slide.md) |
 | content | Codex viết lại chi tiết lời nói 15 slide theo bố cục hook → slide → minigame → recap | 2026-11-08 | [sessions/2026-11-08_1727_content_loi-thuyet-trinh-bo-cuc-moi.md](sessions/2026-11-08_1727_content_loi-thuyet-trinh-bo-cuc-moi.md) |
 | content | Codex chuyển video và âm thanh sang phát thủ công, đồng bộ kế hoạch MD và PPTX 15 trang | 2026-11-07 | [sessions/2026-11-07_1325_content_nghe-nhin-thu-cong.md](sessions/2026-11-07_1325_content_nghe-nhin-thu-cong.md) |
 | minigame | Codex làm mới giao diện nền trắng, màu xanh dương–xanh ngọc–cam, hiệu ứng bản đồ và bảng điểm tám nhóm | 2026-11-07 | [sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md](sessions/2026-11-07_1315_minigame_giao-dien-nen-trang.md) |

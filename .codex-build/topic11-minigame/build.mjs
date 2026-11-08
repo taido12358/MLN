@@ -5,12 +5,23 @@ const build=root+'/.codex-build/topic11-minigame/';
 const output=root+'/Presents/11-doi-moi-kinh-te-chinh-tri-tinh-gon-bo-may/minigame/';
 if(questions.length!==34||new Set(questions.map(q=>q.id)).size!==34||new Set(questions.map(q=>q.kind)).size!==34)throw new Error('Require 34 unique provinces and challenge formats.');
 let template=await fs.readFile(build+'template.html','utf8');
+template=template
+ .replace('CHỦ ĐỀ 11 · PHẦN 1 / MINIGAME','CHỦ ĐỀ 11 / MINIGAME')
+ .replace('Có thể chọn một số lượt cho phần khởi động rồi bấm kết thúc để vào bài thuyết trình.','Vận dụng kiến thức đã học rồi bấm kết thúc để tổng kết trước video recap.')
+ .replace('Kết thúc & dẫn vào bài','Kết thúc & tổng kết')
+ .replace('Từ trò chơi đến bài thuyết trình','Hoàn thành minigame')
+ .replace('Phần 1 · Trải nghiệm','Kiến thức vừa vận dụng')
+ .replace('Phần 2 · Phân tích','Tiếp theo · Video recap')
+ .replace('Quan hệ kinh tế và chính trị qua giáo trình, biểu đồ và bằng chứng thực tế.','Nhìn lại bài học và góc nhìn của nhóm 8 để khép lại chương trình.')
+ .replace(/(<blockquote class="bridge" id="bridge-text">)[\s\S]*?(<\/blockquote>)/,'$1Qua phần slide và trò chơi, chúng ta đã vận dụng kiến thức về địa giới, phân cấp và cách kiểm chứng chất lượng phục vụ. Đổi mới bộ máy cần gắn với quy trình, nguồn lực và trách nhiệm thực thi để hỗ trợ kinh tế. Sau khi công bố kết quả, mời cả lớp theo dõi video recap và góc nhìn của nhóm 8.$2')
+ .replace('href="../Slide-Chu-de-11-Sau-minigame.pptx" download>Mở bản PowerPoint tiếp theo','href="../Slide-Chu-de-11-Thiet-ke-moi.pptx" download>Xem lại PowerPoint');
 const engine=await fs.readFile(build+'engine.js','utf8');
 const mapRegions=JSON.parse(await fs.readFile(build+'map-regions.json','utf8'));
 const mapStyle=await fs.readFile(build+'map.css','utf8');
 const projectorStyle=await fs.readFile(build+'projector.css','utf8');
 const themeStyle=await fs.readFile(build+'theme.css','utf8');
-template=template.replace('</head>',`<style>${mapStyle}</style><style>${projectorStyle}</style><style>${themeStyle}</style></head>`);
+const fitStyle=await fs.readFile(build+'fit.css','utf8');
+template=template.replace('</head>',`<style>${mapStyle}</style><style>${projectorStyle}</style><style>${themeStyle}</style><style>${fitStyle}</style></head>`);
 if(mapRegions.length!==34||questions.some(q=>!mapRegions.some(region=>region.id===q.id)))throw new Error('Province geometry must match all 34 questions.');
 template=template.replace('__MAP_REGIONS__',JSON.stringify(mapRegions)).replace('__QUESTIONS__',JSON.stringify(questions,null,2)).replace('__ENGINE__',engine).replaceAll('__SOURCE__',source).replaceAll('__POLICY_SOURCE__',policySource);
 await fs.mkdir(output,{recursive:true});
@@ -21,7 +32,7 @@ const guide=`# Minigame 34 tỉnh, thành
 
 Mở index.html bằng Chrome hoặc Edge. Người điều khiển dùng một máy để chiếu lên màn hình lớp. Trò chơi có đúng tám nhóm theo thứ tự Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 4, Nhóm 5, Nhóm 6, Nhóm 7 và Nhóm 9. Chọn nhóm đang trả lời bằng ô chọn phía trên bản đồ. Nút “Nhóm & luật chơi” hiển thị danh sách và luật tính điểm.
 
-Giao diện mặc định ưu tiên màn chiếu cho lớp khoảng 70 sinh viên. Trên máy tính, chữ câu hỏi khoảng 30–44px, đáp án khoảng 26–36px, tên địa phương và bảng điểm được phóng lớn theo màn hình. Bấm “Toàn màn hình” để tận dụng diện tích máy chiếu. Với câu dài, cuộn vùng đáp án trong khi câu hỏi và hàng nút điều khiển luôn hiển thị. Khi hoàn thành, vùng đáp án chuyển sang phần lời giải để cả lớp theo dõi. Bảng điểm dành phần lớn diện tích cho tám nhóm.
+Giao diện ưu tiên màn chiếu cho lớp khoảng 70 sinh viên. Vùng “Khám phá Việt Nam” được kéo dài, trên máy tính cao ít nhất 820px để bản đồ lớn và dễ chọn hơn. Bấm “Toàn màn hình” để tận dụng máy chiếu. Câu hỏi mở trong popup; bố cục và cỡ chữ tự điều chỉnh theo diện tích để cả câu hỏi, đáp án và nút thao tác vừa popup, không phải cuộn. Khi hoàn thành, phần nhập đáp án được thay bằng lời giải cũng tự vừa khung. Tám nhóm và bảng điểm được giữ nguyên.
 
 Rê chuột lên bản đồ để làm sáng tỉnh, thành và xem tên cùng dạng câu đố. Bấm trực tiếp vào địa phương để mở câu hỏi. Trên điện thoại, chạm để mở. Dùng các nút +, − để phóng to, thanh cuộn để di chuyển bản đồ và “Toàn cảnh” để thu lại. Tab đến từng địa phương rồi Enter hoặc phím cách cũng mở được câu hỏi. Các số trên bản đồ tương ứng thứ tự trong danh sách 34 thử thách bên dưới. Hoàng Sa và Trường Sa được hiển thị trong khung phụ có ghi tên.
 
@@ -39,17 +50,17 @@ Khi đóng một câu chưa xong, trò chơi giữ bản nháp và nhóm đã m�
 
 Bấm tab “Bảng điểm 8 nhóm” để xem điểm tổng, số câu đúng và thứ hạng. Các nhóm bằng điểm có cùng thứ hạng. Bảng chi tiết liệt kê nhóm trả lời và điểm của từng câu đã hoàn thành. Chọn nhóm trên tab này để trở về trò chơi và giao lượt cho nhóm đó. Điểm tự cập nhật khi trả lời đúng theo quy tắc 10, 7 hoặc 5 điểm. Sau Nhóm 9, lượt mặc định quay về Nhóm 1.
 
-## Hai phần của buổi trình bày
+## Vị trí trong chương trình
 
-Phần 1 là trò chơi này. Chọn số lượt phù hợp thời gian của nhóm. Nút “Kết thúc & dẫn vào bài” hoạt động cả khi chưa chơi hết 34 ô.
+Trình tự hiện tại là video hook → thuyết trình slide → minigame 34 tỉnh, thành → video recap. Chọn số lượt phù hợp thời gian. Nút “Kết thúc & tổng kết” hoạt động cả khi chưa chơi hết 34 tỉnh.
 
-Màn kết hiển thị điểm và lời dẫn nối sang phần 2. Nút mở PowerPoint trỏ tới ../Slide-Chu-de-11-Sau-minigame.pptx. Trình duyệt có thể tải hoặc mở tệp theo thiết lập của máy. Có thể mở sẵn PPTX và chuyển cửa sổ sau khi công bố kết quả.
+Màn kết hiển thị điểm và lời dẫn sang video recap, góc nhìn của nhóm 8. Người điều phối phát video riêng sau khi công bố kết quả. Nút “Xem lại PowerPoint” mở bản thiết kế mới nếu cần ôn lại kiến thức.
 
-Phần 2 gồm 15 slide. Slide 2 có câu mở đầu và ghi chú lời nói khoảng 40–50 giây. Video được chiếu thủ công sau slide tương ứng, âm thanh phát bằng trình phát riêng theo kế hoạch MD. Các liên kết nguồn tham khảo trong trò chơi cần Internet, còn câu hỏi và chấm điểm chạy ngay trong HTML. Xem [kế hoạch video và âm thanh](../ke-hoach-video-am-thanh.md) để điều phối phần trình bày.
+Bản PowerPoint thiết kế mới có 14 trang. Liên kết tham khảo cần Internet, còn bản đồ, câu hỏi và chấm điểm chạy ngay trong HTML. Giữ nguyên tám nhóm gồm Nhóm 1–7 và Nhóm 9. Các file video và âm thanh được phát bằng trình phát riêng.
 
 ## Câu hỏi nối với bản slide đã cập nhật
 
-Tám câu hỏi được biên tập lại theo nội dung slide. Hà Nội kiểm tra quan hệ kinh tế và chính trị trong giáo trình. Hà Tĩnh chọn nguồn khảo sát PCI. Đắk Lắk phân biệt thời hạn thủ tục được công bố với phân tích tác động kinh tế. Quảng Ninh kiểm tra số liệu C/O và yêu cầu đánh giá năng suất. TP.HCM dùng bài toán nguồn lực giả định và kinh nghiệm Quận 3. Đồng Tháp đánh giá mức giảm chi thường xuyên. Cà Mau kiểm tra số liệu cơ cấu. Nghệ An phân loại chỉ số cơ cấu và kết quả phục vụ.
+17 câu được nâng độ khó theo hướng vận dụng cho sinh viên đại học, vẫn đủ 34 dạng chơi. Ví dụ: Ninh Bình tính tiết kiệm sau chi phí chuyển đổi; Lai Châu tính tỷ lệ chung có trọng số; Cần Thơ phân biệt điểm phần trăm và quan hệ nhân quả; Lào Cai ghép nguyên nhân với giải pháp; Phú Thọ chọn cách đánh giá cải cách. Các dữ liệu mô phỏng được ghi rõ GIẢ ĐỊNH. Hà Nội, Đắk Lắk, Quảng Ninh và các câu dẫn chứng tiếp tục nối với lý luận, số liệu trên slide. Số slide trong lời giải theo bản PowerPoint thiết kế mới gồm 14 trang.
 
 Khi xem lời giải, nguồn riêng và số slide liên quan xuất hiện cùng bài học. Câu đã hoàn thành tiếp tục giữ điểm và trạng thái khóa của ván đang lưu. Với câu đã sửa nội dung nhưng chưa hoàn thành, trò chơi làm mới bản nháp và số lần thử của câu đó để phù hợp phiên bản mới.
 

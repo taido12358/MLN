@@ -61,12 +61,45 @@
   function showDialog(id) {
     const dialog=$(id);
     dialog.showModal();
+    if(id==='question-dialog')scheduleQuestionFit();
     animateElement(dialog,[
       {opacity:0,transform:'perspective(1000px) translateY(50px) rotateX(-9deg) scale(.88)'},
       {opacity:1,transform:'perspective(1000px) translateY(-7px) rotateX(2deg) scale(1.025)',offset:.72},
       {opacity:1,transform:'none'},
     ],{duration:480,easing:'cubic-bezier(.16,1,.3,1)'});
   }
+  let questionFitFrame=0;
+  function scheduleQuestionFit(){
+    cancelAnimationFrame(questionFitFrame);
+    questionFitFrame=requestAnimationFrame(fitQuestion);
+  }
+  function fitQuestion(){
+    const dialog=$('question-dialog');
+    if(!dialog.open)return;
+    const body=dialog.querySelector('.dialog-body');
+    const availableHeight=parseFloat(getComputedStyle(dialog).maxHeight)-8;
+    const availableWidth=dialog.clientWidth;
+    const measure=scale=>{
+      body.style.zoom=String(scale);
+      body.style.width=`${availableWidth/scale}px`;
+      return Math.max(body.offsetHeight,body.scrollHeight)*scale;
+    };
+    let scale=1;
+    if(measure(1)>availableHeight){
+      let low=.15,high=1;
+      for(let i=0;i<9;i++){
+        const candidate=(low+high)/2;
+        if(measure(candidate)<=availableHeight)low=candidate;else high=candidate;
+      }
+      scale=low;
+    }
+    measure(scale);
+    dialog.dataset.fitScale=scale.toFixed(3);
+  }
+  new MutationObserver(scheduleQuestionFit).observe($('question-dialog').querySelector('.dialog-body'),{childList:true,subtree:true,characterData:true});
+  window.addEventListener('resize',scheduleQuestionFit);
+  window.visualViewport?.addEventListener('resize',scheduleQuestionFit);
+  document.fonts?.ready.then(scheduleQuestionFit);
   function celebrate(dialog,points) {
     if(motionPreference.matches)return;
     dialog.querySelector('.celebration')?.remove();
@@ -277,6 +310,7 @@
   }
   function refreshQuestion() {
     const q = activeQuestion;
+    $('question-dialog').dataset.kind=q.kind;
     const record = getRecord(q);
     const done = !!record.result;
     $('question-type').textContent=q.type;
@@ -493,7 +527,7 @@
       case 'double':case 'triple':
         choices(`Chọn đúng ${q.answer.length} phương án`,q.options,'choices',true,q.answer.length);evaluation=()=>answerArray(q.answer.length);break;
       case 'cloze':case 'correction':
-        quote(q.sentence);select(q.kind==='cloze'?'Tên còn thiếu':'Tên thay thế phần đánh dấu',q.options,'value');evaluation=()=>({complete:currentDraft('value')!=='',correct:currentDraft('value')===q.answer});break;
+        quote(q.sentence);select(q.kind==='cloze'?'Nội dung còn thiếu':'Nội dung thay thế phần đánh dấu',q.options,'value');evaluation=()=>({complete:currentDraft('value')!=='',correct:currentDraft('value')===q.answer});break;
       case 'matching':case 'truth-matrix':case 'classification':case 'fact-inference':
         rowSelects(q.rows,q.options,'row');evaluation=()=>selectedRows(q.rows,q.answer);break;
       case 'vowels':
@@ -502,10 +536,10 @@
         q.labels.forEach((label,i)=>input(label,`n-${i}`,{number:true}));evaluation=()=>({complete:q.labels.every((_,i)=>currentDraft(`n-${i}`)!==''),correct:q.answer.every((value,i)=>Number(currentDraft(`n-${i}`))===value)});break;
       case 'memory':evaluation=memory(q);break;
       case 'number':
-        input('Số đơn vị giảm','number',{number:true});evaluation=()=>({complete:currentDraft('number')!=='',correct:Number(currentDraft('number'))===q.answer});break;
+        input(q.inputLabel||'Số đơn vị giảm','number',{number:true});evaluation=()=>({complete:currentDraft('number')!=='',correct:Number(currentDraft('number'))===q.answer});break;
       case 'slider': {
         const output=node('output',String(currentDraft('range',17)),'range-output');output.id='range-output';output.htmlFor='answer-range';
-        const range=node('input');range.type='range';range.min=q.min;range.max=q.max;range.step=1;range.value=currentDraft('range',17);range.id='answer-range';range.className='range';range.setAttribute('aria-label','Số tỉnh thành giữ nguyên');range.oninput=()=>{setDraft('range',Number(range.value));output.textContent=range.value;};area().append(output,range);evaluation=()=>({complete:true,correct:Number(currentDraft('range',17))===q.answer});break;
+        const range=node('input');range.type='range';range.min=q.min;range.max=q.max;range.step=1;range.value=currentDraft('range',17);range.id='answer-range';range.className='range';range.setAttribute('aria-label',q.rangeLabel||'Số tỉnh thành giữ nguyên');range.oninput=()=>{setDraft('range',Number(range.value));output.textContent=range.value;};area().append(output,range);evaluation=()=>({complete:true,correct:Number(currentDraft('range',17))===q.answer});break;
       }
       case 'wordsearch':evaluation=wordsearch(q);break;
       case 'decision':evaluation=steps(q,false);break;
@@ -599,7 +633,7 @@
   $('reset-confirm').onclick=()=>{const teams=state.teams;const sound=state.sound;state={...blankState(),teams,sound};animateBoardEntrance=true;completedProvince=null;save();$('reset-dialog').close();$('settings-dialog').close();renderBoard();$('notice').textContent='Ván mới đã sẵn sàng.';};
   function openEnding() {
     const table=scores();const completed=Object.values(state.records).filter(r=>r.result).length;const best=Math.max(...table.map(team=>team.points));const leaders=table.filter(team=>team.points===best).map(team=>team.name).join(', ');
-    $('game-summary').textContent=completed?`Đã hoàn thành ${completed} / 34 thử thách. ${leaders} ${table.filter(team=>team.points===best).length>1?'cùng có':'có'} ${best} điểm.`:'Có thể bắt đầu bài thuyết trình hoặc quay lại chọn thử thách.';
+    $('game-summary').textContent=completed?`Đã hoàn thành ${completed} / 34 thử thách. ${leaders} ${table.filter(team=>team.points===best).length>1?'cùng có':'có'} ${best} điểm.`:'Có thể chuyển sang video recap hoặc quay lại chọn thử thách.';
     $('copy-message').textContent='';showDialog('ending-dialog');
     if(completed)celebrate($('ending-dialog'));
   }
